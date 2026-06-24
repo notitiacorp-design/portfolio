@@ -415,8 +415,10 @@ if(cur&&ring){
   document.querySelectorAll('.hover-project').forEach(el=>{el.addEventListener('mouseenter',()=>{cur.textContent='Découvrir';cur.style.width='90px';cur.style.height='90px';cur.style.background='rgba(197,168,128,.1)';cur.style.backdropFilter='blur(6px)';cur.style.color='#C5A880';ring.style.width='100px';ring.style.height='100px';ring.style.borderColor='#C5A880'});el.addEventListener('mouseleave',()=>{cur.textContent='Voir';cur.style.width='10px';cur.style.height='10px';cur.style.background='#C5A880';cur.style.backdropFilter='none';cur.style.color='transparent';ring.style.width='50px';ring.style.height='50px';ring.style.borderColor='rgba(197,168,128,.3)'})});
 }
 
-// Preloader
-window.addEventListener('load',()=>{
+// Preloader with safety timeout
+let preloaded=false;
+function runPreloader(){
+  if(preloaded)return;preloaded=true;
   lucide.createIcons();
   const tl=gsap.timeline();
   tl.to('#pl-bar',{width:'100%',duration:1.5,ease:'power2.inOut'});
@@ -432,7 +434,9 @@ window.addEventListener('load',()=>{
   // Scroll hint animation
   gsap.to('#scroll-line',{y:56,duration:2,ease:'power1.inOut',repeat:-1,yoyo:true});
   tl.to('#scroll-hint',{opacity:1,duration:.6},'-.4');
-});
+}
+window.addEventListener('load',runPreloader);
+setTimeout(runPreloader,3000);
 
 // Header
 window.addEventListener('scroll',()=>{
