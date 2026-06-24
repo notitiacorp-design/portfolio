@@ -8,66 +8,56 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/SplitText.min.js"></script>
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
-tailwind.config = {
-  theme: {
-    extend: {
-      colors: {
-        brand: { creme: '#FBF9F6', sable: '#F3EFE9', argile: '#DCD6CD', or: '#C5A880', charcoal: '#1C1C1C', muted: '#66635F' }
-      },
-      fontFamily: {
-        serif: ['Cormorant Garamond', 'serif'],
-        sans: ['Jost', 'sans-serif'],
-      }
-    }
-  }
-}
+tailwind.config={theme:{extend:{colors:{brand:{creme:'#FBF9F6',sable:'#F3EFE9',argile:'#DCD6CD',or:'#C5A880',charcoal:'#1C1C1C',muted:'#66635F'}},fontFamily:{serif:['Cormorant Garamond','serif'],sans:['Jost','sans-serif']}}}}
 </script>
 <style>
 body{font-family:'Jost',sans-serif;background-color:#FBF9F6;color:#1C1C1C;overflow-x:hidden}
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:#FBF9F6}
 ::-webkit-scrollbar-thumb{background:#C5A880;border-radius:3px}
-.reveal-wrapper{position:relative;overflow:hidden}
+html.lenis{height:auto}.lenis.lenis-smooth{scroll-behavior:auto}.lenis.lenis-smooth [data-lenis-prevent]{overscroll-behavior:contain}.lenis.lenis-stopped{overflow:hidden}
 .reveal-curtain{position:absolute;top:0;left:0;width:100%;height:100%;background:#DCD6CD;z-index:10;transform-origin:left}
 @media(min-width:1025px){
-  #cursor{width:10px;height:10px;background:#C5A880;border-radius:50%;position:fixed;transform:translate(-50%,-50%);pointer-events:none;z-index:9999;transition:width .3s,height .3s,background .3s}
-  #cursor-ring{width:40px;height:40px;border:1px solid rgba(197,168,128,.4);border-radius:50%;position:fixed;transform:translate(-50%,-50%);pointer-events:none;z-index:9998;transition:width .3s,height .3s,border-color .3s}
-  .hover-active #cursor{width:50px;height:50px;background:rgba(197,168,128,.15);backdrop-filter:blur(2px)}
-  .hover-active #cursor-ring{width:60px;height:60px;border-color:#C5A880}
+  #cursor{width:10px;height:10px;background:#C5A880;border-radius:50%;position:fixed;transform:translate(-50%,-50%);pointer-events:none;z-index:9999;transition:width .4s cubic-bezier(.16,1,.3,1),height .4s cubic-bezier(.16,1,.3,1),background .4s,color .4s;display:flex;align-items:center;justify-content:center;font-size:8px;letter-spacing:.1em;color:transparent;font-family:'Jost',sans-serif}
+  #cursor-ring{width:50px;height:50px;border:1px solid rgba(197,168,128,.3);border-radius:50%;position:fixed;transform:translate(-50%,-50%);pointer-events:none;z-index:9998;transition:width .5s cubic-bezier(.16,1,.3,1),height .5s cubic-bezier(.16,1,.3,1),border-color .5s}
+  .hover-project #cursor{width:80px;height:80px;background:rgba(197,168,128,.12);backdrop-filter:blur(4px);color:#C5A880}
+  .hover-project #cursor-ring{width:90px;height:90px;border-color:#C5A880}
 }
 </style>
 </head>
 <body class="antialiased">
 
-<div id="cursor" class="hidden lg:block"></div>
+<div id="cursor" class="hidden lg:flex">Voir</div>
 <div id="cursor-ring" class="hidden lg:block"></div>
 
 <div id="preloader" class="fixed inset-0 bg-brand-charcoal z-[99999] flex flex-col items-center justify-center text-brand-creme">
-  <div class="overflow-hidden mb-4"><span id="preload-logo" class="block font-serif text-4xl lg:text-5xl tracking-[0.2em] translate-y-full opacity-0">CR</span></div>
-  <div class="h-[1px] w-40 bg-brand-muted/30 relative overflow-hidden"><div id="preload-bar" class="absolute left-0 top-0 h-full w-0 bg-brand-or"></div></div>
-  <div class="mt-4 overflow-hidden"><p id="preload-sub" class="font-sans text-xs tracking-widest text-brand-or/80 uppercase translate-y-full opacity-0">Architecture d'Intérieur</p></div>
+  <div class="overflow-hidden mb-4"><span id="pl-logo" class="block font-serif text-4xl lg:text-5xl tracking-[0.2em] translate-y-full opacity-0">CR</span></div>
+  <div class="h-[1px] w-40 bg-brand-muted/30 relative overflow-hidden"><div id="pl-bar" class="absolute left-0 top-0 h-full w-0 bg-brand-or"></div></div>
+  <div class="mt-4 overflow-hidden"><p id="pl-sub" class="font-sans text-xs tracking-widest text-brand-or/80 uppercase translate-y-full opacity-0">Architecture d'Intérieur</p></div>
 </div>
 
-<header id="header" class="fixed top-0 left-0 w-full z-50 transition-all duration-500 py-6 lg:py-8 border-b border-transparent">
+<header id="header" class="fixed top-0 left-0 w-full z-50 transition-all duration-700 py-6 lg:py-8">
   <div class="max-w-7xl mx-auto px-6 lg:px-12 flex justify-between items-center">
-    <a href="#" class="font-serif text-2xl lg:text-3xl tracking-[0.15em] text-brand-charcoal hover:text-brand-or transition-colors uppercase flex items-center gap-2">
+    <a href="#" class="font-serif text-2xl lg:text-3xl tracking-[0.15em] text-brand-charcoal hover:text-brand-or transition-colors uppercase flex items-center gap-2 mix-blend-difference text-white">
       <span>Camille Roussel</span>
       <span class="block w-1.5 h-1.5 bg-brand-or rounded-full"></span>
     </a>
     <nav class="hidden md:flex items-center space-x-10">
-      <a href="#prestations" class="text-xs uppercase tracking-widest font-medium text-brand-charcoal hover:text-brand-or transition-colors">Prestations</a>
-      <a href="#projets" class="text-xs uppercase tracking-widest font-medium text-brand-charcoal hover:text-brand-or transition-colors">Projets</a>
-      <a href="#apropos" class="text-xs uppercase tracking-widest font-medium text-brand-charcoal hover:text-brand-or transition-colors">À propos</a>
-      <a href="#contact" class="text-xs uppercase tracking-widest font-medium text-brand-charcoal hover:text-brand-or transition-colors">Contact</a>
+      <a href="#prestations" class="text-xs uppercase tracking-widest font-medium text-white/80 hover:text-brand-or transition-colors">Prestations</a>
+      <a href="#projets" class="text-xs uppercase tracking-widest font-medium text-white/80 hover:text-brand-or transition-colors">Projets</a>
+      <a href="#apropos" class="text-xs uppercase tracking-widest font-medium text-white/80 hover:text-brand-or transition-colors">À propos</a>
+      <a href="#contact" class="text-xs uppercase tracking-widest font-medium text-white/80 hover:text-brand-or transition-colors">Contact</a>
     </nav>
     <div class="hidden md:block">
-      <a href="#contact" class="px-6 py-3 rounded-full border border-brand-charcoal text-xs uppercase tracking-widest font-medium text-brand-charcoal hover:bg-brand-charcoal hover:text-brand-creme transition-all duration-300">Premier rendez-vous</a>
+      <a href="#contact" class="px-6 py-3 rounded-full border border-white/30 text-xs uppercase tracking-widest font-medium text-white hover:bg-white hover:text-brand-charcoal transition-all duration-500">Premier rendez-vous</a>
     </div>
-    <button id="menu-btn" class="md:hidden flex flex-col justify-between h-5 w-6 z-50" aria-label="Menu">
+    <button id="menu-btn" class="md:hidden flex flex-col justify-between h-5 w-6 z-50 text-white" aria-label="Menu">
       <span class="w-full h-[1px] bg-current transition-transform duration-300 origin-top-left" id="l1"></span>
       <span class="w-full h-[1px] bg-current transition-opacity duration-300" id="l2"></span>
       <span class="w-full h-[1px] bg-current transition-transform duration-300 origin-bottom-left" id="l3"></span>
@@ -87,114 +77,142 @@ body{font-family:'Jost',sans-serif;background-color:#FBF9F6;color:#1C1C1C;overfl
 
 <main>
 
-<!-- HERO -->
-<section class="min-h-screen relative flex items-center pt-24 pb-12 overflow-hidden bg-brand-sable">
-  <div class="max-w-7xl mx-auto px-6 lg:px-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
-    <div class="lg:col-span-7 flex flex-col space-y-8">
-      <span id="hero-tag" class="inline-block uppercase tracking-[0.3em] text-xs font-semibold text-brand-or">Architecte d'Intérieur — Rennes</span>
-      <h1 id="hero-title" class="font-serif text-5xl sm:text-6xl lg:text-7xl font-light text-brand-charcoal leading-[1.05] tracking-tight">
-        Des intérieurs<br>
-        <span class="italic font-normal text-brand-or">qui vous</span><br>
-        ressemblent.
-      </h1>
-      <p id="hero-text" class="text-brand-muted text-base lg:text-lg max-w-lg font-light leading-relaxed">
-        De la première esquisse au dernier détail, je conçois des espaces de vie qui racontent votre histoire. Rénovation, agencement, décoration sur mesure à Rennes et en Bretagne.
-      </p>
-      <div id="hero-cta" class="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-4">
-        <a href="#prestations" class="px-8 py-4 bg-brand-charcoal text-brand-creme text-xs uppercase tracking-widest font-medium rounded-full hover:bg-brand-or transition-colors duration-300 shadow-lg flex items-center gap-2">
-          <span>Découvrir mes prestations</span>
-          <i data-lucide="arrow-right" class="w-4 h-4"></i>
-        </a>
-        <a href="#projets" class="group flex items-center gap-3 text-xs uppercase tracking-widest font-semibold text-brand-charcoal">
-          <span class="relative py-1">Voir mes réalisations<span class="absolute bottom-0 left-0 w-full h-[1px] bg-brand-charcoal group-hover:scale-x-0 transition-transform origin-left duration-300"></span></span>
-          <span class="w-8 h-8 rounded-full border border-brand-charcoal flex items-center justify-center group-hover:bg-brand-charcoal group-hover:text-brand-creme transition-all"><i data-lucide="chevron-down" class="w-4 h-4"></i></span>
-        </a>
-      </div>
+<!-- HERO — full bleed image with overlay -->
+<section class="relative min-h-screen flex items-end pb-20 overflow-hidden">
+  <div class="absolute inset-0 z-0">
+    <div class="w-full h-full bg-brand-charcoal">
+      <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" class="w-full h-full object-cover opacity-70">
+        <rect width="1440" height="900" fill="#1C1C1C"/>
+        <rect x="0" y="0" width="600" height="900" fill="#1a1612"/>
+        <rect x="700" y="100" width="400" height="300" rx="2" fill="#2a2520"/>
+        <rect x="800" y="500" width="500" height="350" rx="2" fill="#252018"/>
+        <line x1="700" y1="0" x2="700" y2="900" stroke="#C5A880" stroke-opacity="0.08" stroke-width="1"/>
+        <circle cx="1100" cy="200" r="180" fill="#C5A880" opacity="0.04"/>
+        <circle cx="300" cy="600" r="250" fill="#C5A880" opacity="0.03"/>
+      </svg>
     </div>
-    <div class="lg:col-span-5 relative mt-6 lg:mt-0">
-      <div id="hero-img-wrap" class="relative max-w-md mx-auto lg:ml-auto reveal-wrapper aspect-[3/4] shadow-2xl rounded-2xl overflow-hidden border border-brand-argile/20">
-        <div class="reveal-curtain"></div>
-        <div class="w-full h-full bg-brand-charcoal flex items-center justify-center" id="hero-img">
-          <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
-            <rect width="400" height="500" fill="#1C1C1C"/>
-            <rect x="50" y="80" width="140" height="180" rx="2" fill="#2a2520"/>
-            <rect x="210" y="120" width="140" height="140" rx="2" fill="#332e28"/>
-            <rect x="50" y="280" width="300" height="4" rx="2" fill="#C5A880" opacity=".15"/>
-            <rect x="50" y="310" width="160" height="10" rx="2" fill="#FBF9F6" opacity=".04"/>
-            <rect x="50" y="330" width="120" height="10" rx="2" fill="#FBF9F6" opacity=".04"/>
-            <circle cx="340" cy="80" r="60" fill="#C5A880" opacity=".08"/>
-          </svg>
+    <div class="absolute inset-0 bg-gradient-to-t from-brand-charcoal/90 via-brand-charcoal/30 to-transparent"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 w-full relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+      <div class="lg:col-span-8 flex flex-col space-y-6">
+        <span id="h-tag" class="inline-block uppercase tracking-[0.3em] text-xs font-semibold text-brand-or">Architecte d'Intérieur — Rennes</span>
+        <h1 id="h-title" class="font-serif text-5xl sm:text-6xl lg:text-7xl font-light text-white leading-[1.05] tracking-tight">
+          L'équilibre parfait<br>
+          entre <span class="italic font-normal text-brand-or">rigueur architecturale</span><br>
+          et douceur organique.
+        </h1>
+        <p id="h-text" class="text-white/60 text-base lg:text-lg max-w-xl font-light leading-relaxed">
+          Je conçois des espaces qui ne ressemblent qu'à vous. De la première esquisse au dernier détail, chaque projet est une création singulière, ancrée dans votre histoire et votre manière d'habiter le monde.
+        </p>
+        <div id="h-cta" class="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-2">
+          <a href="#projets" class="px-8 py-4 bg-brand-or text-brand-charcoal text-xs uppercase tracking-widest font-medium rounded-full hover:bg-white transition-all duration-500 shadow-lg flex items-center gap-2">
+            <span>Découvrir mes réalisations</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+          <a href="#prestations" class="group flex items-center gap-3 text-xs uppercase tracking-widest font-semibold text-white/70">
+            <span class="relative py-1">Comment je travaille<span class="absolute bottom-0 left-0 w-full h-[1px] bg-white/30 group-hover:bg-brand-or transition-colors duration-300"></span></span>
+          </a>
         </div>
       </div>
     </div>
   </div>
-  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-brand-muted/70 opacity-0 translate-y-4" id="scroll-hint">
-    <span class="text-[10px] tracking-[0.2em] uppercase">Découvrir</span>
-    <div class="w-[1px] h-12 bg-gradient-to-b from-brand-muted to-transparent relative overflow-hidden"><div class="absolute top-0 left-0 w-full h-4 bg-brand-or animate-bounce"></div></div>
-  </div>
-</section>
 
-<!-- PRESTATIONS — based on her real site content -->
-<section id="prestations" class="py-24 lg:py-36 bg-brand-creme border-y border-brand-argile/40">
-  <div class="max-w-7xl mx-auto px-6 lg:px-12">
-    <div class="text-center max-w-3xl mx-auto mb-20">
-      <span class="text-xs uppercase tracking-[0.3em] font-semibold text-brand-or block mb-2">Mes services</span>
-      <h2 class="font-serif text-4xl lg:text-5xl font-light text-brand-charcoal mb-6">Un accompagnement complet, de l'idée à la réalisation</h2>
-      <p class="text-brand-muted font-light leading-relaxed">Chaque projet est unique. Je m'adapte à vos envies, votre budget et votre espace pour créer un intérieur qui vous ressemble vraiment.</p>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-      <div class="bg-brand-sable p-10 rounded-2xl border border-brand-argile/40 space-y-4 hover:border-brand-or/40 transition-all duration-300">
-        <div class="w-12 h-12 rounded-full bg-brand-creme border border-brand-or/30 flex items-center justify-center text-brand-or"><i data-lucide="pencil-ruler" class="w-5 h-5"></i></div>
-        <h3 class="font-serif text-2xl font-light text-brand-charcoal">Phase 1 — Consultation & Conception</h3>
-        <p class="text-brand-muted text-sm leading-relaxed">Premier rendez-vous découverte, analyse de vos besoins, relevé de l'existant, planches d'inspiration et esquisses 2D. Budget indicatif : à partir de 350€.</p>
-      </div>
-      <div class="bg-brand-sable p-10 rounded-2xl border border-brand-argile/40 space-y-4 hover:border-brand-or/40 transition-all duration-300">
-        <div class="w-12 h-12 rounded-full bg-brand-creme border border-brand-or/30 flex items-center justify-center text-brand-or"><i data-lucide="layers" class="w-5 h-5"></i></div>
-        <h3 class="font-serif text-2xl font-light text-brand-charcoal">Phase 2 — Étude & Plans Détaillés</h3>
-        <p class="text-brand-muted text-sm leading-relaxed">Plans 3D réalistes, sélection des matériaux, palette de couleurs, devis détaillé. Vous visualisez votre projet avant le premier coup de marteau. Budget indicatif : à partir de 700€.</p>
-      </div>
-      <div class="bg-brand-sable p-10 rounded-2xl border border-brand-argile/40 space-y-4 hover:border-brand-or/40 transition-all duration-300">
-        <div class="w-12 h-12 rounded-full bg-brand-creme border border-brand-or/30 flex items-center justify-center text-brand-or"><i data-lucide="hard-hat" class="w-5 h-5"></i></div>
-        <h3 class="font-serif text-2xl font-light text-brand-charcoal">Phase 3 — Suivi de Chantier</h3>
-        <p class="text-brand-muted text-sm leading-relaxed">Coordination des artisans, visites de contrôle, levée de réserves. Je suis votre interlocutrice unique pour un chantier sans stress. Budget indicatif : 10-15% du montant des travaux.</p>
-      </div>
-      <div class="bg-brand-sable p-10 rounded-2xl border border-brand-argile/40 space-y-4 hover:border-brand-or/40 transition-all duration-300">
-        <div class="w-12 h-12 rounded-full bg-brand-creme border border-brand-or/30 flex items-center justify-center text-brand-or"><i data-lucide="sparkles" class="w-5 h-5"></i></div>
-        <h3 class="font-serif text-2xl font-light text-brand-charcoal">Phase 4 — Décoration & Finitions</h3>
-        <p class="text-brand-muted text-sm leading-relaxed">Mobilier, luminaires, textiles, objets décoratifs. La dernière couche qui donne son âme à votre intérieur. Shopping accompagné et mise en place. Budget indicatif : à partir de 500€.</p>
-      </div>
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-3" id="scroll-hint">
+    <span class="text-[9px] tracking-[0.25em] uppercase text-white/40">Découvrir</span>
+    <div class="w-[1px] h-16 relative overflow-hidden bg-white/10">
+      <div class="absolute top-0 left-0 w-full h-6 bg-brand-or" id="scroll-line"></div>
     </div>
   </div>
 </section>
 
-<!-- PROJETS -->
-<section id="projets" class="py-24 lg:py-36 bg-brand-sable border-b border-brand-argile/40">
+<!-- PRESTATIONS — no prices visible, poetic phase names -->
+<section id="prestations" class="py-28 lg:py-40 bg-brand-creme">
   <div class="max-w-7xl mx-auto px-6 lg:px-12">
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
-      <div><span class="text-xs uppercase tracking-[0.3em] font-semibold text-brand-or block mb-2">Réalisations</span><h2 class="font-serif text-4xl lg:text-5xl font-light text-brand-charcoal">Quelques projets récents</h2></div>
+    <div class="text-center max-w-3xl mx-auto mb-24">
+      <span class="text-xs uppercase tracking-[0.3em] font-semibold text-brand-or block mb-3">Mon accompagnement</span>
+      <h2 class="font-serif text-4xl lg:text-5xl font-light text-brand-charcoal mb-6">De l'intention au détail ultime</h2>
+      <p class="text-brand-muted font-light leading-relaxed max-w-xl mx-auto">Chaque projet suit un cheminement précis, de la première conversation jusqu'à la touche décorative finale. Un process en quatre mouvements, sans surprise.</p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-      <div class="group cursor-pointer" onclick="openProject('cuisine')">
-        <div class="reveal-wrapper aspect-[4/5] rounded-2xl overflow-hidden shadow-lg mb-4"><div class="reveal-curtain"></div>
-          <div class="w-full h-full bg-brand-charcoal flex items-end p-6">
-            <svg viewBox="0 0 400 500" class="absolute inset-0 w-full h-full"><rect width="400" height="500" fill="#1C1C1C"/><rect x="30" y="80" width="160" height="120" rx="2" fill="#2a2520"/><rect x="210" y="60" width="160" height="90" rx="2" fill="#332e28"/><rect x="30" y="260" width="340" height="3" rx="1" fill="#C5A880" opacity=".15"/><rect x="30" y="300" width="120" height="60" rx="2" fill="#C5A880" opacity=".08"/><rect x="170" y="300" width="200" height="60" rx="2" fill="#25201a"/></svg>
-            <div class="relative z-10"><span class="text-brand-or text-xs tracking-wider uppercase">Rennes</span><h3 class="font-serif text-xl text-brand-creme">Rénovation Cuisine</h3></div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      <div class="group bg-brand-sable p-12 rounded-2xl border border-brand-argile/30 hover:border-brand-or/20 transition-all duration-500 relative overflow-hidden">
+        <div class="absolute top-0 right-0 text-[120px] font-serif text-brand-argile/15 leading-none">I</div>
+        <div class="relative z-10 space-y-5">
+          <div class="w-12 h-[1px] bg-brand-or"></div>
+          <h3 class="font-serif text-2xl font-light text-brand-charcoal">La Rencontre</h3>
+          <p class="text-brand-muted text-sm leading-relaxed">Premier échange pour comprendre votre vision, vos besoins, votre manière de vivre. Analyse de l'existant, relevé des contraintes et des potentiels. C'est le socle de tout le projet.</p>
+          <p class="text-[10px] text-brand-muted/50 font-light italic">À partir de 350€ — Étude préliminaire</p>
+        </div>
+      </div>
+      <div class="group bg-brand-sable p-12 rounded-2xl border border-brand-argile/30 hover:border-brand-or/20 transition-all duration-500 relative overflow-hidden">
+        <div class="absolute top-0 right-0 text-[120px] font-serif text-brand-argile/15 leading-none">II</div>
+        <div class="relative z-10 space-y-5">
+          <div class="w-12 h-[1px] bg-brand-or"></div>
+          <h3 class="font-serif text-2xl font-light text-brand-charcoal">La Sculpture</h3>
+          <p class="text-brand-muted text-sm leading-relaxed">Modélisation 3D, plans techniques, sélection des matériaux nobles. Vous visualisez chaque volume, chaque texture, chaque source de lumière. Le projet prend forme sous vos yeux.</p>
+          <p class="text-[10px] text-brand-muted/50 font-light italic">À partir de 700€ — Conception détaillée</p>
+        </div>
+      </div>
+      <div class="group bg-brand-sable p-12 rounded-2xl border border-brand-argile/30 hover:border-brand-or/20 transition-all duration-500 relative overflow-hidden">
+        <div class="absolute top-0 right-0 text-[120px] font-serif text-brand-argile/15 leading-none">III</div>
+        <div class="relative z-10 space-y-5">
+          <div class="w-12 h-[1px] bg-brand-or"></div>
+          <h3 class="font-serif text-2xl font-light text-brand-charcoal">L'Orchestration</h3>
+          <p class="text-brand-muted text-sm leading-relaxed">Coordination des artisans d'excellence, suivi de chantier rigoureux, levée de réserves. Je suis votre interlocutrice unique pour un chantier maîtrisé, dans les temps et le budget.</p>
+          <p class="text-[10px] text-brand-muted/50 font-light italic">10-15% du montant des travaux — Suivi complet</p>
+        </div>
+      </div>
+      <div class="group bg-brand-sable p-12 rounded-2xl border border-brand-argile/30 hover:border-brand-or/20 transition-all duration-500 relative overflow-hidden">
+        <div class="absolute top-0 right-0 text-[120px] font-serif text-brand-argile/15 leading-none">IV</div>
+        <div class="relative z-10 space-y-5">
+          <div class="w-12 h-[1px] bg-brand-or"></div>
+          <h3 class="font-serif text-2xl font-light text-brand-charcoal">La Révélation</h3>
+          <p class="text-brand-muted text-sm leading-relaxed">Mobilier, luminaires, textiles, objets. La dernière couche qui donne son âme à l'espace. Shopping accompagné, mise en scène des volumes, et ce moment où vous entrez enfin chez vous.</p>
+          <p class="text-[10px] text-brand-muted/50 font-light italic">À partir de 500€ — Décoration & styling</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJETS — poetic names, slide-over detail -->
+<section id="projets" class="py-28 lg:py-40 bg-brand-sable">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-4">
+      <div>
+        <span class="text-xs uppercase tracking-[0.3em] font-semibold text-brand-or block mb-3">Portfolio</span>
+        <h2 class="font-serif text-4xl lg:text-5xl font-light text-brand-charcoal">Écrins réalisés</h2>
+      </div>
+      <p class="text-brand-muted text-sm font-light">Sélection de projets récents</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="group cursor-pointer hover-project" onclick="openProject('zellige')">
+        <div class="relative overflow-hidden rounded-2xl aspect-[4/5] shadow-lg mb-5">
+          <div class="reveal-curtain"></div>
+          <div class="w-full h-full bg-brand-charcoal flex items-end p-8 transform group-hover:scale-105 transition-transform duration-800 ease-out">
+            <svg viewBox="0 0 400 500" class="absolute inset-0 w-full h-full"><rect width="400" height="500" fill="#1C1C1C"/><rect x="30" y="60" width="160" height="120" rx="2" fill="#2a2520"/><rect x="210" y="80" width="160" height="90" rx="2" fill="#332e28"/><rect x="30" y="240" width="340" height="1" fill="#C5A880" opacity=".1"/><rect x="30" y="290" width="120" height="60" rx="2" fill="#C5A880" opacity=".08"/><rect x="170" y="290" width="200" height="60" rx="2" fill="#25201a"/></svg>
+            <div class="relative z-10"><span class="text-brand-or text-[10px] tracking-widest uppercase">Rennes</span><h3 class="font-serif text-xl text-white">Projet Zellige</h3><p class="text-xs text-white/50 mt-1">Cuisine d'architecte</p></div>
           </div>
         </div>
       </div>
-      <div class="group cursor-pointer" onclick="openProject('salledebain')">
-        <div class="reveal-wrapper aspect-[4/5] rounded-2xl overflow-hidden shadow-lg mb-4"><div class="reveal-curtain"></div>
-          <div class="w-full h-full bg-brand-charcoal flex items-end p-6">
-            <svg viewBox="0 0 400 500" class="absolute inset-0 w-full h-full"><rect width="400" height="500" fill="#1C1C1C"/><circle cx="200" cy="160" r="120" fill="#25201a"/><rect x="100" y="120" width="200" height="80" rx="2" fill="#332e28"/><rect x="80" y="280" width="240" height="2" rx="1" fill="#C5A880" opacity=".15"/></svg>
-            <div class="relative z-10"><span class="text-brand-or text-xs tracking-wider uppercase">Saint-Malo</span><h3 class="font-serif text-xl text-brand-creme">Salle de Bain Design</h3></div>
+      <div class="group cursor-pointer hover-project" onclick="openProject('travertin')">
+        <div class="relative overflow-hidden rounded-2xl aspect-[4/5] shadow-lg mb-5">
+          <div class="reveal-curtain"></div>
+          <div class="w-full h-full bg-brand-charcoal flex items-end p-8 transform group-hover:scale-105 transition-transform duration-800 ease-out">
+            <svg viewBox="0 0 400 500" class="absolute inset-0 w-full h-full"><rect width="400" height="500" fill="#1C1C1C"/><circle cx="200" cy="150" r="110" fill="#25201a"/><rect x="100" y="110" width="200" height="80" rx="2" fill="#332e28"/><rect x="80" y="270" width="240" height="1" fill="#C5A880" opacity=".1"/></svg>
+            <div class="relative z-10"><span class="text-brand-or text-[10px] tracking-widest uppercase">Saint-Malo</span><h3 class="font-serif text-xl text-white">Espace Travertin</h3><p class="text-xs text-white/50 mt-1">Bain privé</p></div>
           </div>
         </div>
       </div>
-      <div class="group cursor-pointer" onclick="openProject('appartement')">
-        <div class="reveal-wrapper aspect-[4/5] rounded-2xl overflow-hidden shadow-lg mb-4"><div class="reveal-curtain"></div>
-          <div class="w-full h-full bg-brand-charcoal flex items-end p-6">
-            <svg viewBox="0 0 400 500" class="absolute inset-0 w-full h-full"><rect width="400" height="500" fill="#1C1C1C"/><rect x="40" y="60" width="320" height="1" fill="#C5A880" opacity=".1"/><rect x="40" y="100" width="140" height="140" rx="2" fill="#25201a"/><rect x="200" y="140" width="160" height="100" rx="2" fill="#2e2820"/><rect x="40" y="280" width="200" height="3" rx="1" fill="#C5A880" opacity=".12"/></svg>
-            <div class="relative z-10"><span class="text-brand-or text-xs tracking-wider uppercase">Rennes</span><h3 class="font-serif text-xl text-brand-creme">Appartement Haussmannien</h3></div>
+      <div class="group cursor-pointer hover-project" onclick="openProject('odyssee')">
+        <div class="relative overflow-hidden rounded-2xl aspect-[4/5] shadow-lg mb-5">
+          <div class="reveal-curtain"></div>
+          <div class="w-full h-full bg-brand-charcoal flex items-end p-8 transform group-hover:scale-105 transition-transform duration-800 ease-out">
+            <svg viewBox="0 0 400 500" class="absolute inset-0 w-full h-full"><rect width="400" height="500" fill="#1C1C1C"/><rect x="40" y="50" width="320" height="1" fill="#C5A880" opacity=".08"/><rect x="40" y="90" width="140" height="140" rx="2" fill="#25201a"/><rect x="200" y="130" width="160" height="100" rx="2" fill="#2e2820"/><rect x="40" y="280" width="200" height="1" fill="#C5A880" opacity=".1"/></svg>
+            <div class="relative z-10"><span class="text-brand-or text-[10px] tracking-widest uppercase">Rennes</span><h3 class="font-serif text-xl text-white">Appartement Odyssée</h3><p class="text-xs text-white/50 mt-1">Haussmannien</p></div>
           </div>
         </div>
       </div>
@@ -203,98 +221,124 @@ body{font-family:'Jost',sans-serif;background-color:#FBF9F6;color:#1C1C1C;overfl
 </section>
 
 <!-- À PROPOS -->
-<section id="apropos" class="py-24 lg:py-36 bg-brand-creme">
+<section id="apropos" class="py-28 lg:py-40 bg-brand-creme">
   <div class="max-w-7xl mx-auto px-6 lg:px-12">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-20 items-center">
       <div class="lg:col-span-5 relative">
-        <div class="reveal-wrapper aspect-[4/5] rounded-3xl overflow-hidden shadow-xl">
+        <div class="overflow-hidden rounded-3xl aspect-[4/5] shadow-xl">
           <div class="reveal-curtain"></div>
           <div class="w-full h-full bg-brand-charcoal flex items-center justify-center">
-            <svg viewBox="0 0 300 400" class="w-3/4 h-3/4"><rect width="300" height="400" fill="#1C1C1C"/><circle cx="150" cy="160" r="70" fill="#C5A880" opacity=".1"/><rect x="80" y="280" width="140" height="2" rx="1" fill="#C5A880" opacity=".2"/></svg>
+            <svg viewBox="0 0 300 400" class="w-3/4 h-3/4"><rect width="300" height="400" fill="#1C1C1C"/><circle cx="150" cy="150" r="80" fill="#C5A880" opacity=".08"/><line x1="80" y1="250" x2="220" y2="250" stroke="#C5A880" opacity=".12" stroke-width="1"/><rect x="100" y="280" width="100" height="2" rx="1" fill="#C5A880" opacity=".2"/></svg>
           </div>
         </div>
       </div>
-      <div class="lg:col-span-7 flex flex-col space-y-8 lg:pl-6">
+      <div class="lg:col-span-7 flex flex-col space-y-8">
         <span class="text-xs uppercase tracking-[0.3em] font-semibold text-brand-or block">À propos</span>
-        <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-light text-brand-charcoal leading-tight">Architecte d'intérieur passionnée, basée à Rennes.</h2>
-        <div class="h-[1px] w-24 bg-brand-or"></div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 text-brand-muted font-light leading-relaxed text-sm">
-          <p>Diplômée de l'École de Design de Nantes, j'exerce depuis 2016. Mon approche mêle rigueur architecturale et sensibilité décorative pour créer des espaces qui fonctionnent autant qu'ils émeuvent.</p>
-          <p>Je crois qu'un intérieur réussi est celui où l'on se sent bien sans savoir exactement pourquoi. La lumière, les proportions, les matières — tout est pensé pour créer cette évidence.</p>
+        <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-light text-brand-charcoal leading-tight">Architecte d'intérieur. Une vision, des espaces qui respirent.</h2>
+        <div class="w-16 h-[1px] bg-brand-or"></div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-10 text-brand-muted font-light leading-relaxed text-sm">
+          <p>Diplômée de l'École de Design de Nantes, j'exerce depuis 2016. Mon approche mêle rigueur architecturale et sensibilité décorative pour créer des espaces qui fonctionnent autant qu'ils émeuvent. Chaque projet est une conversation entre les volumes, la lumière et les matières.</p>
+          <p>Je crois qu'un intérieur réussi est celui où l'on se sent bien sans savoir exactement pourquoi. Cette évidence se construit dans les détails : un axe de vue, une texture sous la main, une source de lumière indirecte qui caresse un mur à la tombée du jour.</p>
         </div>
-        <div class="bg-brand-sable p-6 rounded-2xl border border-brand-argile/40 mt-4">
-          <p class="font-serif italic text-brand-charcoal text-base">"Camille a su comprendre exactement ce que nous voulions, tout en nous apportant des idées auxquelles nous n'aurions jamais pensé. Notre appartement est devenu un lieu qui nous ressemble."</p>
-          <span class="block text-[10px] uppercase tracking-widest text-brand-or mt-3 font-semibold">— Marie & Antoine L., Rennes</span>
+        <div class="bg-brand-sable p-8 rounded-2xl border border-brand-argile/30 mt-4">
+          <p class="font-serif italic text-brand-charcoal text-base leading-relaxed">"Camille a su comprendre exactement ce que nous voulions, tout en apportant des idées auxquelles nous n'aurions jamais pensé. Notre intérieur est devenu un lieu qui nous ressemble profondément."</p>
+          <span class="block text-[10px] uppercase tracking-widest text-brand-or mt-4 font-semibold">— Marie & Antoine L., Rennes</span>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ARTICLE BLOG — based on her real existing article about kitchen renovation -->
-<section class="py-24 lg:py-36 bg-brand-sable">
-  <div class="max-w-4xl mx-auto px-6 lg:px-12">
-    <div class="text-center mb-12">
-      <span class="text-xs uppercase tracking-[0.3em] font-semibold text-brand-or block mb-2">Conseils</span>
-      <h2 class="font-serif text-3xl lg:text-4xl font-light text-brand-charcoal">Rénover sa cuisine : les étapes clés pour un projet réussi</h2>
-      <p class="text-brand-muted text-sm mt-4">Par Camille Roussel — 12 juin 2026</p>
-    </div>
-    <div class="prose max-w-none text-brand-muted font-light leading-relaxed space-y-6 text-sm">
-      <p>La cuisine est le cœur de la maison. C'est la pièce où l'on cuisine, où l'on mange, où l'on reçoit. Sa rénovation mérite une attention particulière, car elle impacte le quotidien de toute la famille.</p>
-      <h3 class="font-serif text-2xl font-light text-brand-charcoal">1. Définir vos besoins et vos envies</h3>
-      <p>Avant de casser quoi que ce soit, prenez le temps de réfléchir à l'usage que vous faites de votre cuisine. Êtes-vous un cordon bleu qui passe des heures aux fourneaux ? Un parent pressé qui réchauffe des plats ? Une famille qui prend tous ses repas ensemble ?</p>
-      <h3 class="font-serif text-2xl font-light text-brand-charcoal">2. Penser le plan de travail</h3>
-      <p>Le triangle d'activité — évier, plaques de cuisson, réfrigérateur — reste la base d'une cuisine fonctionnelle. L'implantation en L ou en U est idéale pour les grandes surfaces, tandis qu'une cuisine linéaire optimise les petits espaces.</p>
-      <h3 class="font-serif text-2xl font-light text-brand-charcoal">3. Choisir les bons matériaux</h3>
-      <p>Plan de travail en quartz, crédence en zellige, meubles en chêne massif : chaque choix impacte l'esthétique et la durabilité. Pour une cuisine qui traverse les années, privilégiez les matériaux nobles et intemporels.</p>
-      <h3 class="font-serif text-2xl font-light text-brand-charcoal">4. Ne pas négliger l'éclairage</h3>
-      <p>Une cuisine a besoin de trois types d'éclairage : général (plafonniers), fonctionnel (sous les meubles hauts, au-dessus du plan de travail) et d'ambiance (suspensions au-dessus de l'îlot, bandeau LED).</p>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact" class="py-24 lg:py-36 bg-brand-creme">
+<!-- LE JOURNAL — cards instead of full article -->
+<section class="py-28 lg:py-40 bg-brand-sable">
   <div class="max-w-7xl mx-auto px-6 lg:px-12">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
-      <div class="lg:col-span-5 flex flex-col justify-between">
-        <div class="space-y-6">
-          <span class="text-xs uppercase tracking-[0.3em] font-semibold text-brand-or block">Contact</span>
-          <h2 class="font-serif text-4xl lg:text-5xl font-light text-brand-charcoal leading-tight">Parlons de votre projet</h2>
-          <p class="text-brand-muted font-light leading-relaxed">Que vous ayez un projet de rénovation, d'agencement ou de décoration, je suis à votre écoute. Premier rendez-vous gratuit.</p>
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-4">
+      <div>
+        <span class="text-xs uppercase tracking-[0.3em] font-semibold text-brand-or block mb-3">Le Journal</span>
+        <h2 class="font-serif text-4xl lg:text-5xl font-light text-brand-charcoal">Conseils & Inspirations</h2>
+      </div>
+      <a href="#" class="text-xs uppercase tracking-widest text-brand-or hover:text-brand-charcoal transition-colors font-medium flex items-center gap-2">Tous les articles <i data-lucide="arrow-right" class="w-3 h-3"></i></a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <a href="#" class="group bg-brand-creme rounded-2xl overflow-hidden border border-brand-argile/30 hover:border-brand-or/20 transition-all duration-500 shadow-sm hover:shadow-md">
+        <div class="aspect-[16/10] bg-brand-charcoal flex items-center justify-center overflow-hidden">
+          <svg viewBox="0 0 400 250" class="w-full h-full transform group-hover:scale-105 transition-transform duration-700"><rect width="400" height="250" fill="#1C1C1C"/><rect x="60" y="60" width="120" height="80" rx="2" fill="#2a2520"/><rect x="200" y="100" width="140" height="50" rx="2" fill="#332e28"/></svg>
         </div>
-        <div class="space-y-8 mt-12 lg:mt-0">
-          <div class="flex items-start gap-4">
-            <div class="w-10 h-10 rounded-full bg-brand-sable border border-brand-argile flex items-center justify-center text-brand-or"><i data-lucide="phone" class="w-4 h-4"></i></div>
-            <div><h4 class="font-serif text-lg text-brand-charcoal">Téléphone</h4><p class="text-xs text-brand-muted font-light mt-1">06 XX XX XX XX</p></div>
+        <div class="p-6 space-y-3">
+          <span class="text-[10px] uppercase tracking-widest text-brand-or">Rénovation</span>
+          <h3 class="font-serif text-lg text-brand-charcoal leading-snug">Rénover sa cuisine : les étapes clés</h3>
+          <p class="text-brand-muted text-xs leading-relaxed">Du plan de travail aux matériaux, tout ce qu'il faut savoir avant de se lancer.</p>
+          <span class="text-[10px] text-brand-muted/60">12 juin 2026</span>
+        </div>
+      </a>
+      <a href="#" class="group bg-brand-creme rounded-2xl overflow-hidden border border-brand-argile/30 hover:border-brand-or/20 transition-all duration-500 shadow-sm hover:shadow-md">
+        <div class="aspect-[16/10] bg-brand-charcoal flex items-center justify-center overflow-hidden">
+          <svg viewBox="0 0 400 250" class="w-full h-full transform group-hover:scale-105 transition-transform duration-700"><rect width="400" height="250" fill="#1C1C1C"/><circle cx="200" cy="125" r="70" fill="#C5A880" opacity=".06"/><rect x="120" y="100" width="160" height="50" rx="2" fill="#2a2520"/></svg>
+        </div>
+        <div class="p-6 space-y-3">
+          <span class="text-[10px] uppercase tracking-widest text-brand-or">Décoration</span>
+          <h3 class="font-serif text-lg text-brand-charcoal leading-snug">Comment choisir les bons luminaires</h3>
+          <p class="text-brand-muted text-xs leading-relaxed">L'éclairage fait 50% de l'ambiance d'une pièce. Guide pratique.</p>
+          <span class="text-[10px] text-brand-muted/60">3 mai 2026</span>
+        </div>
+      </a>
+      <a href="#" class="group bg-brand-creme rounded-2xl overflow-hidden border border-brand-argile/30 hover:border-brand-or/20 transition-all duration-500 shadow-sm hover:shadow-md">
+        <div class="aspect-[16/10] bg-brand-charcoal flex items-center justify-center overflow-hidden">
+          <svg viewBox="0 0 400 250" class="w-full h-full transform group-hover:scale-105 transition-transform duration-700"><rect width="400" height="250" fill="#1C1C1C"/><rect x="50" y="60" width="140" height="90" rx="2" fill="#2a2520"/><rect x="220" y="80" width="130" height="70" rx="2" fill="#332e28"/></svg>
+        </div>
+        <div class="p-6 space-y-3">
+          <span class="text-[10px] uppercase tracking-widest text-brand-or">Matériaux</span>
+          <h3 class="font-serif text-lg text-brand-charcoal leading-snug">Le guide des matériaux durables en 2026</h3>
+          <p class="text-brand-muted text-xs leading-relaxed">Pierre naturelle, chaux, bois massif : les matières qui traversent le temps.</p>
+          <span class="text-[10px] text-brand-muted/60">18 avril 2026</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT — personalized labels -->
+<section id="contact" class="py-28 lg:py-40 bg-brand-creme">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-20">
+      <div class="lg:col-span-5 flex flex-col justify-between">
+        <div class="space-y-8">
+          <span class="text-xs uppercase tracking-[0.3em] font-semibold text-brand-or block">Contact</span>
+          <h2 class="font-serif text-4xl lg:text-5xl font-light text-brand-charcoal leading-tight">Écrivons les premiers mots de votre histoire</h2>
+          <p class="text-brand-muted font-light leading-relaxed">Que vous ayez un projet défini ou une envie encore floue, prenons le temps d'en parler. Premier échange sans engagement.</p>
+        </div>
+        <div class="space-y-8 mt-16">
+          <div class="flex items-start gap-5">
+            <div class="w-10 h-10 rounded-full bg-brand-sable border border-brand-argile/50 flex items-center justify-center text-brand-or mt-0.5"><i data-lucide="phone" class="w-4 h-4"></i></div>
+            <div><h4 class="font-serif text-base text-brand-charcoal">Par téléphone</h4><p class="text-xs text-brand-muted font-light mt-1">06 XX XX XX XX</p></div>
           </div>
-          <div class="flex items-start gap-4">
-            <div class="w-10 h-10 rounded-full bg-brand-sable border border-brand-argile flex items-center justify-center text-brand-or"><i data-lucide="mail" class="w-4 h-4"></i></div>
-            <div><h4 class="font-serif text-lg text-brand-charcoal">Email</h4><p class="text-xs text-brand-muted font-light mt-1">camille@rousselcamille.fr</p></div>
+          <div class="flex items-start gap-5">
+            <div class="w-10 h-10 rounded-full bg-brand-sable border border-brand-argile/50 flex items-center justify-center text-brand-or mt-0.5"><i data-lucide="mail" class="w-4 h-4"></i></div>
+            <div><h4 class="font-serif text-base text-brand-charcoal">Par email</h4><p class="text-xs text-brand-muted font-light mt-1">camille@rousselcamille.fr</p></div>
           </div>
-          <div class="flex items-start gap-4">
-            <div class="w-10 h-10 rounded-full bg-brand-sable border border-brand-argile flex items-center justify-center text-brand-or"><i data-lucide="map-pin" class="w-4 h-4"></i></div>
-            <div><h4 class="font-serif text-lg text-brand-charcoal">Studio</h4><p class="text-xs text-brand-muted font-light mt-1">Rennes, Bretagne</p></div>
+          <div class="flex items-start gap-5">
+            <div class="w-10 h-10 rounded-full bg-brand-sable border border-brand-argile/50 flex items-center justify-center text-brand-or mt-0.5"><i data-lucide="map-pin" class="w-4 h-4"></i></div>
+            <div><h4 class="font-serif text-base text-brand-charcoal">Le studio</h4><p class="text-xs text-brand-muted font-light mt-1">Rennes, Bretagne</p></div>
           </div>
         </div>
       </div>
-      <div class="lg:col-span-7 bg-brand-creme p-8 rounded-3xl border border-brand-argile">
-        <form id="contact-form" onsubmit="handleSubmit(event)" class="space-y-6">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div class="space-y-2"><label class="block text-xs uppercase tracking-widest text-brand-muted font-medium">Nom complet *</label><input type="text" required name="name" class="w-full bg-transparent border-b border-brand-argile py-3 focus:outline-none focus:border-brand-or text-brand-charcoal font-light transition-colors"></div>
-            <div class="space-y-2"><label class="block text-xs uppercase tracking-widest text-brand-muted font-medium">Email *</label><input type="email" required name="email" class="w-full bg-transparent border-b border-brand-argile py-3 focus:outline-none focus:border-brand-or text-brand-charcoal font-light transition-colors"></div>
+      <div class="lg:col-span-7 bg-brand-creme p-10 rounded-3xl border border-brand-argile/40">
+        <form id="contact-form" onsubmit="handleSubmit(event)" class="space-y-8">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <div class="space-y-3"><label class="block text-xs uppercase tracking-widest text-brand-muted font-medium">Comment vous appelez-vous ?</label><input type="text" required name="name" placeholder="Votre nom" class="w-full bg-transparent border-b border-brand-argile py-3 focus:outline-none focus:border-brand-or text-brand-charcoal font-light transition-colors placeholder:text-brand-muted/40"></div>
+            <div class="space-y-3"><label class="block text-xs uppercase tracking-widest text-brand-muted font-medium">Votre adresse email</label><input type="email" required name="email" placeholder="vous@email.fr" class="w-full bg-transparent border-b border-brand-argile py-3 focus:outline-none focus:border-brand-or text-brand-charcoal font-light transition-colors placeholder:text-brand-muted/40"></div>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div class="space-y-2"><label class="block text-xs uppercase tracking-widest text-brand-muted font-medium">Téléphone</label><input type="tel" name="phone" class="w-full bg-transparent border-b border-brand-argile py-3 focus:outline-none focus:border-brand-or text-brand-charcoal font-light transition-colors"></div>
-            <div class="space-y-2"><label class="block text-xs uppercase tracking-widest text-brand-muted font-medium">Type de projet</label><select name="type" class="w-full bg-transparent border-b border-brand-argile py-3 focus:outline-none focus:border-brand-or text-brand-charcoal font-light transition-colors"><option>Rénovation complète</option><option>Agencement</option><option>Décoration</option><option>Conseil ponctuel</option></select></div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            <div class="space-y-3"><label class="block text-xs uppercase tracking-widest text-brand-muted font-medium">Votre téléphone</label><input type="tel" name="phone" placeholder="06 XX XX XX XX" class="w-full bg-transparent border-b border-brand-argile py-3 focus:outline-none focus:border-brand-or text-brand-charcoal font-light transition-colors placeholder:text-brand-muted/40"></div>
+            <div class="space-y-3"><label class="block text-xs uppercase tracking-widest text-brand-muted font-medium">Où se situe votre projet ?</label><input type="text" name="location" placeholder="Rennes, Saint-Malo..." class="w-full bg-transparent border-b border-brand-argile py-3 focus:outline-none focus:border-brand-or text-brand-charcoal font-light transition-colors placeholder:text-brand-muted/40"></div>
           </div>
-          <div class="space-y-2"><label class="block text-xs uppercase tracking-widest text-brand-muted font-medium">Votre message</label><textarea name="notes" rows="4" placeholder="Décrivez votre projet..." class="w-full bg-transparent border-b border-brand-argile py-3 focus:outline-none focus:border-brand-or text-brand-charcoal font-light transition-colors resize-none"></textarea></div>
-          <button type="submit" class="w-full py-4 bg-brand-charcoal text-brand-creme text-xs uppercase tracking-widest font-semibold rounded-full hover:bg-brand-or transition-colors flex items-center justify-center gap-2"><span>Demander un rendez-vous</span><i data-lucide="send" class="w-4 h-4"></i></button>
+          <div class="space-y-3"><label class="block text-xs uppercase tracking-widest text-brand-muted font-medium">Parlez-moi de votre projet</label><textarea name="notes" rows="4" placeholder="Vos envies, vos contraintes, votre budget..." class="w-full bg-transparent border-b border-brand-argile py-3 focus:outline-none focus:border-brand-or text-brand-charcoal font-light transition-colors resize-none placeholder:text-brand-muted/40"></textarea></div>
+          <button type="submit" class="w-full py-4 bg-brand-charcoal text-brand-creme text-xs uppercase tracking-widest font-semibold rounded-full hover:bg-brand-or transition-all duration-500 flex items-center justify-center gap-2 group"><span>Prendre rendez-vous</span><i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></button>
         </form>
-        <div id="form-ok" class="hidden mt-6 bg-brand-sable p-6 rounded-2xl border border-brand-or/40 text-center space-y-4">
-          <div class="w-12 h-12 rounded-full bg-brand-or/10 flex items-center justify-center mx-auto text-brand-or"><i data-lucide="check-circle-2" class="w-6 h-6"></i></div>
-          <h3 class="font-serif text-2xl font-light text-brand-charcoal">Message reçu</h3>
-          <p class="text-xs text-brand-muted max-w-md mx-auto leading-relaxed">Je vous réponds sous 48h pour convenir d'un premier rendez-vous.</p>
+        <div id="form-ok" class="hidden mt-8 bg-brand-sable p-8 rounded-2xl border border-brand-or/30 text-center space-y-5">
+          <div class="w-14 h-14 rounded-full bg-brand-or/10 flex items-center justify-center mx-auto text-brand-or"><i data-lucide="check-circle-2" class="w-7 h-7"></i></div>
+          <h3 class="font-serif text-2xl font-light text-brand-charcoal">Merci pour votre message</h3>
+          <p class="text-xs text-brand-muted max-w-sm mx-auto leading-relaxed">Je vous réponds personnellement sous 48h pour convenir d'un premier rendez-vous. À très bientôt.</p>
         </div>
       </div>
     </div>
@@ -302,24 +346,24 @@ body{font-family:'Jost',sans-serif;background-color:#FBF9F6;color:#1C1C1C;overfl
 </section>
 </main>
 
-<footer class="bg-brand-charcoal text-brand-creme py-16 lg:py-24">
-  <div class="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
+<footer class="bg-brand-charcoal text-brand-creme py-20">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-3 gap-16 items-start">
     <div class="space-y-6">
       <span class="font-serif text-3xl tracking-[0.15em] text-brand-creme block">Camille Roussel</span>
-      <p class="text-xs text-brand-muted font-light leading-relaxed max-w-sm">Architecte d'intérieur à Rennes. Rénovation, agencement et décoration sur mesure.</p>
+      <p class="text-xs text-brand-muted font-light leading-relaxed max-w-xs">Architecte d'intérieur à Rennes. Rénovation, agencement et décoration sur mesure depuis 2016.</p>
     </div>
-    <div class="space-y-4">
+    <div class="space-y-5">
       <h4 class="text-xs uppercase tracking-widest text-brand-or font-semibold">Navigation</h4>
-      <ul class="space-y-2 text-xs text-brand-muted font-light">
+      <ul class="space-y-3 text-xs text-brand-muted font-light">
         <li><a href="#prestations" class="hover:text-brand-creme transition-colors">Prestations</a></li>
         <li><a href="#projets" class="hover:text-brand-creme transition-colors">Projets</a></li>
         <li><a href="#apropos" class="hover:text-brand-creme transition-colors">À propos</a></li>
         <li><a href="#contact" class="hover:text-brand-creme transition-colors">Contact</a></li>
       </ul>
     </div>
-    <div class="space-y-4">
-      <h4 class="text-xs uppercase tracking-widest text-brand-or font-semibold">Contact</h4>
-      <ul class="space-y-2 text-xs text-brand-muted font-light">
+    <div class="space-y-5">
+      <h4 class="text-xs uppercase tracking-widest text-brand-or font-semibold">Le studio</h4>
+      <ul class="space-y-3 text-xs text-brand-muted font-light">
         <li>Rennes, Bretagne</li>
         <li>camille@rousselcamille.fr</li>
         <li>SIRET : XX XXX XXX XXXX</li>
@@ -331,70 +375,114 @@ body{font-family:'Jost',sans-serif;background-color:#FBF9F6;color:#1C1C1C;overfl
   </div>
 </footer>
 
-<!-- PROJECT MODAL -->
-<div id="modal" class="fixed inset-0 bg-brand-charcoal/80 z-50 flex items-center justify-center p-8 opacity-0 pointer-events-none transition-opacity duration-400" onclick="closeModal()">
-  <div class="bg-brand-creme rounded-3xl max-w-lg w-full p-8 text-center space-y-6" onclick="event.stopPropagation()">
-    <div class="w-full aspect-[4/3] rounded-2xl overflow-hidden bg-brand-sable flex items-center justify-center">
-      <div class="w-full h-full bg-brand-charcoal flex items-center justify-center"><div id="modal-img" class="w-full h-full"></div></div>
+<!-- SLIDE-OVER PROJECT DRAWER -->
+<div id="drawer-overlay" class="fixed inset-0 bg-brand-charcoal/60 z-50 opacity-0 pointer-events-none transition-opacity duration-500" onclick="closeProject()"></div>
+<div id="drawer" class="fixed inset-y-0 right-0 w-full md:max-w-xl bg-brand-creme z-50 shadow-2xl translate-x-full transition-transform duration-600 ease-out flex flex-col">
+  <div class="p-6 border-b border-brand-argile/40 flex justify-between items-center bg-brand-sable">
+    <div><span id="dr-tag" class="text-[10px] uppercase tracking-widest text-brand-or"></span><h3 id="dr-title" class="font-serif text-2xl font-light text-brand-charcoal mt-1"></h3></div>
+    <button onclick="closeProject()" class="w-10 h-10 rounded-full border border-brand-argile flex items-center justify-center hover:bg-brand-charcoal hover:text-brand-creme transition-all"><i data-lucide="x" class="w-4 h-4"></i></button>
+  </div>
+  <div class="p-8 space-y-8 overflow-y-auto flex-1">
+    <div class="aspect-[16/10] rounded-xl overflow-hidden shadow-lg bg-brand-sable" id="dr-img"></div>
+    <div class="space-y-5">
+      <h4 class="font-serif text-xl text-brand-charcoal">Le projet en détail</h4>
+      <p id="dr-desc" class="text-brand-muted text-sm font-light leading-relaxed"></p>
     </div>
-    <h3 id="modal-title" class="font-serif text-2xl font-light text-brand-charcoal"></h3>
-    <p id="modal-desc" class="text-brand-muted text-sm leading-relaxed"></p>
-    <p class="text-[10px] text-brand-or uppercase tracking-widest font-medium">Cliquez n'importe où pour fermer</p>
+    <div class="border-t border-brand-argile/30 pt-6 grid grid-cols-2 gap-8">
+      <div><span class="text-[10px] uppercase tracking-widest text-brand-or font-medium block mb-2">Matériaux</span><p id="dr-mat" class="text-sm text-brand-charcoal font-light"></p></div>
+      <div><span class="text-[10px] uppercase tracking-widest text-brand-or font-medium block mb-2">Durée & Budget</span><p id="dr-budget" class="text-sm text-brand-charcoal font-light"></p></div>
+    </div>
+  </div>
+  <div class="p-6 border-t border-brand-argile/40 bg-brand-sable">
+    <a href="#contact" onclick="closeProject()" class="px-6 py-4 bg-brand-charcoal text-brand-creme text-xs uppercase tracking-widest font-medium rounded-full hover:bg-brand-or transition-all flex-1 text-center block">Un projet similaire ? Parlons-en</a>
   </div>
 </div>
 
 <script>
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger,SplitText);
 
-const projects = {
-  cuisine: {title:"Rénovation Cuisine — Rennes",desc:"Cuisine de 18m² entièrement repensée. Plan en L, îlot central en chêne massif, crédence zellige. Budget : 18 000€. Durée : 6 semaines."},
-  salledebain: {title:"Salle de Bain Design — Saint-Malo",desc:"Salle d'eau minimaliste. Béton ciré, vasque en pierre naturelle, robinetterie noire mate. Budget : 9 500€. Durée : 4 semaines."},
-  appartement: {title:"Appartement Haussmannien — Rennes",desc:"Rénovation complète d'un 80m². Restauration des moulures, parquet point de Hongrie, cuisine ouverte. Budget : 55 000€. Durée : 4 mois."}
-};
+// Lenis smooth scroll
+const lenis=new Lenis({duration:1.4,easing:t=>1-Math.pow(1-t,3),smoothWheel:true});
+function raf(t){lenis.raf(t);requestAnimationFrame(raf)}requestAnimationFrame(raf);
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)lenis.scrollTo(t,{offset:0,duration:1.6})}));
 
-function openProject(k){
-  document.getElementById('modal-title').textContent=projects[k].title;
-  document.getElementById('modal-desc').textContent=projects[k].desc;
-  document.getElementById('modal').classList.remove('opacity-0','pointer-events-none');
-  document.body.style.overflow='hidden';
-}
-function closeModal(){document.getElementById('modal').classList.add('opacity-0','pointer-events-none');document.body.style.overflow=''}
-
+// Cursor
 const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
-if(cur&&ring){document.addEventListener('mousemove',e=>{gsap.to(cur,{x:e.clientX,y:e.clientY,duration:.1});gsap.to(ring,{x:e.clientX,y:e.clientY,duration:.3})});document.querySelectorAll('a,button,[onclick],input,textarea,select').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('hover-active'));el.addEventListener('mouseleave',()=>document.body.classList.remove('hover-active'))})}
+if(cur&&ring){
+  let mx=0,my=0,cx=0,cy=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+  function anim(){cx+=(mx-cx)*.15;cy+=(my-cy)*.15;gsap.set(cur,{x:cx,y:cy});gsap.set(ring,{x:cx,y:cy});requestAnimationFrame(anim)}anim();
+  document.querySelectorAll('.hover-project').forEach(el=>{el.addEventListener('mouseenter',()=>{cur.textContent='Découvrir';cur.style.width='90px';cur.style.height='90px';cur.style.background='rgba(197,168,128,.1)';cur.style.backdropFilter='blur(6px)';cur.style.color='#C5A880';ring.style.width='100px';ring.style.height='100px';ring.style.borderColor='#C5A880'});el.addEventListener('mouseleave',()=>{cur.textContent='Voir';cur.style.width='10px';cur.style.height='10px';cur.style.background='#C5A880';cur.style.backdropFilter='none';cur.style.color='transparent';ring.style.width='50px';ring.style.height='50px';ring.style.borderColor='rgba(197,168,128,.3)'})});
+}
 
+// Preloader
 window.addEventListener('load',()=>{
   lucide.createIcons();
   const tl=gsap.timeline();
-  tl.to('#preload-bar',{width:'100%',duration:1.5,ease:'power2.inOut'});
-  tl.to(['#preload-logo','#preload-sub'],{y:0,opacity:1,duration:.8,stagger:.2,ease:'power3.out'},'-.8');
+  tl.to('#pl-bar',{width:'100%',duration:1.5,ease:'power2.inOut'});
+  tl.to(['#pl-logo','#pl-sub'],{y:0,opacity:1,duration:.8,stagger:.2,ease:'power3.out'},'-.8');
   tl.to('#preloader',{clipPath:'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)',duration:1.2,ease:'power4.inOut'},'+=.2');
-  tl.from('#header',{y:-50,opacity:0,duration:1,ease:'power3.out'},'-.4');
-  tl.from('#hero-tag',{opacity:0,y:30,duration:.8,ease:'power3.out'},'-.8');
-  tl.from('#hero-title',{opacity:0,y:40,duration:1,ease:'power3.out'},'-.6');
-  tl.from('#hero-text',{opacity:0,y:30,duration:.8,ease:'power3.out'},'-.5');
-  tl.from('#hero-cta',{opacity:0,y:30,duration:.8,ease:'power3.out'},'-.4');
-  tl.to('#hero-img-wrap .reveal-curtain',{scaleX:0,duration:1.2,ease:'power4.inOut'},'-1.2');
-  tl.to('#scroll-hint',{opacity:1,y:0,duration:.8,ease:'power3.out'},'-.4');
+  tl.from('#header',{y:-30,opacity:0,duration:.8,ease:'power3.out'},'-.4');
+  tl.from('#h-tag',{opacity:0,y:40,duration:1,ease:'power3.out'},'-.6');
+  // Split text on title
+  const st=new SplitText('#h-title',{type:'lines'});
+  tl.from(st.lines,{opacity:0,y:60,stagger:.12,duration:1.2,ease:'power4.out'},'-.5');
+  tl.from('#h-text',{opacity:0,y:30,duration:1,ease:'power3.out'},'-.8');
+  tl.from('#h-cta',{opacity:0,y:20,duration:.8,ease:'power3.out'},'-.6');
+  // Scroll hint animation
+  gsap.to('#scroll-line',{y:56,duration:2,ease:'power1.inOut',repeat:-1,yoyo:true});
+  tl.to('#scroll-hint',{opacity:1,duration:.6},'-.4');
 });
 
+// Header
 window.addEventListener('scroll',()=>{
   const h=document.getElementById('header');
-  if(window.scrollY>50){h.classList.add('bg-brand-creme/90','backdrop-blur-md','py-4','border-brand-argile/40','shadow-sm');h.classList.remove('py-6','lg:py-8','border-transparent')}
-  else{h.classList.remove('bg-brand-creme/90','backdrop-blur-md','py-4','border-brand-argile/40','shadow-sm');h.classList.add('py-6','lg:py-8','border-transparent')}
+  if(window.scrollY>50){h.classList.add('bg-brand-creme/85','backdrop-blur-xl','py-4','shadow-sm');h.classList.remove('py-6','lg:py-8');h.querySelector('a').classList.remove('mix-blend-difference','text-white');h.querySelector('a').classList.add('text-brand-charcoal');h.querySelectorAll('nav a').forEach(a=>{a.classList.remove('text-white/80');a.classList.add('text-brand-charcoal')});h.querySelector('.border-white\\/30').classList.remove('border-white/30','text-white','hover:bg-white','hover:text-brand-charcoal');h.querySelector('.border-white\\/30').classList.add('border-brand-charcoal','text-brand-charcoal','hover:bg-brand-charcoal','hover:text-brand-creme')}
+  else{h.classList.remove('bg-brand-creme/85','backdrop-blur-xl','py-4','shadow-sm');h.classList.add('py-6','lg:py-8');h.querySelector('a').classList.add('mix-blend-difference','text-white');h.querySelector('a').classList.remove('text-brand-charcoal');h.querySelectorAll('nav a').forEach(a=>{a.classList.add('text-white/80');a.classList.remove('text-brand-charcoal')});h.querySelector('.border-brand-charcoal').classList.add('border-white/30','text-white','hover:bg-white','hover:text-brand-charcoal');h.querySelector('.border-brand-charcoal').classList.remove('border-brand-charcoal','text-brand-charcoal','hover:bg-brand-charcoal','hover:text-brand-creme')}
 });
 
+// Mobile
 let mo=false;
 document.getElementById('menu-btn').addEventListener('click',()=>{
   mo=!mo;const m=document.getElementById('mobile-menu');
-  if(mo){m.classList.remove('translate-y-full');document.getElementById('l1').classList.add('rotate-45','translate-x-1','translate-y-1');document.getElementById('l2').classList.add('opacity-0');document.getElementById('l3').classList.add('-rotate-45','translate-x-1','-translate-y-1')}
-  else{m.classList.add('translate-y-full');document.getElementById('l1').classList.remove('rotate-45','translate-x-1','translate-y-1');document.getElementById('l2').classList.remove('opacity-0');document.getElementById('l3').classList.remove('-rotate-45','translate-x-1','-translate-y-1')}
+  if(mo){m.classList.remove('translate-y-full');document.getElementById('l1').classList.add('rotate-45');document.getElementById('l2').classList.add('opacity-0');document.getElementById('l3').classList.add('-rotate-45')}
+  else{m.classList.add('translate-y-full');document.getElementById('l1').classList.remove('rotate-45');document.getElementById('l2').classList.remove('opacity-0');document.getElementById('l3').classList.remove('-rotate-45')}
 });
 document.querySelectorAll('.mobile-link').forEach(l=>l.addEventListener('click',()=>{mo=false;document.getElementById('mobile-menu').classList.add('translate-y-full')}));
 
-gsap.utils.toArray('.reveal-wrapper').forEach(w=>{const c=w.querySelector('.reveal-curtain');if(c)gsap.to(c,{scrollTrigger:{trigger:w,start:'top 85%'},scaleX:0,duration:1.2,ease:'power4.inOut'})});
+// Scroll reveals
+gsap.utils.toArray('.reveal-curtain').forEach(c=>{gsap.to(c,{scrollTrigger:{trigger:c.parentElement,start:'top 85%'},scaleX:0,duration:1.3,ease:'power4.inOut'})});
 
-function handleSubmit(e){e.preventDefault();const b=e.target.querySelector('button');b.disabled=true;b.innerHTML='<span>Envoi...</span><div class=\"w-4 h-4 border-2 border-brand-creme border-t-transparent rounded-full animate-spin\"></div>';setTimeout(()=>{e.target.classList.add('hidden');document.getElementById('form-ok').classList.remove('hidden')},1500)}
+// Project drawer
+const pdata={
+  zellige:{title:'Projet Zellige',tag:'Rennes — Cuisine d\'architecte',desc:'Cuisine de 18m² entièrement repensée dans un appartement du centre-ville de Rennes. Le parti pris : un îlot central en chêne massif comme pièce maîtresse, entouré d'une crédence en zellige artisanal qui capte la lumière tout au long de la journée. Les meubles bas en noyer créent un contraste chaleureux avec le sol en pierre naturelle.',mat:'Chêne massif, Zellige artisanal, Noyer, Pierre naturelle',budget:'18 000€ — 6 semaines'},
+  travertin:{title:'Espace Travertin',tag:'Saint-Malo — Bain privé',desc:'Salle d\'eau minimaliste de 12m² dans une maison de bord de mer. Béton ciré aux murs et au sol pour une continuité visuelle totale. Vasque sculptée dans un bloc de travertin brut, robinetterie en laiton brossé. La fenêtre en bandeau zénithal baigne l\'espace d\'une lumière douce sans vis-à-vis.',mat:'Béton ciré, Travertin brut, Laiton brossé',budget:'9 500€ — 4 semaines'},
+  odyssee:{title:'Appartement Odyssée',tag:'Rennes — Haussmannien',desc:'Rénovation complète d\'un 80m² sous les toits de Rennes. Restauration des moulures d\'époque, parquet point de Hongrie remis à neuf, cuisine ouverte sur le séjour. La verrière atelier sépare l\'espace nuit sans couper la lumière. Chaque pièce dialogue avec la suivante dans un équilibre entre classicisme et modernité.',mat:'Parquet Hongrie, Verrière acier, Moulures restaurées, Béton ciré',budget:'55 000€ — 4 mois'}
+};
+
+let currentScroll=0;
+function openProject(k){
+  const d=document.getElementById('drawer'),o=document.getElementById('drawer-overlay');
+  document.getElementById('dr-title').textContent=pdata[k].title;
+  document.getElementById('dr-tag').textContent=pdata[k].tag;
+  document.getElementById('dr-desc').textContent=pdata[k].desc;
+  document.getElementById('dr-mat').textContent=pdata[k].mat;
+  document.getElementById('dr-budget').textContent=pdata[k].budget;
+  currentScroll=window.scrollY;
+  d.classList.remove('translate-x-full');o.classList.remove('opacity-0','pointer-events-none');
+  document.body.style.overflow='hidden';
+}
+function closeProject(){
+  document.getElementById('drawer').classList.add('translate-x-full');
+  document.getElementById('drawer-overlay').classList.add('opacity-0','pointer-events-none');
+  document.body.style.overflow='';
+}
+
+function handleSubmit(e){
+  e.preventDefault();const b=e.target.querySelector('button');
+  b.disabled=true;b.innerHTML='<span>Envoi en cours...</span><div class=\"w-4 h-4 border-2 border-brand-creme border-t-transparent rounded-full animate-spin\"></div>';
+  setTimeout(()=>{e.target.classList.add('hidden');document.getElementById('form-ok').classList.remove('hidden')},1500);
+}
 </script>
 </body>
 </html>
