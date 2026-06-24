@@ -4,244 +4,279 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Camille Roussel — Architecture d'Intérieur | Rennes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
   --creme:#FBF9F6;--sable:#F3EFE9;--argile:#DCD6CD;--or:#C5A880;--charcoal:#1C1C1C;--muted:#66635F;
   --ease: cubic-bezier(0.16,1,0.3,1);
 }
-body{font-family:'Georgia',serif;background:var(--creme);color:var(--charcoal);overflow-x:hidden;-webkit-font-smoothing:antialiased}
-h1,h2,h3{font-weight:400;line-height:1.1}
-p{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+html{background:var(--creme);color:var(--charcoal)}
+html.lenis{height:auto}.lenis.lenis-smooth{scroll-behavior:auto}
+body{font-family:'Jost',sans-serif;font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-track{background:var(--creme)}
 ::-webkit-scrollbar-thumb{background:var(--or);border-radius:3px}
-.wrap{max-width:1280px;margin:0 auto;padding:0 32px}
-.eyebrow{font-size:10px;letter-spacing:.28em;color:var(--or);text-transform:uppercase;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-weight:600}
 
-nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:28px 32px;display:flex;justify-content:space-between;align-items:center;transition:background .4s,backdrop-filter .4s}
-nav.scrolled{background:rgba(251,249,246,.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
-nav a.logo{font-size:22px;letter-spacing:.15em;text-decoration:none;color:#fff;text-transform:uppercase;mix-blend-mode:difference}
-nav a.cta{font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:10px 22px;border-radius:999px;border:1px solid rgba(255,255,255,.3);color:#fff;text-decoration:none;font-family:-apple-system,sans-serif;transition:all .4s}
-nav a.cta:hover{background:#fff;color:var(--charcoal)}
+/* Curseur */
+@media(min-width:1025px){
+  #cursor{width:10px;height:10px;background:var(--or);border-radius:50%;position:fixed;transform:translate(-50%,-50%);pointer-events:none;z-index:9999;transition:width .4s var(--ease),height .4s,background .4s;display:flex;align-items:center;justify-content:center;font-size:8px;letter-spacing:.1em;color:transparent;font-family:'Jost',sans-serif}
+  #cursor-ring{width:50px;height:50px;border:1px solid rgba(197,168,128,.3);border-radius:50%;position:fixed;transform:translate(-50%,-50%);pointer-events:none;z-index:9998;transition:width .5s var(--ease),height .5s,border-color .5s}
+  .hover-img #cursor{width:90px;height:90px;background:rgba(197,168,128,.1);backdrop-filter:blur(6px);color:var(--or)}
+  .hover-img #cursor-ring{width:100px;height:100px;border-color:var(--or)}
+}
 
-.hero{min-height:100vh;display:flex;align-items:flex-end;padding-bottom:100px;background:var(--charcoal);position:relative}
-.hero .wrap{position:relative;z-index:2;padding-top:160px}
-.hero h1{font-size:clamp(38px,6vw,76px);color:#fff;max-width:800px;margin:16px 0 24px}
-.hero h1 em{font-style:italic;color:var(--or)}
-.hero p{color:rgba(255,255,255,.55);font-size:16px;max-width:500px;line-height:1.7;font-weight:300}
-.hero .btns{display:flex;gap:14px;margin-top:36px;flex-wrap:wrap}
-.hero .btns a{padding:14px 28px;border-radius:999px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;font-family:-apple-system,sans-serif;font-weight:500;transition:all .4s}
-.btn-fill{background:var(--or);color:var(--charcoal)}
-.btn-fill:hover{background:#fff}
-.btn-line{border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.7)}
-.btn-line:hover{border-color:var(--or);color:var(--or)}
-.hero-bg{position:absolute;inset:0;overflow:hidden}
+/* Nav */
+#nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:36px 48px;display:flex;justify-content:space-between;align-items:center;transition:background .6s var(--ease),padding .6s}
+#nav.scrolled{background:rgba(251,249,246,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:20px 48px}
+.logo{font-family:'Cormorant Garamond',serif;font-size:26px;letter-spacing:.18em;text-decoration:none;color:#fff;text-transform:uppercase;mix-blend-mode:difference;font-weight:400}
+.nav-cta{font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:12px 24px;border-radius:999px;border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.8);text-decoration:none;font-weight:400;transition:all .5s}
+.nav-cta:hover{background:#fff;color:var(--charcoal);border-color:#fff}
+
+/* Wrap */
+.wrap{max-width:1400px;margin:0 auto;padding:0 64px}
+
+/* Hero */
+.hero{height:100vh;display:flex;align-items:flex-end;padding-bottom:120px;background:var(--charcoal);position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0}
 .hero-bg svg{width:100%;height:100%}
-.hero-scroll{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);text-align:center;z-index:2}
-.hero-scroll span{display:block;font-size:9px;letter-spacing:.2em;color:rgba(255,255,255,.35);text-transform:uppercase;font-family:-apple-system,sans-serif}
-.hero-scroll .line{width:1px;height:50px;background:rgba(255,255,255,.1);margin:8px auto 0;position:relative;overflow:hidden}
-.hero-scroll .dot{position:absolute;top:0;left:0;width:100%;height:20px;background:var(--or);animation:scrollDot 2s ease-in-out infinite}
-@keyframes scrollDot{0%,100%{transform:translateY(0)}50%{transform:translateY(30px)}}
+.hero .wrap{position:relative;z-index:2;padding-top:160px}
+.hero-eyebrow{font-size:9px;letter-spacing:.32em;color:var(--or);text-transform:uppercase;font-weight:400;margin-bottom:20px}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(42px,7vw,90px);font-weight:300;line-height:1.04;color:#fff;max-width:900px}
+.hero h1 em{font-style:italic;font-weight:400;color:var(--or)}
+.hero .lede{color:rgba(255,255,255,.5);font-size:16px;max-width:480px;line-height:1.75;margin-top:24px;font-weight:300}
+.hero-actions{display:flex;gap:16px;margin-top:40px;flex-wrap:wrap}
+.btn-fill{display:inline-block;padding:16px 32px;background:var(--or);color:var(--charcoal);font-size:11px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;border-radius:999px;font-weight:400;transition:all .5s}
+.btn-fill:hover{background:#fff}
+.btn-ghost{display:inline-block;padding:16px 32px;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);font-size:11px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;border-radius:999px;font-weight:400;transition:all .5s}
+.btn-ghost:hover{border-color:var(--or);color:var(--or)}
+.scroll-hint{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);text-align:center;z-index:2}
+.scroll-hint span{display:block;font-size:9px;letter-spacing:.24em;color:rgba(255,255,255,.3);text-transform:uppercase}
+.scroll-line{width:1px;height:56px;background:rgba(255,255,255,.08);margin:10px auto 0;position:relative;overflow:hidden}
+.scroll-dot{position:absolute;top:0;left:0;width:100%;height:20px;background:var(--or)}
 
-section{padding:100px 0}
+/* Sections */
+section{padding:140px 0}
 section.alt{background:var(--sable)}
-h2{font-size:clamp(32px,4.5vw,52px);margin-bottom:8px}
+.sec-eyebrow{font-size:9px;letter-spacing:.3em;color:var(--or);text-transform:uppercase;font-weight:400;display:block;margin-bottom:16px}
+h2{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,56px);font-weight:300;line-height:1.15}
+p.sec-desc{color:var(--muted);font-size:15px;max-width:500px;line-height:1.7;margin-top:12px;font-weight:300}
 
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:3px}
-.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px}
-.card{background:var(--sable);padding:48px 36px;border-radius:2px;position:relative;overflow:hidden;transition:transform .4s var(--ease)}
-.card:hover{transform:translateY(-4px)}
-.card .num{position:absolute;top:12px;right:20px;font-size:100px;color:var(--argile);opacity:.2;line-height:1}
-.card h3{font-size:22px;margin-bottom:12px}
-.card p{font-size:13px;color:var(--muted);line-height:1.7}
-.card .price{font-size:10px;color:rgba(102,99,95,.4);font-style:italic;margin-top:16px;display:block;font-family:Georgia,serif}
+/* Prestations */
+.presta-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:72px}
+.p-card{background:var(--sable);padding:64px 48px;position:relative;overflow:hidden;transition:transform .5s var(--ease)}
+.p-card:hover{transform:translateY(-6px)}
+.p-card .chiffre{position:absolute;top:16px;right:28px;font-family:'Cormorant Garamond',serif;font-size:120px;color:var(--argile);opacity:.18;line-height:1;font-weight:300}
+.p-card h3{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;margin-bottom:12px;position:relative}
+.p-card p{font-size:13px;color:var(--muted);line-height:1.8;font-weight:300}
+.p-card .price{font-family:'Cormorant Garamond',serif;font-size:12px;color:rgba(102,99,95,.35);font-style:italic;margin-top:20px;display:block}
 
-.work-card{position:relative;aspect-ratio:4/5;border-radius:4px;overflow:hidden;cursor:pointer;transition:transform .6s var(--ease)}
-.work-card:hover{transform:translateY(-6px)}
-.work-card svg{width:100%;height:100%}
-.work-card .info{position:absolute;bottom:0;left:0;right:0;padding:28px;background:linear-gradient(transparent,rgba(28,28,28,.9) 50%)}
-.work-card .info h3{color:#fff;font-size:20px}
-.work-card .info span{color:var(--or);font-size:10px;text-transform:uppercase;letter-spacing:.1em;font-family:-apple-system,sans-serif;font-weight:500}
-.work-card .info p{color:rgba(255,255,255,.4);font-size:11px;margin-top:4px}
+/* Projets — asymétrique */
+.projets-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:60px}
+.projets-grid .big{grid-row:span 2}
+.proj-card{position:relative;overflow:hidden;border-radius:4px;cursor:pointer;transition:transform .6s var(--ease)}
+.proj-card:hover{transform:translateY(-8px)}
+.proj-card svg{width:100%;height:100%;display:block}
+.proj-card .info{position:absolute;bottom:0;left:0;right:0;padding:36px;background:linear-gradient(transparent,rgba(28,28,28,.92) 50%)}
+.proj-card .info span{font-size:9px;letter-spacing:.14em;color:var(--or);text-transform:uppercase;font-weight:400}
+.proj-card .info h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:#fff;margin-top:4px}
+.proj-card .info p{font-size:11px;color:rgba(255,255,255,.35);margin-top:3px;font-weight:300}
+/* Débordement / asymétrie */
+.proj-offset{margin-top:-60px;margin-left:40px}
+.proj-pull{margin-top:40px;margin-right:-20px}
 
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
-.about-img{aspect-ratio:4/5;background:var(--charcoal);border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.about p{font-size:14px;color:var(--muted);line-height:1.8}
-.about .quote{background:var(--sable);padding:28px;border-radius:8px;margin-top:24px;font-style:italic;font-size:16px}
-.about .quote cite{display:block;font-size:10px;font-style:normal;color:var(--or);margin-top:12px;text-transform:uppercase;letter-spacing:.12em;font-family:-apple-system,sans-serif;font-weight:600}
+/* About — texte qui chevauche l'image */
+.about-block{display:grid;grid-template-columns:1fr 1.2fr;gap:0;margin-top:60px;align-items:start}
+.about-img{aspect-ratio:4/5;background:var(--charcoal);border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
+.about-text{background:var(--creme);padding:60px;border-radius:8px;margin-left:-40px;margin-top:60px;position:relative;z-index:2;box-shadow:0 20px 60px rgba(0,0,0,.04)}
+.about-text p{font-size:14px;color:var(--muted);line-height:1.9;margin-bottom:14px;font-weight:300}
+.about-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--charcoal);padding-top:20px;border-top:1px solid var(--argile);margin-top:20px}
+.about-quote cite{display:block;font-family:'Jost',sans-serif;font-style:normal;font-size:9px;letter-spacing:.14em;color:var(--or);text-transform:uppercase;margin-top:10px;font-weight:400}
 
-.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
-.blog-card{background:#fff;border-radius:4px;overflow:hidden;transition:transform .4s var(--ease);text-decoration:none;color:inherit}
-.blog-card:hover{transform:translateY(-4px)}
-.blog-img{aspect-ratio:16/10;background:var(--charcoal);display:flex;align-items:center;justify-content:center}
-.blog-card .text{padding:24px}
-.blog-card .tag{font-size:9px;letter-spacing:.14em;color:var(--or);text-transform:uppercase;font-family:-apple-system,sans-serif;font-weight:600}
-.blog-card h3{font-size:18px;margin:8px 0}
-.blog-card p{font-size:12px;color:var(--muted);line-height:1.6}
-.blog-card .date{font-size:10px;color:rgba(102,99,95,.5);margin-top:8px}
+/* Journal */
+.journal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:56px}
+.j-card{background:#fff;border-radius:4px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .5s var(--ease)}
+.j-card:hover{transform:translateY(-6px)}
+.j-img{aspect-ratio:16/10;background:var(--charcoal);display:flex;align-items:center;justify-content:center}
+.j-text{padding:28px}
+.j-tag{font-size:9px;letter-spacing:.14em;color:var(--or);text-transform:uppercase;font-weight:400}
+.j-card h3{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;margin:8px 0}
+.j-card p{font-size:12px;color:var(--muted);line-height:1.6;font-weight:300}
+.j-date{font-size:10px;color:rgba(102,99,95,.4);margin-top:8px}
 
-.contact-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:60px;align-items:start}
-.contact-info p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:32px}
-.contact-info .detail{margin-bottom:20px}
-.contact-info .detail .label{font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;font-family:-apple-system,sans-serif}
-.contact-info .detail .value{font-size:15px;color:var(--charcoal);margin-top:2px}
-.contact-form{background:#fff;padding:40px;border-radius:8px}
-.contact-form label{display:block;font-size:10px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;font-family:-apple-system,sans-serif}
-.contact-form input,.contact-form textarea,.contact-form select{width:100%;border:none;border-bottom:1px solid var(--argile);padding:12px 0;font-size:15px;font-family:Georgia,serif;color:var(--charcoal);outline:none;margin-bottom:20px;transition:border-color .3s;background:transparent}
+/* Contact */
+.contact-block{display:grid;grid-template-columns:1fr 1.3fr;gap:80px;margin-top:60px;align-items:start}
+.contact-info h2{margin-bottom:12px}
+.contact-info>p{color:var(--muted);font-size:14px;line-height:1.8;margin-bottom:40px;font-weight:300}
+.contact-detail{margin-bottom:24px}
+.contact-detail .lbl{font-size:9px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;font-weight:400}
+.contact-detail .val{font-size:15px;color:var(--charcoal);margin-top:3px}
+.contact-form{background:#fff;padding:48px;border-radius:8px}
+.contact-form label{display:block;font-size:9px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;font-weight:400}
+.contact-form input,.contact-form textarea{width:100%;border:none;border-bottom:1px solid var(--argile);padding:14px 0;font-family:'Jost',sans-serif;font-size:14px;font-weight:300;color:var(--charcoal);outline:none;margin-bottom:24px;transition:border-color .3s;background:transparent}
 .contact-form input:focus,.contact-form textarea:focus{border-bottom-color:var(--or)}
 .contact-form textarea{resize:none}
-.contact-form button{width:100%;padding:16px;background:var(--charcoal);color:#fff;border:none;border-radius:999px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;font-family:-apple-system,sans-serif;font-weight:600;transition:background .4s}
+.contact-form button{width:100%;padding:18px;background:var(--charcoal);color:#fff;border:none;border-radius:999px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;font-weight:400;transition:background .5s}
 .contact-form button:hover{background:var(--or)}
 
-footer{background:var(--charcoal);color:rgba(255,255,255,.5);padding:60px 0}
-footer .fgrid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:40px}
-footer h4{font-size:10px;letter-spacing:.15em;color:var(--or);text-transform:uppercase;margin-bottom:16px;font-family:-apple-system,sans-serif}
-footer p,footer li{font-size:12px;line-height:2;font-family:-apple-system,sans-serif}
+footer{background:var(--charcoal);padding:80px 0;color:rgba(255,255,255,.4)}
+footer .fgrid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:60px}
+footer h4{font-family:'Jost',sans-serif;font-weight:400;font-size:9px;letter-spacing:.16em;color:var(--or);text-transform:uppercase;margin-bottom:16px}
+footer p,footer li{font-size:12px;line-height:2.2;font-weight:300}
 footer ul{list-style:none}
-footer a{color:rgba(255,255,255,.5);text-decoration:none;transition:color .3s}
+footer a{color:rgba(255,255,255,.4);text-decoration:none;transition:color .3s;font-weight:300}
 footer a:hover{color:#fff}
-footer .bottom{margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,.06);text-align:center;font-size:9px;letter-spacing:.15em;text-transform:uppercase;font-family:-apple-system,sans-serif}
+footer .fbottom{margin-top:56px;padding-top:28px;border-top:1px solid rgba(255,255,255,.06);text-align:center;font-size:9px;letter-spacing:.16em;text-transform:uppercase}
 
-.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
-.reveal.in{opacity:1;transform:translateY(0)}
-
-@media(max-width:768px){
-  .grid2,.grid3,.about-grid,.contact-grid,.blog-grid{grid-template-columns:1fr}
-  nav{padding:20px 20px}
-  .wrap{padding:0 20px}
-  section{padding:60px 0}
+@media(max-width:900px){
+  .wrap{padding:0 28px}#nav{padding:24px 28px}.logo{font-size:20px}
+  .hero h1{font-size:clamp(32px,9vw,56px)}
+  .presta-grid,.about-block,.contact-block,.journal-grid{grid-template-columns:1fr}
+  .about-text{margin-left:0;margin-top:24px}
+  .projets-grid{grid-template-columns:1fr}
+  .proj-offset{margin-top:0;margin-left:0}.proj-pull{margin-right:0}
+  section{padding:80px 0}
 }
 
-@media(prefers-reduced-motion:reduce){
-  .reveal{opacity:1;transform:none;transition:none}
-}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 
+<div id="cursor" class="hidden"></div>
+<div id="cursor-ring" class="hidden"></div>
+
 <nav id="nav">
   <a href="#" class="logo">Camille Roussel</a>
-  <a href="#contact" class="cta">Premier rendez-vous</a>
+  <a href="#contact" class="nav-cta">Premier rendez-vous</a>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
   <div class="hero-bg">
-    <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice"><rect width="1440" height="900" fill="#1C1C1C"/><rect x="0" y="0" width="550" height="900" fill="#1a1612"/><line x1="550" y1="0" x2="550" y2="900" stroke="#C5A880" stroke-opacity=".06" stroke-width="1"/><circle cx="1000" cy="250" r="200" fill="#C5A880" opacity=".04"/></svg>
+    <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
+      <rect width="1440" height="900" fill="#1C1C1C"/>
+      <rect x="0" y="0" width="500" height="900" fill="#1a1612"/>
+      <rect x="600" y="120" width="350" height="250" rx="2" fill="#2a2520"/>
+      <rect x="750" y="520" width="450" height="320" rx="2" fill="#242018"/>
+      <line x1="500" y1="0" x2="500" y2="900" stroke="#C5A880" stroke-opacity=".05" stroke-width="1"/>
+      <circle cx="1050" cy="220" r="200" fill="#C5A880" opacity=".03"/>
+    </svg>
   </div>
   <div class="wrap">
-    <span class="eyebrow">Architecte d'Intérieur — Rennes</span>
+    <div class="hero-eyebrow">Architecte d'Intérieur — Rennes</div>
     <h1>L'équilibre parfait entre <em>rigueur architecturale</em> et douceur organique.</h1>
-    <p>Je conçois des espaces qui ne ressemblent qu'à vous. De la première esquisse au dernier détail, chaque projet est une création singulière.</p>
-    <div class="btns">
+    <p class="lede">Je conçois des espaces qui ne ressemblent qu'à vous. De la première esquisse au dernier détail, chaque projet est une création singulière, ancrée dans votre histoire.</p>
+    <div class="hero-actions">
       <a href="#projets" class="btn-fill">Découvrir mes réalisations</a>
-      <a href="#prestations" class="btn-line">Comment je travaille</a>
+      <a href="#prestations" class="btn-ghost">Comment je travaille</a>
     </div>
   </div>
-  <div class="hero-scroll">
+  <div class="scroll-hint">
     <span>Découvrir</span>
-    <div class="line"><div class="dot"></div></div>
+    <div class="scroll-line"><div class="scroll-dot"></div></div>
   </div>
 </section>
 
+<!-- PRESTATIONS -->
 <section id="prestations">
   <div class="wrap">
-    <div style="text-align:center;margin-bottom:64px">
-      <span class="eyebrow" style="display:block;margin-bottom:8px">Mon accompagnement</span>
-      <h2>De l'intention au détail ultime</h2>
-      <p style="color:var(--muted);font-size:15px;max-width:500px;margin:12px auto 0">Un process en quatre mouvements, sans surprise.</p>
-    </div>
-    <div class="grid2">
-      <div class="card"><div class="num">I</div><h3>La Rencontre</h3><p>Premier échange pour comprendre votre vision, vos besoins, votre manière de vivre. Analyse de l'existant, relevé des contraintes.</p><span class="price">À partir de 350€ — Étude préliminaire</span></div>
-      <div class="card"><div class="num">II</div><h3>La Sculpture</h3><p>Modélisation 3D, plans techniques, sélection des matériaux nobles. Le projet prend forme sous vos yeux.</p><span class="price">À partir de 700€ — Conception détaillée</span></div>
-      <div class="card"><div class="num">III</div><h3>L'Orchestration</h3><p>Coordination des artisans d'excellence, suivi de chantier rigoureux. Je suis votre interlocutrice unique.</p><span class="price">10-15% du montant des travaux</span></div>
-      <div class="card"><div class="num">IV</div><h3>La Révélation</h3><p>Mobilier, luminaires, textiles. La dernière couche qui donne son âme à l'espace. Shopping accompagné.</p><span class="price">À partir de 500€ — Décoration & styling</span></div>
+    <span class="sec-eyebrow">Mon accompagnement</span>
+    <h2>De l'intention au détail ultime</h2>
+    <p class="sec-desc">Chaque projet suit un cheminement précis, de la première conversation jusqu'à la touche décorative finale. Un process en quatre mouvements, sans surprise.</p>
+    <div class="presta-grid">
+      <div class="p-card"><div class="chiffre">I</div><h3>La Rencontre</h3><p>Premier échange pour comprendre votre vision, vos besoins, votre manière de vivre. Analyse de l'existant, relevé des contraintes et des potentiels. Le socle de tout le projet.</p><span class="price">À partir de 350€ — Étude préliminaire</span></div>
+      <div class="p-card"><div class="chiffre">II</div><h3>La Sculpture</h3><p>Modélisation 3D, plans techniques, sélection des matériaux nobles. Vous visualisez chaque volume, chaque texture. Le projet prend forme sous vos yeux.</p><span class="price">À partir de 700€ — Conception détaillée</span></div>
+      <div class="p-card"><div class="chiffre">III</div><h3>L'Orchestration</h3><p>Coordination des artisans d'excellence, suivi de chantier rigoureux, levée de réserves. Je suis votre interlocutrice unique pour un chantier maîtrisé.</p><span class="price">10-15% du montant des travaux</span></div>
+      <div class="p-card"><div class="chiffre">IV</div><h3>La Révélation</h3><p>Mobilier, luminaires, textiles, objets. La dernière couche qui donne son âme à l'espace. Shopping accompagné, mise en scène des volumes.</p><span class="price">À partir de 500€ — Décoration & styling</span></div>
     </div>
   </div>
 </section>
 
+<!-- PROJETS — asymétrique -->
 <section id="projets" class="alt">
   <div class="wrap">
-    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px">
-      <div><span class="eyebrow" style="display:block;margin-bottom:8px">Portfolio</span><h2>Écrins réalisés</h2></div>
-      <p style="color:var(--muted);font-size:13px">Sélection de projets récents</p>
-    </div>
-    <div class="grid3">
-      <div class="work-card" onclick="openProject('zellige')">
-        <svg viewBox="0 0 400 500"><rect width="400" height="500" fill="#1C1C1C"/><rect x="30" y="60" width="160" height="120" rx="2" fill="#2a2520"/><rect x="210" y="80" width="160" height="90" rx="2" fill="#332e28"/><rect x="30" y="240" width="340" height="1" fill="#C5A880" opacity=".1"/></svg>
-        <div class="info"><span>Rennes</span><h3>Projet Zellige</h3><p>Cuisine d'architecte</p></div>
+    <span class="sec-eyebrow">Portfolio</span>
+    <h2>Écrins réalisés</h2>
+    <div class="projets-grid">
+      <div class="proj-card big" onclick="openProject('zellige')" style="aspect-ratio:3/4">
+        <svg viewBox="0 0 600 800" class="hover-img-target"><rect width="600" height="800" fill="#1C1C1C"/><rect x="40" y="80" width="220" height="180" rx="2" fill="#2a2520"/><rect x="280" y="120" width="280" height="140" rx="2" fill="#332e28"/><rect x="40" y="360" width="520" height="2" fill="#C5A880" opacity=".08"/><rect x="40" y="440" width="180" height="100" rx="2" fill="#C5A880" opacity=".07"/><rect x="240" y="440" width="320" height="100" rx="2" fill="#201c16"/></svg>
+        <div class="info"><span>Rennes</span><h3>Projet Zellige</h3><p>Cuisine d'architecte · 18m²</p></div>
       </div>
-      <div class="work-card" onclick="openProject('travertin')">
-        <svg viewBox="0 0 400 500"><rect width="400" height="500" fill="#1C1C1C"/><circle cx="200" cy="150" r="110" fill="#25201a"/><rect x="100" y="110" width="200" height="80" rx="2" fill="#332e28"/></svg>
-        <div class="info"><span>Saint-Malo</span><h3>Espace Travertin</h3><p>Bain privé</p></div>
+      <div class="proj-card proj-offset" onclick="openProject('travertin')" style="aspect-ratio:16/10">
+        <svg viewBox="0 0 600 375" class="hover-img-target"><rect width="600" height="375" fill="#1C1C1C"/><circle cx="300" cy="160" r="100" fill="#25201a"/><rect x="180" y="120" width="240" height="80" rx="2" fill="#2e2820"/></svg>
+        <div class="info"><span>Saint-Malo</span><h3>Espace Travertin</h3><p>Bain privé · 12m²</p></div>
       </div>
-      <div class="work-card" onclick="openProject('odyssee')">
-        <svg viewBox="0 0 400 500"><rect width="400" height="500" fill="#1C1C1C"/><rect x="40" y="50" width="320" height="1" fill="#C5A880" opacity=".08"/><rect x="40" y="90" width="140" height="140" rx="2" fill="#25201a"/><rect x="200" y="130" width="160" height="100" rx="2" fill="#2e2820"/></svg>
-        <div class="info"><span>Rennes</span><h3>Appartement Odyssée</h3><p>Haussmannien</p></div>
+      <div class="proj-card proj-pull" onclick="openProject('odyssee')" style="aspect-ratio:16/10">
+        <svg viewBox="0 0 600 375" class="hover-img-target"><rect width="600" height="375" fill="#1C1C1C"/><rect x="60" y="50" width="180" height="200" rx="2" fill="#25201a"/><rect x="270" y="90" width="270" height="150" rx="2" fill="#2e2820"/><rect x="60" y="290" width="480" height="2" fill="#C5A880" opacity=".08"/></svg>
+        <div class="info"><span>Rennes</span><h3>Appartement Odyssée</h3><p>Haussmannien · 80m²</p></div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- À PROPOS — chevauchement -->
 <section id="apropos">
   <div class="wrap">
-    <div class="about-grid">
+    <span class="sec-eyebrow">À propos</span>
+    <h2>Architecte d'intérieur.<br>Une vision, des espaces qui respirent.</h2>
+    <div class="about-block">
       <div class="about-img">
-        <svg viewBox="0 0 200 250" width="120"><rect width="200" height="250" fill="#1C1C1C"/><circle cx="100" cy="100" r="50" fill="#C5A880" opacity=".1"/><line x1="60" y1="160" x2="140" y2="160" stroke="#C5A880" stroke-opacity=".15"/></svg>
+        <svg viewBox="0 0 200 250" width="100"><rect width="200" height="250" fill="#1C1C1C"/><circle cx="100" cy="100" r="60" fill="#C5A880" opacity=".08"/><rect x="70" y="170" width="60" height="2" fill="#C5A880" opacity=".15"/></svg>
       </div>
-      <div>
-        <span class="eyebrow" style="display:block;margin-bottom:8px">À propos</span>
-        <h2 style="margin-bottom:20px">Architecte d'intérieur. Une vision, des espaces qui respirent.</h2>
-        <p style="margin-bottom:12px">Diplômée de l'École de Design de Nantes, j'exerce depuis 2016. Mon approche mêle rigueur architecturale et sensibilité décorative pour créer des espaces qui fonctionnent autant qu'ils émeuvent.</p>
-        <p>Je crois qu'un intérieur réussi est celui où l'on se sent bien sans savoir exactement pourquoi.</p>
-        <div class="quote">
-          "Camille a su comprendre exactement ce que nous voulions, tout en apportant des idées auxquelles nous n'aurions jamais pensé."
-          <cite>— Marie & Antoine L., Rennes</cite>
-        </div>
+      <div class="about-text">
+        <p>Diplômée de l'École de Design de Nantes, j'exerce depuis 2016. Mon approche mêle rigueur architecturale et sensibilité décorative pour créer des espaces qui fonctionnent autant qu'ils émeuvent. Chaque projet est une conversation entre les volumes, la lumière et les matières.</p>
+        <p>Je crois qu'un intérieur réussi est celui où l'on se sent bien sans savoir exactement pourquoi. Cette évidence se construit dans les détails : un axe de vue, une texture sous la main, une source de lumière qui caresse un mur à la tombée du jour.</p>
+        <div class="about-quote">"Camille a su comprendre exactement ce que nous voulions, tout en apportant des idées auxquelles nous n'aurions jamais pensé."<cite>— Marie & Antoine L., Rennes</cite></div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- JOURNAL -->
 <section class="alt">
   <div class="wrap">
-    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px">
-      <div><span class="eyebrow" style="display:block;margin-bottom:8px">Le Journal</span><h2>Conseils & Inspirations</h2></div>
-      <a href="#" style="color:var(--or);text-decoration:none;font-size:11px;text-transform:uppercase;letter-spacing:.1em;font-family:-apple-system,sans-serif;font-weight:500">Tous les articles →</a>
-    </div>
-    <div class="blog-grid">
-      <a href="#" class="blog-card">
-        <div class="blog-img"><svg viewBox="0 0 400 200" width="100%"><rect width="400" height="200" fill="#1C1C1C"/><rect x="60" y="60" width="100" height="60" rx="2" fill="#2a2520"/></svg></div>
-        <div class="text"><span class="tag">Rénovation</span><h3>Rénover sa cuisine : les étapes clés</h3><p>Du plan de travail aux matériaux, tout ce qu'il faut savoir.</p><span class="date">12 juin 2026</span></div>
+    <span class="sec-eyebrow">Le Journal</span>
+    <h2>Conseils & Inspirations</h2>
+    <div class="journal-grid">
+      <a href="#" class="j-card">
+        <div class="j-img"><svg viewBox="0 0 400 180" width="100%"><rect width="400" height="180" fill="#1C1C1C"/><rect x="60" y="50" width="120" height="70" rx="2" fill="#2a2520"/></svg></div>
+        <div class="j-text"><span class="j-tag">Rénovation</span><h3>Rénover sa cuisine : les étapes clés</h3><p>Du plan de travail aux matériaux.</p><span class="j-date">12 juin 2026</span></div>
       </a>
-      <a href="#" class="blog-card">
-        <div class="blog-img"><svg viewBox="0 0 400 200" width="100%"><rect width="400" height="200" fill="#1C1C1C"/><circle cx="200" cy="100" r="50" fill="#C5A880" opacity=".06"/></svg></div>
-        <div class="text"><span class="tag">Décoration</span><h3>Comment choisir les bons luminaires</h3><p>L'éclairage fait 50% de l'ambiance d'une pièce.</p><span class="date">3 mai 2026</span></div>
+      <a href="#" class="j-card">
+        <div class="j-img"><svg viewBox="0 0 400 180" width="100%"><rect width="400" height="180" fill="#1C1C1C"/><circle cx="200" cy="90" r="50" fill="#C5A880" opacity=".06"/></svg></div>
+        <div class="j-text"><span class="j-tag">Décoration</span><h3>Comment choisir les bons luminaires</h3><p>L'éclairage fait 50% de l'ambiance.</p><span class="j-date">3 mai 2026</span></div>
       </a>
-      <a href="#" class="blog-card">
-        <div class="blog-img"><svg viewBox="0 0 400 200" width="100%"><rect width="400" height="200" fill="#1C1C1C"/><rect x="40" y="60" width="120" height="70" rx="2" fill="#2a2520"/></svg></div>
-        <div class="text"><span class="tag">Matériaux</span><h3>Le guide des matériaux durables</h3><p>Les matières qui traversent le temps.</p><span class="date">18 avril 2026</span></div>
+      <a href="#" class="j-card">
+        <div class="j-img"><svg viewBox="0 0 400 180" width="100%"><rect width="400" height="180" fill="#1C1C1C"/><rect x="40" y="50" width="140" height="80" rx="2" fill="#2a2520"/></svg></div>
+        <div class="j-text"><span class="j-tag">Matériaux</span><h3>Le guide des matériaux durables</h3><p>Les matières qui traversent le temps.</p><span class="j-date">18 avril 2026</span></div>
       </a>
     </div>
   </div>
 </section>
 
+<!-- CONTACT -->
 <section id="contact">
   <div class="wrap">
-    <div class="contact-grid">
+    <span class="sec-eyebrow">Contact</span>
+    <div class="contact-block">
       <div class="contact-info">
-        <span class="eyebrow" style="display:block;margin-bottom:8px">Contact</span>
-        <h2 style="margin-bottom:16px">Écrivons les premiers mots de votre histoire</h2>
+        <h2>Écrivons les premiers mots de votre histoire</h2>
         <p>Que vous ayez un projet défini ou une envie encore floue, prenons le temps d'en parler. Premier échange sans engagement.</p>
-        <div class="detail"><span class="label">Par téléphone</span><span class="value">06 XX XX XX XX</span></div>
-        <div class="detail"><span class="label">Par email</span><span class="value">camille@rousselcamille.fr</span></div>
-        <div class="detail"><span class="label">Le studio</span><span class="value">Rennes, Bretagne</span></div>
+        <div class="contact-detail"><span class="lbl">Par téléphone</span><span class="val">06 XX XX XX XX</span></div>
+        <div class="contact-detail"><span class="lbl">Par email</span><span class="val">camille@rousselcamille.fr</span></div>
+        <div class="contact-detail"><span class="lbl">Le studio</span><span class="val">Rennes, Bretagne</span></div>
       </div>
       <form class="contact-form" onsubmit="handleSubmit(event)">
         <label>Comment vous appelez-vous ?</label><input type="text" required placeholder="Votre nom">
         <label>Votre adresse email</label><input type="email" required placeholder="vous@email.fr">
         <label>Où se situe votre projet ?</label><input type="text" placeholder="Rennes, Saint-Malo...">
-        <label>Parlez-moi de votre projet</label><textarea rows="3" placeholder="Vos envies, vos contraintes..."></textarea>
+        <label>Parlez-moi de votre projet</label><textarea rows="3" placeholder="Vos envies, vos contraintes, votre budget..."></textarea>
         <button type="submit">Prendre rendez-vous</button>
       </form>
     </div>
@@ -255,38 +290,62 @@ footer .bottom{margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,25
       <div><h4>Navigation</h4><ul><li><a href="#prestations">Prestations</a></li><li><a href="#projets">Projets</a></li><li><a href="#apropos">À propos</a></li><li><a href="#contact">Contact</a></li></ul></div>
       <div><h4>Le studio</h4><ul><li>Rennes, Bretagne</li><li>camille@rousselcamille.fr</li></ul></div>
     </div>
-    <div class="bottom">© 2026 Camille Roussel Architecture d'Intérieur. Tous droits réservés.</div>
+    <div class="fbottom">© 2026 Camille Roussel Architecture d'Intérieur. Tous droits réservés.</div>
   </div>
 </footer>
 
 <script>
-// Nav scroll
-window.addEventListener('scroll',()=>{
-  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50);
-},{passive:true});
+gsap.registerPlugin(ScrollTrigger);
 
-// Reveal
-const ob=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ob.unobserve(e.target)}}),{threshold:.1});
-document.querySelectorAll('.card,.work-card,.about-grid>div,.blog-card,.contact-info').forEach(el=>{el.classList.add('reveal');ob.observe(el)});
+// Lenis
+const lenis=new Lenis({duration:1.5,easing:t=>1-Math.pow(1-t,3),smoothWheel:true});
+function raf(t){lenis.raf(t);requestAnimationFrame(raf)}requestAnimationFrame(raf);
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)lenis.scrollTo(t,{offset:0,duration:1.8})}));
 
-// Project modal
-const data={
-  zellige:{title:'Projet Zellige',tag:'Rennes — Cuisine d\'architecte',desc:'Cuisine de 18m² dans le centre de Rennes. Îlot central en chêne massif, crédence en zellige artisanal. Meubles bas en noyer, sol en pierre naturelle.',mat:'Chêne massif, Zellige, Noyer',budget:'18 000€ — 6 semaines'},
-  travertin:{title:'Espace Travertin',tag:'Saint-Malo — Bain privé',desc:'Salle d\'eau de 12m². Béton ciré, vasque en travertin brut, robinetterie laiton brossé. Fenêtre zénithale sans vis-à-vis.',mat:'Béton ciré, Travertin, Laiton',budget:'9 500€ — 4 semaines'},
-  odyssee:{title:'Appartement Odyssée',tag:'Rennes — Haussmannien',desc:'Rénovation de 80m². Moulures restaurées, parquet Hongrie, verrière atelier. Dialogue entre classicisme et modernité.',mat:'Parquet Hongrie, Verrière acier, Béton ciré',budget:'55 000€ — 4 mois'}
-};
-function openProject(k){
-  const d=data[k];
-  let m=document.getElementById('modal');
-  if(!m){
-    m=document.createElement('div');m.id='modal';
-    m.style.cssText='position:fixed;inset:0;background:rgba(28,28,28,.7);z-index:100;display:flex;align-items:center;justify-content:center;padding:24px;cursor:pointer';
-    m.onclick=()=>m.remove();
-    document.body.appendChild(m);
-  }
-  m.innerHTML=`<div style="background:#fff;border-radius:12px;max-width:440px;padding:32px;cursor:default" onclick="event.stopPropagation()"><span style="font-size:10px;letter-spacing:.12em;color:#C5A880;text-transform:uppercase;font-family:system-ui,sans-serif;font-weight:600">${d.tag}</span><h3 style="font-size:24px;font-weight:400;margin:8px 0 16px">${d.title}</h3><p style="font-size:13px;color:#66635F;line-height:1.7;margin-bottom:20px">${d.desc}</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:16px;border-top:1px solid #DCD6CD"><div><span style="font-size:9px;letter-spacing:.1em;color:#C5A880;text-transform:uppercase;font-family:system-ui,sans-serif">Matériaux</span><p style="font-size:13px;margin-top:4px">${d.mat}</p></div><div><span style="font-size:9px;letter-spacing:.1em;color:#C5A880;text-transform:uppercase;font-family:system-ui,sans-serif">Budget</span><p style="font-size:13px;margin-top:4px">${d.budget}</p></div></div></div>`;
+// Curseur
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+if(cur&&ring&&window.innerWidth>1024){
+  cur.classList.remove('hidden');ring.classList.remove('hidden');
+  let mx=0,my=0,cx=0,cy=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+  function anim(){cx+=(mx-cx)*.12;cy+=(my-cy)*.12;gsap.set(cur,{x:cx,y:cy});gsap.set(ring,{x:cx,y:cy});requestAnimationFrame(anim)}anim();
+  document.querySelectorAll('.proj-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cur.textContent='Découvrir';cur.style.width='90px';cur.style.height='90px';cur.style.background='rgba(197,168,128,.1)';cur.style.backdropFilter='blur(6px)';cur.style.color='#C5A880';ring.style.width='100px';ring.style.height='100px';ring.style.borderColor='#C5A880'});
+    el.addEventListener('mouseleave',()=>{cur.textContent='';cur.style.width='10px';cur.style.height='10px';cur.style.background='#C5A880';cur.style.backdropFilter='none';cur.style.color='transparent';ring.style.width='50px';ring.style.height='50px';ring.style.borderColor='rgba(197,168,128,.3)'});
+  });
 }
 
+// Nav scroll
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50),{passive:true});
+
+// Scroll hint
+gsap.to('.scroll-dot',{y:36,duration:2,ease:'power1.inOut',repeat:-1,yoyo:true});
+
+// Scroll reveals
+gsap.utils.toArray('.p-card,.proj-card,.j-card,.about-text,.contact-form').forEach(el=>{
+  gsap.fromTo(el,{opacity:0,y:40},{opacity:1,y:0,scrollTrigger:{trigger:el,start:'top 90%'},duration:1,ease:'power3.out'});
+});
+
+// Hero stagger
+const tl=gsap.timeline();
+tl.from('.hero-eyebrow',{opacity:0,y:30,duration:1,ease:'power4.out'});
+tl.from('.hero h1',{opacity:0,y:40,duration:1.2,ease:'power4.out'},'-.6');
+tl.from('.hero .lede',{opacity:0,y:20,duration:1,ease:'power4.out'},'-.7');
+tl.from('.hero-actions',{opacity:0,y:20,duration:.8,ease:'power4.out'},'-.6');
+tl.from('.scroll-hint',{opacity:0,duration:.6},'-.4');
+
+// Project modal
+const pdata={
+  zellige:{title:'Projet Zellige',tag:'Rennes — Cuisine d\'architecte',desc:'Cuisine de 18m² repensée dans le centre de Rennes. Îlot central en chêne massif, crédence en zellige artisanal. Meubles bas en noyer, sol en pierre naturelle.',mat:'Chêne massif, Zellige, Noyer',budget:'18 000€ · 6 semaines'},
+  travertin:{title:'Espace Travertin',tag:'Saint-Malo — Bain privé',desc:'Salle d\'eau minimaliste de 12m². Béton ciré, vasque en travertin brut, robinetterie laiton brossé. Fenêtre zénithale sans vis-à-vis.',mat:'Béton ciré, Travertin, Laiton',budget:'9 500€ · 4 semaines'},
+  odyssee:{title:'Appartement Odyssée',tag:'Rennes — Haussmannien',desc:'Rénovation de 80m² sous les toits. Moulures restaurées, parquet Hongrie, verrière atelier. Dialogue entre classicisme et modernité.',mat:'Parquet Hongrie, Verrière acier',budget:'55 000€ · 4 mois'}
+};
+function openProject(k){
+  const d=pdata[k];
+  let m=document.getElementById('modal');
+  if(!m){m=document.createElement('div');m.id='modal';m.style.cssText='position:fixed;inset:0;background:rgba(28,28,28,.7);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;cursor:pointer';m.onclick=()=>m.remove();document.body.appendChild(m)}
+  m.innerHTML=`<div style="background:#fff;border-radius:12px;max-width:440px;padding:36px;cursor:default" onclick="event.stopPropagation()"><span style="font-size:9px;letter-spacing:.14em;color:#C5A880;text-transform:uppercase;font-family:Jost,sans-serif">${d.tag}</span><h3 style="font-family:Cormorant Garamond,serif;font-size:26px;font-weight:300;margin:8px 0 16px">${d.title}</h3><p style="font-family:Jost,sans-serif;font-size:13px;color:#66635F;line-height:1.7;font-weight:300;margin-bottom:20px">${d.desc}</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:16px;border-top:1px solid #DCD6CD"><div><span style="font-size:9px;letter-spacing:.1em;color:#C5A880;text-transform:uppercase;font-family:Jost,sans-serif">Matériaux</span><p style="font-family:Jost,sans-serif;font-size:13px;font-weight:300;margin-top:4px">${d.mat}</p></div><div><span style="font-size:9px;letter-spacing:.1em;color:#C5A880;text-transform:uppercase;font-family:Jost,sans-serif">Budget</span><p style="font-family:Jost,sans-serif;font-size:13px;font-weight:300;margin-top:4px">${d.budget}</p></div></div></div>`;
+}
 function handleSubmit(e){e.preventDefault();const b=e.target.querySelector('button');b.textContent='Envoyé ✓';b.style.background='#C5A880';setTimeout(()=>{b.textContent='Prendre rendez-vous';b.style.background='#1C1C1C'},2000)}
 </script>
 </body>
