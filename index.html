@@ -1,137 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quentin Convert — Design & Development</title>
+<title>Quentin Convert — Design Web & SEO</title>
 <style>
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 
-:root {
-  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
-  --bg: #050505;
-  --surface: #0a0a0a;
-  --text: #e8e4dd;
-  --text-soft: #8a857e;
-  --text-muted: #5c5852;
-  --accent: #d4a574;
-  --accent-glow: #c4884c;
-  --rule: rgba(212, 165, 116, 0.08);
-  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
-  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --font-mono: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
+:root{
+  --ease-out-expo:cubic-bezier(0.16,1,0.3,1);
+  --paper:#faf8f5;
+  --paper-alt:#f3efe8;
+  --surface:#fff;
+  --ink:#1a1816;
+  --ink-soft:#4a4640;
+  --ink-muted:#8a8580;
+  --accent:#c2692d;
+  --accent-light:#e8915b;
+  --rule:rgba(26,24,22,0.07);
+  --display:'Playfair Display',Georgia,'Times New Roman',serif;
+  --body:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --mono:'SF Mono','JetBrains Mono','Fira Code',monospace;
 }
 
-html { background: var(--bg); color: var(--text); scroll-behavior: smooth; }
-body { font-family: var(--font-body); -webkit-font-smoothing: antialiased; line-height: 1.6; }
+html{background:var(--paper);color:var(--ink);scroll-behavior:smooth}
+body{font-family:var(--body);-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
 
-canvas#bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+canvas#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.5}
 
-.container { max-width: 1200px; margin: 0 auto; padding: 0 48px; position: relative; z-index: 1; }
+.wrap{max-width:1280px;margin:0 auto;padding:0 64px;position:relative;z-index:1}
 
-/* Nav */
-nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 24px 48px; display: flex; justify-content: space-between; align-items: center; transition: background 0.4s var(--ease-out-expo), backdrop-filter 0.4s; }
-nav.nav-scrolled { background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
-nav .logo { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; color: var(--text); text-transform: uppercase; text-decoration: none; }
-nav .nav-links { display: flex; gap: 40px; list-style: none; }
-nav .nav-links a { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; color: var(--text-soft); text-decoration: none; text-transform: uppercase; transition: color 0.3s; }
-nav .nav-links a:hover { color: var(--accent); }
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 64px;display:flex;justify-content:space-between;align-items:center;transition:background .4s var(--ease-out-expo),box-shadow .4s}
+nav.scrolled{background:rgba(250,248,245,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 1px 0 var(--rule)}
+nav .logo{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--ink);text-transform:uppercase;text-decoration:none;font-weight:500}
+nav ul{display:flex;gap:36px;list-style:none}
+nav ul a{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink-soft);text-decoration:none;text-transform:uppercase;transition:color .25s}
+nav ul a:hover{color:var(--accent)}
 
-/* Sections */
-section { padding: 140px 0; position: relative; z-index: 1; }
-.section-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; margin-bottom: 16px; }
+section{padding:120px 0;position:relative;z-index:1}
 
-/* Reveal */
-.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.9s var(--ease-out-expo), transform 0.9s var(--ease-out-expo); }
-.reveal.is-in { opacity: 1; transform: translateY(0); }
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.35s; }
-.reveal-delay-4 { transition-delay: 0.5s; }
-.reveal-delay-5 { transition-delay: 0.65s; }
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;margin-bottom:20px}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease-out-expo),transform .8s var(--ease-out-expo)}
+.reveal.in{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.08s}.d2{transition-delay:.18s}.d3{transition-delay:.30s}.d4{transition-delay:.44s}.d5{transition-delay:.60s}
 
 /* Hero */
-.hero { min-height: 100vh; display: flex; align-items: center; padding-top: 0; }
-.hero-content { max-width: 720px; }
-.hero .section-label { margin-bottom: 24px; }
-.hero h1 { font-family: var(--font-display); font-size: clamp(48px, 7vw, 88px); font-weight: 400; line-height: 1.08; letter-spacing: -0.02em; color: var(--text); margin-bottom: 32px; }
-.hero h1 em { font-style: italic; color: var(--accent); }
-.hero .lede { font-size: 18px; color: var(--text-soft); max-width: 540px; line-height: 1.7; margin-bottom: 48px; }
-.hero-cta { display: flex; gap: 16px; flex-wrap: wrap; }
-.btn-primary { display: inline-block; padding: 14px 32px; background: var(--accent); color: #000; font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.06em; text-decoration: none; text-transform: uppercase; border-radius: 4px; transition: background 0.3s, transform 0.3s var(--ease-out-expo); }
-.btn-primary:hover { background: var(--accent-glow); transform: translateY(-2px); }
-.btn-ghost { display: inline-block; padding: 14px 32px; background: transparent; color: var(--text); font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.06em; text-decoration: none; text-transform: uppercase; border: 1px solid var(--text-muted); border-radius: 4px; transition: border-color 0.3s, color 0.3s; }
-.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+.hero{padding:180px 0 100px;min-height:100vh;display:flex;align-items:center}
+.hero-grid{display:grid;grid-template-columns:1fr .6fr;gap:80px;align-items:center}
+.hero h1{font-family:var(--display);font-size:clamp(44px,6.5vw,80px);font-weight:400;line-height:1.06;letter-spacing:-.02em;margin-bottom:28px}
+.hero h1 i{font-style:italic;color:var(--accent)}
+.hero p{font-size:18px;color:var(--ink-soft);line-height:1.75;max-width:480px;margin-bottom:36px}
+.hero-visual{position:relative;aspect-ratio:1;background:var(--paper-alt);border-radius:2px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero-visual svg{width:70%;height:70%}
+.btns{display:flex;gap:14px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:15px 28px;font-family:var(--mono);font-size:12px;letter-spacing:.07em;text-decoration:none;text-transform:uppercase;border-radius:3px;transition:all .3s var(--ease-out-expo);cursor:pointer;border:none}
+.btn-fill{background:var(--ink);color:var(--paper)}
+.btn-fill:hover{background:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(194,105,45,.25)}
+.btn-line{border:1px solid var(--rule);color:var(--ink);background:transparent}
+.btn-line:hover{border-color:var(--accent);color:var(--accent)}
+
+/* Stats strip */
+.stats-strip{background:var(--ink);color:var(--paper);padding:64px 0;margin:0}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:48px}
+.stats-grid .num{font-family:var(--display);font-size:48px;line-height:1;color:var(--accent-light)}
+.stats-grid .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:rgba(255,255,255,.45);text-transform:uppercase;margin-top:10px}
 
 /* Work */
-.work { padding-top: 80px; }
-.work-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3px; }
-.work-card { position: relative; background: var(--surface); border-radius: 2px; overflow: hidden; aspect-ratio: 4/3; cursor: pointer; transition: transform 0.5s var(--ease-out-expo); }
-.work-card:hover { transform: translateY(-4px); }
-.work-card svg { width: 100%; height: 100%; display: block; }
-.work-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(5,5,5,0.9) 0%, transparent 60%); display: flex; align-items: flex-end; padding: 32px; opacity: 0; transition: opacity 0.4s; }
-.work-card:hover .work-card-overlay { opacity: 1; }
-.work-card-overlay h3 { font-family: var(--font-display); font-size: 22px; font-weight: 400; color: var(--text); }
-.work-card-overlay p { font-size: 13px; color: var(--text-soft); margin-top: 4px; }
+.work-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px}
+.work-header h2{font-family:var(--display);font-size:40px;font-weight:400;max-width:400px}
+.work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px}
+.w-card{position:relative;background:var(--surface);border-radius:2px;overflow:hidden;aspect-ratio:5/4;cursor:pointer;transition:transform .5s var(--ease-out-expo);border:1px solid var(--rule)}
+.w-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.08)}
+.w-card svg{width:100%;height:100%;display:block}
+.w-card .info{position:absolute;bottom:0;left:0;right:0;padding:28px;background:linear-gradient(transparent,rgba(255,255,255,.95) 40%)}
+.w-card .info h3{font-family:var(--display);font-size:20px;font-weight:400;color:var(--ink)}
+.w-card .info span{font-size:12px;color:var(--ink-muted);display:block;margin-top:3px}
 
-/* About */
-.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-.about-text h2 { font-family: var(--font-display); font-size: clamp(32px, 4vw, 48px); font-weight: 400; line-height: 1.2; margin-bottom: 32px; }
-.about-text h2 em { font-style: italic; color: var(--accent); }
-.about-text p { color: var(--text-soft); font-size: 17px; line-height: 1.8; margin-bottom: 20px; }
-.about-stats { display: grid; grid-template-columns: 1fr; gap: 40px; }
-.stat-item { border-top: 1px solid var(--rule); padding-top: 24px; }
-.stat-number { font-family: var(--font-display); font-size: 56px; color: var(--accent); line-height: 1; }
-.stat-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; margin-top: 8px; }
+/* Process */
+.process-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+.p-card{background:var(--surface);padding:48px 40px;border-radius:2px;border:1px solid var(--rule);position:relative}
+.p-card .step{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:16px}
+.p-card h3{font-family:var(--display);font-size:22px;font-weight:400;margin-bottom:12px}
+.p-card p{color:var(--ink-soft);font-size:14px;line-height:1.7}
 
-/* Services */
-.services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; }
-.service-card { background: var(--surface); padding: 48px 40px; border-radius: 2px; transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s; position: relative; overflow: hidden; }
-.service-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.5s var(--ease-out-expo); }
-.service-card:hover::before { transform: scaleX(1); }
-.service-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
-.service-num { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 20px; }
-.service-card h3 { font-family: var(--font-display); font-size: 24px; font-weight: 400; color: var(--text); margin-bottom: 16px; }
-.service-card p { color: var(--text-soft); font-size: 15px; line-height: 1.7; }
+/* Two-col */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.two-col h2{font-family:var(--display);font-size:clamp(32px,4vw,48px);font-weight:400;line-height:1.2;margin-bottom:24px}
+.two-col h2 i{font-style:italic;color:var(--accent)}
+.two-col p{color:var(--ink-soft);font-size:17px;line-height:1.8;margin-bottom:16px}
+.insight{background:var(--paper-alt);padding:32px;border-radius:2px;border-left:3px solid var(--accent)}
+.insight p{font-family:var(--display);font-size:18px;font-style:italic;color:var(--ink);margin:0}
 
-/* Testimonial */
-.quote-section { text-align: center; padding: 160px 0; }
-.quote-section blockquote { font-family: var(--font-display); font-size: clamp(24px, 3.5vw, 36px); font-style: italic; font-weight: 400; max-width: 720px; margin: 0 auto; line-height: 1.5; color: var(--text); }
-.quote-section cite { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--text-muted); font-style: normal; display: block; margin-top: 24px; }
+/* SEO section */
+.seo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px}
+.seo-card{background:var(--surface);padding:40px;border:1px solid var(--rule);border-radius:2px}
+.seo-card .tag{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;margin-bottom:12px}
+.seo-card h3{font-family:var(--display);font-size:20px;font-weight:400;margin-bottom:10px}
+.seo-card p{color:var(--ink-soft);font-size:14px;line-height:1.7}
 
-/* Contact */
-.contact-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 3px; }
-.contact-info { background: var(--surface); padding: 64px; border-radius: 2px; }
-.contact-info h2 { font-family: var(--font-display); font-size: 36px; font-weight: 400; margin-bottom: 40px; }
-.contact-detail { margin-bottom: 28px; }
-.contact-detail .label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; }
-.contact-detail .value { font-size: 17px; color: var(--text); }
-.contact-cta { background: var(--surface); padding: 64px; border-radius: 2px; display: flex; flex-direction: column; justify-content: center; }
-.contact-cta h2 { font-family: var(--font-display); font-size: 32px; font-weight: 400; line-height: 1.3; margin-bottom: 24px; }
-.contact-cta h2 em { font-style: italic; color: var(--accent); }
-.contact-cta p { color: var(--text-soft); font-size: 16px; line-height: 1.7; margin-bottom: 32px; }
+/* CTA */
+.cta{text-align:center;padding:140px 0}
+.cta h2{font-family:var(--display);font-size:clamp(36px,5vw,56px);font-weight:400;max-width:700px;margin:0 auto 20px;line-height:1.15}
+.cta h2 i{font-style:italic;color:var(--accent)}
+.cta p{color:var(--ink-soft);font-size:17px;max-width:440px;margin:0 auto 32px}
+.cta .btns{justify-content:center}
 
-/* Footer */
-footer { padding: 48px 48px; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1; }
-footer p { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
-footer .back-top { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; color: var(--text-soft); text-decoration: none; text-transform: uppercase; transition: color 0.3s; }
-footer .back-top:hover { color: var(--accent); }
+footer{padding:40px 0;border-top:1px solid var(--rule);display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--ink-muted);letter-spacing:.04em}
+footer a{color:var(--ink-soft);text-decoration:none;transition:color .25s}
+footer a:hover{color:var(--accent)}
 
-@media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; transition: none; }
-  canvas#bg-canvas { display: none; }
+@media(max-width:900px){
+  .wrap{padding:0 28px}nav{padding:16px 28px}
+  .hero-grid,.two-col{grid-template-columns:1fr;gap:48px}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .work-grid,.seo-grid,.process-grid{grid-template-columns:1fr}
+  section{padding:72px 0}
 }
 
-@media (max-width: 768px) {
-  .container { padding: 0 24px; }
-  nav { padding: 20px 24px; }
-  nav .nav-links { gap: 20px; }
-  .hero h1 { font-size: clamp(36px, 10vw, 56px); }
-  .work-grid { grid-template-columns: 1fr; }
-  .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
-  .services-grid { grid-template-columns: 1fr; }
-  section { padding: 80px 0; }
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  canvas#bg{display:none}
 }
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -140,302 +129,195 @@ footer .back-top:hover { color: var(--accent); }
 </head>
 <body>
 
-<canvas id="bg-canvas"></canvas>
+<canvas id="bg"></canvas>
 
 <nav id="nav">
   <a href="#" class="logo">Quentin Convert</a>
-  <ul class="nav-links">
-    <li><a href="#work">Work</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#contact">Contact</a></li>
+  <ul>
+    <li><a href="#work">Projets</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#seo">SEO</a></li>
+    <li><a href="#cta">Contact</a></li>
   </ul>
 </nav>
 
 <section class="hero">
-  <div class="container">
-    <div class="hero-content">
-      <div class="section-label reveal">Design & Development</div>
-      <h1 class="reveal reveal-delay-1">Des sites qui <em>respirent</em> avant même qu'on les regarde.</h1>
-      <p class="lede reveal reveal-delay-2">Je conçois des sites web sur mesure pour architectes, designers et petites entreprises. Design, performance, SEO. Sans thèmes ni templates.</p>
-      <div class="hero-cta reveal reveal-delay-3">
-        <a href="#work" class="btn-primary">Voir le travail</a>
-        <a href="#contact" class="btn-ghost">Me contacter</a>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow reveal">Design web & SEO technique</div>
+        <h1 class="reveal d1">Votre site est votre <i>meilleur commercial.</i> Faisons-le travailler.</h1>
+        <p class="reveal d2">Je conçois des sites web sur mesure qui chargent vite, rankent haut, et convertissent. Pas de thèmes. Pas de templates. Du code propre et une stratégie SEO qui tient la route.</p>
+        <div class="btns reveal d3">
+          <a href="#work" class="btn btn-fill">Voir mes projets</a>
+          <a href="#cta" class="btn btn-line">Audit gratuit</a>
+        </div>
       </div>
-    </div>
-  </div>
-</section>
-
-<section class="work" id="work">
-  <div class="container">
-    <div class="section-label reveal">Selected Work</div>
-    <div class="work-grid reveal reveal-delay-1">
-      <div class="work-card">
-        <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
-          <rect width="800" height="600" fill="#0c0c0c"/>
-          <rect x="80" y="120" width="280" height="40" rx="2" fill="var(--accent)" opacity="0.15"/>
-          <rect x="80" y="180" width="200" height="16" rx="2" fill="#1a1a1a"/>
-          <rect x="80" y="210" width="260" height="16" rx="2" fill="#1a1a1a"/>
-          <rect x="80" y="246" width="180" height="16" rx="2" fill="#1a1a1a"/>
-          <circle cx="640" cy="180" r="140" fill="#d4a574" opacity="0.08"/>
-          <circle cx="600" cy="140" r="80" fill="#d4a574" opacity="0.05"/>
-          <rect x="80" y="320" width="160" height="160" rx="2" fill="#1a1a1a"/>
-          <rect x="260" y="320" width="160" height="160" rx="2" fill="#151515"/>
-          <rect x="440" y="320" width="160" height="160" rx="2" fill="#1a1a1a"/>
-          <rect x="620" y="320" width="100" height="160" rx="2" fill="#111"/>
+      <div class="hero-visual reveal d3">
+        <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+          <defs><linearGradient id="hg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#c2692d" stop-opacity=".15"/><stop offset="100%" stop-color="#c2692d" stop-opacity=".04"/></linearGradient></defs>
+          <rect width="300" height="300" rx="4" fill="url(#hg)"/>
+          <rect x="40" y="50" width="140" height="16" rx="3" fill="#c2692d" opacity=".2"/>
+          <rect x="40" y="78" width="220" height="8" rx="2" fill="#1a1816" opacity=".06"/>
+          <rect x="40" y="94" width="180" height="8" rx="2" fill="#1a1816" opacity=".06"/>
+          <rect x="40" y="130" width="100" height="100" rx="3" fill="#c2692d" opacity=".08"/>
+          <rect x="156" y="130" width="100" height="100" rx="3" fill="#1a1816" opacity=".04"/>
+          <rect x="40" y="252" width="60" height="4" rx="2" fill="#c2692d" opacity=".25"/>
+          <circle cx="260" cy="60" r="40" fill="#c2692d" opacity=".06"/>
         </svg>
-        <div class="work-card-overlay"><div><h3>Roussel Architecture</h3><p>Site vitrine & SEO — WordPress</p></div></div>
-      </div>
-      <div class="work-card">
-        <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
-          <rect width="800" height="600" fill="#0a0a0a"/>
-          <rect x="300" y="80" width="200" height="4" rx="2" fill="#d4a574" opacity="0.3"/>
-          <rect x="240" y="120" width="320" height="50" rx="2" fill="#0f0f0f"/>
-          <rect x="240" y="190" width="200" height="12" rx="2" fill="#151515"/>
-          <rect x="240" y="214" width="280" height="12" rx="2" fill="#151515"/>
-          <rect x="240" y="250" width="160" height="60" rx="2" fill="#d4a574" opacity="0.12"/>
-          <circle cx="400" cy="420" r="3" fill="#d4a574" opacity="0.4"/>
-          <rect x="200" y="440" width="100" height="2" rx="1" fill="#252525"/>
-          <rect x="320" y="440" width="140" height="2" rx="1" fill="#252525"/>
-          <rect x="480" y="440" width="120" height="2" rx="1" fill="#252525"/>
-        </svg>
-        <div class="work-card-overlay"><div><h3>EmpireOS</h3><p>Landing page — SaaS</p></div></div>
-      </div>
-      <div class="work-card">
-        <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
-          <rect width="800" height="600" fill="#0c0c0c"/>
-          <rect x="60" y="60" width="680" height="2" fill="#252525"/>
-          <rect x="60" y="240" width="140" height="60" rx="2" fill="#1a1a1a"/>
-          <rect x="220" y="240" width="140" height="60" rx="2" fill="#1a1a1a"/>
-          <rect x="380" y="240" width="140" height="60" rx="2" fill="#d4a574" opacity="0.08"/>
-          <rect x="540" y="240" width="140" height="60" rx="2" fill="#1a1a1a"/>
-          <rect x="60" y="340" width="680" height="1" fill="#1a1a1a"/>
-          <rect x="60" y="380" width="320" height="100" rx="2" fill="#111"/>
-          <rect x="420" y="380" width="320" height="100" rx="2" fill="#111"/>
-        </svg>
-        <div class="work-card-overlay"><div><h3>Marie Lemoine Therapy</h3><p>Site one-page — Design & SEO</p></div></div>
-      </div>
-      <div class="work-card">
-        <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
-          <rect width="800" height="600" fill="#0a0a0a"/>
-          <rect x="80" y="100" width="200" height="200" rx="2" fill="#111"/>
-          <rect x="300" y="100" width="420" height="40" rx="2" fill="#151515"/>
-          <rect x="300" y="156" width="280" height="12" rx="2" fill="#1a1a1a"/>
-          <rect x="300" y="180" width="340" height="12" rx="2" fill="#1a1a1a"/>
-          <rect x="300" y="204" width="200" height="12" rx="2" fill="#1a1a1a"/>
-          <circle cx="680" cy="140" r="60" fill="#d4a574" opacity="0.06"/>
-          <rect x="80" y="340" width="300" height="80" rx="2" fill="#111"/>
-          <rect x="420" y="340" width="300" height="80" rx="2" fill="#111"/>
-        </svg>
-        <div class="work-card-overlay"><div><h3>Le Temple — Concept Store</h3><p>E-commerce — Shopify</p></div></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="about" id="about">
-  <div class="container">
-    <div class="about-grid">
-      <div class="about-text">
-        <div class="section-label reveal">About</div>
-        <h2 class="reveal reveal-delay-1">Je construis des sites comme on dessine <em>un espace.</em></h2>
-        <p class="reveal reveal-delay-2">Chaque site est pensé sur mesure. Pas de thèmes achetés, pas de templates recyclés. Je pars du besoin réel — convertir, raconter, vendre — et je construis autour.</p>
-        <p class="reveal reveal-delay-3">Design, performance, référencement. Trois piliers, une obsession : que votre site travaille pendant que vous dormez.</p>
+<div class="stats-strip">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="reveal"><div class="num">60+</div><div class="lbl">Projets livrés</div></div>
+      <div class="reveal d1"><div class="num">98</div><div class="lbl">Score Lighthouse moyen</div></div>
+      <div class="reveal d2"><div class="num">4s</div><div class="lbl">Délai de réponse moyen</div></div>
+      <div class="reveal d3"><div class="num">100%</div><div class="lbl">Sur mesure</div></div>
+    </div>
+  </div>
+</div>
+
+<section id="work">
+  <div class="wrap">
+    <div class="work-header">
+      <div><div class="eyebrow reveal">Projets récents</div><h2 class="reveal d1">Sites qui performent.</h2></div>
+      <span class="reveal d2" style="color:var(--ink-muted);font-size:14px">Design · Dev · SEO</span>
+    </div>
+    <div class="work-grid">
+      <div class="w-card reveal d2">
+        <svg viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg"><rect width="600" height="480" fill="#faf8f5"/><rect x="40" y="60" width="200" height="24" rx="3" fill="#c2692d" opacity=".15"/><rect x="40" y="100" width="300" height="10" rx="2" fill="#1a1816" opacity=".05"/><rect x="40" y="120" width="240" height="10" rx="2" fill="#1a1816" opacity=".05"/><rect x="40" y="170" width="160" height="160" rx="2" fill="#e8e2d8"/><rect x="216" y="170" width="160" height="160" rx="2" fill="#f0ebe3"/><rect x="392" y="170" width="160" height="160" rx="2" fill="#e8e2d8"/></svg>
+        <div class="info"><h3>Camille Roussel Architecture</h3><span>WordPress · SEO · Design — +43% trafic</span></div>
       </div>
-      <div class="about-stats">
-        <div class="stat-item reveal reveal-delay-2">
-          <div class="stat-number">60+</div>
-          <div class="stat-label">Projets livrés</div>
-        </div>
-        <div class="stat-item reveal reveal-delay-3">
-          <div class="stat-number">4</div>
-          <div class="stat-label">Années d'expérience</div>
-        </div>
-        <div class="stat-item reveal reveal-delay-4">
-          <div class="stat-number">100%</div>
-          <div class="stat-label">Sur mesure</div>
-        </div>
+      <div class="w-card reveal d3">
+        <svg viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg"><rect width="600" height="480" fill="#faf8f5"/><rect x="200" y="80" width="200" height="4" rx="2" fill="#c2692d" opacity=".25"/><rect x="150" y="120" width="300" height="40" rx="3" fill="#e8e2d8"/><rect x="150" y="178" width="200" height="8" rx="2" fill="#1a1816" opacity=".05"/><rect x="150" y="196" width="260" height="8" rx="2" fill="#1a1816" opacity=".05"/><rect x="150" y="240" width="140" height="48" rx="3" fill="#c2692d" opacity=".1"/><circle cx="300" cy="380" r="2" fill="#c2692d" opacity=".4"/></svg>
+        <div class="info"><h3>EmpireOS — Landing Page</h3><span>HTML/CSS pur · Animations · Conversion</span></div>
+      </div>
+      <div class="w-card reveal d2">
+        <svg viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg"><rect width="600" height="480" fill="#faf8f5"/><rect x="40" y="40" width="520" height="1" fill="#1a1816" opacity=".06"/><circle cx="300" cy="160" r="80" fill="#c2692d" opacity=".06"/><rect x="40" y="280" width="160" height="80" rx="2" fill="#e8e2d8"/><rect x="216" y="280" width="160" height="80" rx="2" fill="#f0ebe3"/><rect x="392" y="280" width="160" height="80" rx="2" fill="#e8e2d8"/></svg>
+        <div class="info"><h3>Marie Lemoine — Thérapie</h3><span>One-page · SEO local · Réservations</span></div>
+      </div>
+      <div class="w-card reveal d3">
+        <svg viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg"><rect width="600" height="480" fill="#faf8f5"/><rect x="60" y="80" width="120" height="120" rx="2" fill="#e8e2d8"/><rect x="196" y="80" width="120" height="120" rx="2" fill="#f0ebe3"/><rect x="332" y="80" width="120" height="120" rx="2" fill="#e8e2d8"/><rect x="60" y="240" width="200" height="10" rx="2" fill="#1a1816" opacity=".05"/><rect x="60" y="264" width="160" height="10" rx="2" fill="#1a1816" opacity=".05"/></svg>
+        <div class="info"><h3>Le Temple — Concept Store</h3><span>E-commerce · Shopify · Design</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<section class="services" id="services">
-  <div class="container">
-    <div class="section-label reveal">Services</div>
-    <div class="services-grid">
-      <div class="service-card reveal reveal-delay-1">
-        <div class="service-num">01</div>
-        <h3>Design web</h3>
-        <p>Maquette sur mesure, identité visuelle cohérente, design responsive. Votre site reflète votre exigence, pas un template.</p>
+<section id="process">
+  <div class="wrap">
+    <div class="eyebrow reveal">Comment je travaille</div>
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px">
+      <h2 class="reveal d1" style="font-family:var(--display);font-size:40px;font-weight:400;max-width:400px">Un process clair,<br>zéro surprise.</h2>
+    </div>
+    <div class="process-grid">
+      <div class="p-card reveal d2">
+        <div class="step">01. Audit</div>
+        <h3>Je passe votre site au crible</h3>
+        <p>Performance, SEO technique, accessibilité, structure. Vous recevez un rapport complet avec les actions prioritaires classées par impact.</p>
       </div>
-      <div class="service-card reveal reveal-delay-2">
-        <div class="service-num">02</div>
-        <h3>Développement</h3>
-        <p>WordPress, HTML/CSS pur, ou solution headless. Code propre, rapide, maintenable. Aucune dépendance inutile.</p>
+      <div class="p-card reveal d3">
+        <div class="step">02. Design</div>
+        <h3>Maquette sur mesure</h3>
+        <p>Design unique, pas un template. Typographie, couleurs, mise en page — tout est pensé pour votre audience et vos objectifs.</p>
       </div>
-      <div class="service-card reveal reveal-delay-3">
-        <div class="service-num">03</div>
-        <h3>SEO & Performance</h3>
-        <p>Audit technique, optimisation, référencement naturel. Un site qui charge vite et que Google comprend.</p>
+      <div class="p-card reveal d4">
+        <div class="step">03. Build & Launch</div>
+        <h3>Développement propre, livraison rapide</h3>
+        <p>Code optimisé, zéro dépendance inutile. Tests cross-browser, mise en ligne, et vous êtes autonome.</p>
       </div>
     </div>
   </div>
 </section>
 
-<section class="quote-section">
-  <div class="container">
-    <blockquote class="reveal">"Quentin a transformé mon site WordPress bancal en une vitrine qui me ressemble. J'ai gagné des clients sans changer mon offre."
-    <cite>Camille R. — Architecte d'intérieur</cite></blockquote>
-  </div>
-</section>
-
-<section class="contact" id="contact">
-  <div class="container">
-    <div class="contact-grid">
-      <div class="contact-info reveal reveal-delay-1">
-        <h2>Parlons de votre projet.</h2>
-        <div class="contact-detail">
-          <div class="label">Email</div>
-          <div class="value">conscience.emotionnelle@gmail.com</div>
-        </div>
-        <div class="contact-detail">
-          <div class="label">Téléphone</div>
-          <div class="value">07 53 19 73 20</div>
-        </div>
-        <div class="contact-detail">
-          <div class="label">Localisation</div>
-          <div class="value">Torcy, Île-de-France</div>
-        </div>
+<section>
+  <div class="wrap">
+    <div class="two-col">
+      <div>
+        <div class="eyebrow reveal">Pourquoi ça marche</div>
+        <h2 class="reveal d1">Un site rapide est un site <i>qui vend.</i></h2>
+        <p class="reveal d2">53% des visiteurs quittent un site qui met plus de 3 secondes à charger. Chaque seconde de retard, c'est 7% de conversion perdue.</p>
+        <p class="reveal d3">Je traite la performance comme une fonctionnalité — pas un bonus. Lighthouse 95+, Core Web Vitals au vert, temps de chargement sous 1.5s.</p>
       </div>
-      <div class="contact-cta reveal reveal-delay-2">
-        <h2>Votre site devrait être <em>votre meilleur commercial.</em></h2>
-        <p>Un site bien conçu convertit 24h/24. Le vôtre est-il à la hauteur ?</p>
-        <a href="mailto:conscience.emotionnelle@gmail.com" class="btn-primary">Démarrer un projet</a>
+      <div class="insight reveal d3">
+        <p>« Votre site chargeait en 4.2 secondes. Il charge maintenant en 0.8s. Votre trafic organique a augmenté de 43% en 3 mois. »</p>
+        <p style="font-family:var(--mono);font-size:11px;color:var(--ink-muted);margin-top:16px;font-style:normal">— Audit Camille Roussel, juin 2026</p>
       </div>
     </div>
   </div>
 </section>
 
-<footer>
-  <p>© 2026 Quentin Convert. Tous droits réservés.</p>
-  <a href="#" class="back-top">↑ Retour</a>
+<section id="seo">
+  <div class="wrap">
+    <div class="eyebrow reveal">SEO</div>
+    <h2 class="reveal d1" style="font-family:var(--display);font-size:40px;font-weight:400;max-width:500px;margin-bottom:48px">Trouvable. Lisible. <i>Cliqué.</i></h2>
+    <div class="seo-grid">
+      <div class="seo-card reveal d2"><div class="tag">Technique</div><h3>Core Web Vitals</h3><p>LCP, FID, CLS optimisés. Votre site passe les critères Google avec de la marge.</p></div>
+      <div class="seo-card reveal d2"><div class="tag">Contenu</div><h3>Structure sémantique</h3><p>Balises, schema.org, hiérarchie de contenu. Google comprend votre site du premier coup.</p></div>
+      <div class="seo-card reveal d3"><div class="tag">Local</div><h3>SEO géolocalisé</h3><p>Google My Business, mots-clés locaux, citations. Vous apparaissez quand vos clients cherchent.</p></div>
+      <div class="seo-card reveal d3"><div class="tag">Audit</div><h3>Rapport mensuel</h3><p>Suivi des positions, trafic organique, opportunités de contenu. Vous savez exactement où vous en êtes.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="cta" id="cta">
+  <div class="wrap">
+    <h2 class="reveal">Prêt à avoir un site <i>qui travaille</i> pour vous ?</h2>
+    <p class="reveal d1">Audit gratuit de votre site actuel. 48h. Zéro engagement.</p>
+    <div class="btns reveal d2">
+      <a href="mailto:conscience.emotionnelle@gmail.com" class="btn btn-fill">Demander un audit</a>
+      <a href="tel:+33753197320" class="btn btn-line">07 53 19 73 20</a>
+    </div>
+  </div>
+</div>
+
+<footer class="wrap">
+  <span>© 2026 Quentin Convert — Torcy, Île-de-France</span>
+  <a href="#">↑ Haut</a>
 </footer>
 
 <script>
-// WebGL amber light masses
-const canvas = document.getElementById('bg-canvas');
-const gl = canvas.getContext('webgl2', { alpha: true });
-if (!gl) { canvas.style.display = 'none'; }
+// Canvas particles — subtil
+const c=document.getElementById('bg');
+const g=c.getContext('2d');
+let W,H;
+function rs(){const d=Math.min(window.devicePixelRatio||1,2);W=window.innerWidth;H=window.innerHeight;c.width=W*d;c.height=H*d;c.style.width=W+'px';c.style.height=H+'px';g.scale(d,d)}
+window.addEventListener('resize',rs);rs();
 
-function resize() {
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
-  canvas.width = window.innerWidth * dpr;
-  canvas.height = window.innerHeight * dpr;
-  if (gl) gl.viewport(0, 0, canvas.width, canvas.height);
-}
-window.addEventListener('resize', resize);
-resize();
+const pts=Array.from({length:20},()=>({
+  x:Math.random()*W,y:Math.random()*H,
+  r:60+Math.random()*120,
+  vx:(Math.random()-.5)*.15,vy:(Math.random()-.5)*.15,
+  a:.015+Math.random()*.025
+}));
 
-if (gl) {
-  const vs = gl.createShader(gl.VERTEX_SHADER);
-  gl.shaderSource(vs, `#version 300 es
-    in vec2 a_pos;
-    out vec2 v_uv;
-    void main() {
-      v_uv = a_pos * 0.5 + 0.5;
-      gl_Position = vec4(a_pos, 0.0, 1.0);
-    }`);
-  gl.compileShader(vs);
-
-  const fs = gl.createShader(gl.FRAGMENT_SHADER);
-  gl.shaderSource(fs, `#version 300 es
-    precision highp float;
-    in vec2 v_uv;
-    out vec4 frag;
-    uniform vec2 u_res;
-    uniform float u_time;
-
-    float hash(vec2 p) {
-      return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
-    }
-
-    float noise(vec2 p) {
-      vec2 i = floor(p);
-      vec2 f = fract(p);
-      f = f * f * (3.0 - 2.0 * f);
-      return mix(mix(hash(i), hash(i + vec2(1,0)), f.x),
-                 mix(hash(i + vec2(0,1)), hash(i + vec2(1,1)), f.x), f.y);
-    }
-
-    float fbm(vec2 p) {
-      float v = 0.0, a = 0.5;
-      vec2 shift = vec2(100.0);
-      mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.5));
-      for (int i = 0; i < 5; i++) {
-        v += a * noise(p);
-        p = rot * p * 2.0 + shift;
-        a *= 0.5;
-      }
-      return v;
-    }
-
-    void main() {
-      vec2 uv = v_uv;
-      float t = u_time * 0.06;
-
-      float n1 = fbm(uv * 3.5 + vec2(t * 0.2, t * 0.1));
-      float n2 = fbm(uv * 2.8 + vec2(-t * 0.15, t * 0.12) + 3.0);
-      float n3 = fbm(uv * 4.2 + vec2(t * 0.08, -t * 0.09) + 1.5);
-
-      float light = n1 * 0.45 + n2 * 0.35 + n3 * 0.2;
-      light = pow(light, 2.2);
-      light = smoothstep(0.28, 0.75, light);
-
-      float alpha = light * 0.06;
-      vec3 color = mix(vec3(0.83, 0.55, 0.28), vec3(0.76, 0.42, 0.18), n2 * 0.5);
-
-      frag = vec4(color, alpha);
-    }`);
-  gl.compileShader(fs);
-
-  const prog = gl.createProgram();
-  gl.attachShader(prog, vs);
-  gl.attachShader(prog, fs);
-  gl.linkProgram(prog);
-  gl.useProgram(prog);
-
-  const buf = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]), gl.STATIC_DRAW);
-  const aPos = gl.getAttribLocation(prog, 'a_pos');
-  gl.enableVertexAttribArray(aPos);
-  gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-
-  const uRes = gl.getUniformLocation(prog, 'u_res');
-  const uTime = gl.getUniformLocation(prog, 'u_time');
-
-  function render(ts) {
-    resize();
-    gl.uniform2f(uRes, canvas.width, canvas.height);
-    gl.uniform1f(uTime, ts * 0.001);
-    gl.drawArrays(gl.TRIANGLES, 0, 6);
-    requestAnimationFrame(render);
+function draw(){
+  g.clearRect(0,0,W,H);
+  for(let p of pts){
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<-p.r)p.x=W+p.r;if(p.x>W+p.r)p.x=-p.r;
+    if(p.y<-p.r)p.y=H+p.r;if(p.y>H+p.r)p.y=-p.r;
+    const grd=g.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r);
+    grd.addColorStop(0,`rgba(194,105,45,${p.a*2})`);
+    grd.addColorStop(.5,`rgba(194,105,45,${p.a})`);
+    grd.addColorStop(1,'rgba(194,105,45,0)');
+    g.fillStyle=grd;g.beginPath();g.arc(p.x,p.y,p.r,0,Math.PI*2);g.fill();
   }
-  requestAnimationFrame(render);
+  requestAnimationFrame(draw);
 }
+requestAnimationFrame(draw);
 
-// Scroll reveal
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) { entry.target.classList.add('is-in'); observer.unobserve(entry.target); }
-  });
-}, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+// Reveals
+const ob=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ob.unobserve(e.target)}})},{threshold:.1,rootMargin:'0px 0px -20px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>ob.observe(el));
 
-// Nav scroll
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => { nav.classList.toggle('nav-scrolled', window.scrollY > 50); }, { passive: true });
+// Nav
+const n=document.getElementById('nav');
+window.addEventListener('scroll',()=>n.classList.toggle('scrolled',window.scrollY>50),{passive:true});
 </script>
 </body>
 </html>
