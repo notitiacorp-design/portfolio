@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quentin Convert — Design & Development</title>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --bg: #050505;
+  --surface: #0a0a0a;
+  --text: #e8e4dd;
+  --text-soft: #8a857e;
+  --text-muted: #5c5852;
+  --accent: #d4a574;
+  --accent-glow: #c4884c;
+  --rule: rgba(212, 165, 116, 0.08);
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+html { background: var(--bg); color: var(--text); scroll-behavior: smooth; }
+body { font-family: var(--font-body); -webkit-font-smoothing: antialiased; line-height: 1.6; }
+
+canvas#bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 48px; position: relative; z-index: 1; }
+
+/* Nav */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 24px 48px; display: flex; justify-content: space-between; align-items: center; transition: background 0.4s var(--ease-out-expo), backdrop-filter 0.4s; }
+nav.nav-scrolled { background: rgba(5, 5, 5, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+nav .logo { font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.08em; color: var(--text); text-transform: uppercase; text-decoration: none; }
+nav .nav-links { display: flex; gap: 40px; list-style: none; }
+nav .nav-links a { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; color: var(--text-soft); text-decoration: none; text-transform: uppercase; transition: color 0.3s; }
+nav .nav-links a:hover { color: var(--accent); }
+
+/* Sections */
+section { padding: 140px 0; position: relative; z-index: 1; }
+.section-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; color: var(--accent); text-transform: uppercase; margin-bottom: 16px; }
+
+/* Reveal */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.9s var(--ease-out-expo), transform 0.9s var(--ease-out-expo); }
+.reveal.is-in { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.35s; }
+.reveal-delay-4 { transition-delay: 0.5s; }
+.reveal-delay-5 { transition-delay: 0.65s; }
+
+/* Hero */
+.hero { min-height: 100vh; display: flex; align-items: center; padding-top: 0; }
+.hero-content { max-width: 720px; }
+.hero .section-label { margin-bottom: 24px; }
+.hero h1 { font-family: var(--font-display); font-size: clamp(48px, 7vw, 88px); font-weight: 400; line-height: 1.08; letter-spacing: -0.02em; color: var(--text); margin-bottom: 32px; }
+.hero h1 em { font-style: italic; color: var(--accent); }
+.hero .lede { font-size: 18px; color: var(--text-soft); max-width: 540px; line-height: 1.7; margin-bottom: 48px; }
+.hero-cta { display: flex; gap: 16px; flex-wrap: wrap; }
+.btn-primary { display: inline-block; padding: 14px 32px; background: var(--accent); color: #000; font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.06em; text-decoration: none; text-transform: uppercase; border-radius: 4px; transition: background 0.3s, transform 0.3s var(--ease-out-expo); }
+.btn-primary:hover { background: var(--accent-glow); transform: translateY(-2px); }
+.btn-ghost { display: inline-block; padding: 14px 32px; background: transparent; color: var(--text); font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.06em; text-decoration: none; text-transform: uppercase; border: 1px solid var(--text-muted); border-radius: 4px; transition: border-color 0.3s, color 0.3s; }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Work */
+.work { padding-top: 80px; }
+.work-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3px; }
+.work-card { position: relative; background: var(--surface); border-radius: 2px; overflow: hidden; aspect-ratio: 4/3; cursor: pointer; transition: transform 0.5s var(--ease-out-expo); }
+.work-card:hover { transform: translateY(-4px); }
+.work-card svg { width: 100%; height: 100%; display: block; }
+.work-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(5,5,5,0.9) 0%, transparent 60%); display: flex; align-items: flex-end; padding: 32px; opacity: 0; transition: opacity 0.4s; }
+.work-card:hover .work-card-overlay { opacity: 1; }
+.work-card-overlay h3 { font-family: var(--font-display); font-size: 22px; font-weight: 400; color: var(--text); }
+.work-card-overlay p { font-size: 13px; color: var(--text-soft); margin-top: 4px; }
+
+/* About */
+.about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.about-text h2 { font-family: var(--font-display); font-size: clamp(32px, 4vw, 48px); font-weight: 400; line-height: 1.2; margin-bottom: 32px; }
+.about-text h2 em { font-style: italic; color: var(--accent); }
+.about-text p { color: var(--text-soft); font-size: 17px; line-height: 1.8; margin-bottom: 20px; }
+.about-stats { display: grid; grid-template-columns: 1fr; gap: 40px; }
+.stat-item { border-top: 1px solid var(--rule); padding-top: 24px; }
+.stat-number { font-family: var(--font-display); font-size: 56px; color: var(--accent); line-height: 1; }
+.stat-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; margin-top: 8px; }
+
+/* Services */
+.services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; }
+.service-card { background: var(--surface); padding: 48px 40px; border-radius: 2px; transition: transform 0.5s var(--ease-out-expo), box-shadow 0.5s; position: relative; overflow: hidden; }
+.service-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.5s var(--ease-out-expo); }
+.service-card:hover::before { transform: scaleX(1); }
+.service-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+.service-num { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 20px; }
+.service-card h3 { font-family: var(--font-display); font-size: 24px; font-weight: 400; color: var(--text); margin-bottom: 16px; }
+.service-card p { color: var(--text-soft); font-size: 15px; line-height: 1.7; }
+
+/* Testimonial */
+.quote-section { text-align: center; padding: 160px 0; }
+.quote-section blockquote { font-family: var(--font-display); font-size: clamp(24px, 3.5vw, 36px); font-style: italic; font-weight: 400; max-width: 720px; margin: 0 auto; line-height: 1.5; color: var(--text); }
+.quote-section cite { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; color: var(--text-muted); font-style: normal; display: block; margin-top: 24px; }
+
+/* Contact */
+.contact-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 3px; }
+.contact-info { background: var(--surface); padding: 64px; border-radius: 2px; }
+.contact-info h2 { font-family: var(--font-display); font-size: 36px; font-weight: 400; margin-bottom: 40px; }
+.contact-detail { margin-bottom: 28px; }
+.contact-detail .label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px; }
+.contact-detail .value { font-size: 17px; color: var(--text); }
+.contact-cta { background: var(--surface); padding: 64px; border-radius: 2px; display: flex; flex-direction: column; justify-content: center; }
+.contact-cta h2 { font-family: var(--font-display); font-size: 32px; font-weight: 400; line-height: 1.3; margin-bottom: 24px; }
+.contact-cta h2 em { font-style: italic; color: var(--accent); }
+.contact-cta p { color: var(--text-soft); font-size: 16px; line-height: 1.7; margin-bottom: 32px; }
+
+/* Footer */
+footer { padding: 48px 48px; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1; }
+footer p { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); }
+footer .back-top { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; color: var(--text-soft); text-decoration: none; text-transform: uppercase; transition: color 0.3s; }
+footer .back-top:hover { color: var(--accent); }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  canvas#bg-canvas { display: none; }
+}
+
+@media (max-width: 768px) {
+  .container { padding: 0 24px; }
+  nav { padding: 20px 24px; }
+  nav .nav-links { gap: 20px; }
+  .hero h1 { font-size: clamp(36px, 10vw, 56px); }
+  .work-grid { grid-template-columns: 1fr; }
+  .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+  .services-grid { grid-template-columns: 1fr; }
+  section { padding: 80px 0; }
+}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<nav id="nav">
+  <a href="#" class="logo">Quentin Convert</a>
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="section-label reveal">Design & Development</div>
+      <h1 class="reveal reveal-delay-1">Des sites qui <em>respirent</em> avant même qu'on les regarde.</h1>
+      <p class="lede reveal reveal-delay-2">Je conçois des sites web sur mesure pour architectes, designers et petites entreprises. Design, performance, SEO. Sans thèmes ni templates.</p>
+      <div class="hero-cta reveal reveal-delay-3">
+        <a href="#work" class="btn-primary">Voir le travail</a>
+        <a href="#contact" class="btn-ghost">Me contacter</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="work" id="work">
+  <div class="container">
+    <div class="section-label reveal">Selected Work</div>
+    <div class="work-grid reveal reveal-delay-1">
+      <div class="work-card">
+        <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+          <rect width="800" height="600" fill="#0c0c0c"/>
+          <rect x="80" y="120" width="280" height="40" rx="2" fill="var(--accent)" opacity="0.15"/>
+          <rect x="80" y="180" width="200" height="16" rx="2" fill="#1a1a1a"/>
+          <rect x="80" y="210" width="260" height="16" rx="2" fill="#1a1a1a"/>
+          <rect x="80" y="246" width="180" height="16" rx="2" fill="#1a1a1a"/>
+          <circle cx="640" cy="180" r="140" fill="#d4a574" opacity="0.08"/>
+          <circle cx="600" cy="140" r="80" fill="#d4a574" opacity="0.05"/>
+          <rect x="80" y="320" width="160" height="160" rx="2" fill="#1a1a1a"/>
+          <rect x="260" y="320" width="160" height="160" rx="2" fill="#151515"/>
+          <rect x="440" y="320" width="160" height="160" rx="2" fill="#1a1a1a"/>
+          <rect x="620" y="320" width="100" height="160" rx="2" fill="#111"/>
+        </svg>
+        <div class="work-card-overlay"><div><h3>Roussel Architecture</h3><p>Site vitrine & SEO — WordPress</p></div></div>
+      </div>
+      <div class="work-card">
+        <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+          <rect width="800" height="600" fill="#0a0a0a"/>
+          <rect x="300" y="80" width="200" height="4" rx="2" fill="#d4a574" opacity="0.3"/>
+          <rect x="240" y="120" width="320" height="50" rx="2" fill="#0f0f0f"/>
+          <rect x="240" y="190" width="200" height="12" rx="2" fill="#151515"/>
+          <rect x="240" y="214" width="280" height="12" rx="2" fill="#151515"/>
+          <rect x="240" y="250" width="160" height="60" rx="2" fill="#d4a574" opacity="0.12"/>
+          <circle cx="400" cy="420" r="3" fill="#d4a574" opacity="0.4"/>
+          <rect x="200" y="440" width="100" height="2" rx="1" fill="#252525"/>
+          <rect x="320" y="440" width="140" height="2" rx="1" fill="#252525"/>
+          <rect x="480" y="440" width="120" height="2" rx="1" fill="#252525"/>
+        </svg>
+        <div class="work-card-overlay"><div><h3>EmpireOS</h3><p>Landing page — SaaS</p></div></div>
+      </div>
+      <div class="work-card">
+        <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+          <rect width="800" height="600" fill="#0c0c0c"/>
+          <rect x="60" y="60" width="680" height="2" fill="#252525"/>
+          <rect x="60" y="240" width="140" height="60" rx="2" fill="#1a1a1a"/>
+          <rect x="220" y="240" width="140" height="60" rx="2" fill="#1a1a1a"/>
+          <rect x="380" y="240" width="140" height="60" rx="2" fill="#d4a574" opacity="0.08"/>
+          <rect x="540" y="240" width="140" height="60" rx="2" fill="#1a1a1a"/>
+          <rect x="60" y="340" width="680" height="1" fill="#1a1a1a"/>
+          <rect x="60" y="380" width="320" height="100" rx="2" fill="#111"/>
+          <rect x="420" y="380" width="320" height="100" rx="2" fill="#111"/>
+        </svg>
+        <div class="work-card-overlay"><div><h3>Marie Lemoine Therapy</h3><p>Site one-page — Design & SEO</p></div></div>
+      </div>
+      <div class="work-card">
+        <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+          <rect width="800" height="600" fill="#0a0a0a"/>
+          <rect x="80" y="100" width="200" height="200" rx="2" fill="#111"/>
+          <rect x="300" y="100" width="420" height="40" rx="2" fill="#151515"/>
+          <rect x="300" y="156" width="280" height="12" rx="2" fill="#1a1a1a"/>
+          <rect x="300" y="180" width="340" height="12" rx="2" fill="#1a1a1a"/>
+          <rect x="300" y="204" width="200" height="12" rx="2" fill="#1a1a1a"/>
+          <circle cx="680" cy="140" r="60" fill="#d4a574" opacity="0.06"/>
+          <rect x="80" y="340" width="300" height="80" rx="2" fill="#111"/>
+          <rect x="420" y="340" width="300" height="80" rx="2" fill="#111"/>
+        </svg>
+        <div class="work-card-overlay"><div><h3>Le Temple — Concept Store</h3><p>E-commerce — Shopify</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-label reveal">About</div>
+        <h2 class="reveal reveal-delay-1">Je construis des sites comme on dessine <em>un espace.</em></h2>
+        <p class="reveal reveal-delay-2">Chaque site est pensé sur mesure. Pas de thèmes achetés, pas de templates recyclés. Je pars du besoin réel — convertir, raconter, vendre — et je construis autour.</p>
+        <p class="reveal reveal-delay-3">Design, performance, référencement. Trois piliers, une obsession : que votre site travaille pendant que vous dormez.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat-item reveal reveal-delay-2">
+          <div class="stat-number">60+</div>
+          <div class="stat-label">Projets livrés</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-3">
+          <div class="stat-number">4</div>
+          <div class="stat-label">Années d'expérience</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-4">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Sur mesure</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services" id="services">
+  <div class="container">
+    <div class="section-label reveal">Services</div>
+    <div class="services-grid">
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-num">01</div>
+        <h3>Design web</h3>
+        <p>Maquette sur mesure, identité visuelle cohérente, design responsive. Votre site reflète votre exigence, pas un template.</p>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-num">02</div>
+        <h3>Développement</h3>
+        <p>WordPress, HTML/CSS pur, ou solution headless. Code propre, rapide, maintenable. Aucune dépendance inutile.</p>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-num">03</div>
+        <h3>SEO & Performance</h3>
+        <p>Audit technique, optimisation, référencement naturel. Un site qui charge vite et que Google comprend.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="quote-section">
+  <div class="container">
+    <blockquote class="reveal">"Quentin a transformé mon site WordPress bancal en une vitrine qui me ressemble. J'ai gagné des clients sans changer mon offre."
+    <cite>Camille R. — Architecte d'intérieur</cite></blockquote>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-info reveal reveal-delay-1">
+        <h2>Parlons de votre projet.</h2>
+        <div class="contact-detail">
+          <div class="label">Email</div>
+          <div class="value">conscience.emotionnelle@gmail.com</div>
+        </div>
+        <div class="contact-detail">
+          <div class="label">Téléphone</div>
+          <div class="value">07 53 19 73 20</div>
+        </div>
+        <div class="contact-detail">
+          <div class="label">Localisation</div>
+          <div class="value">Torcy, Île-de-France</div>
+        </div>
+      </div>
+      <div class="contact-cta reveal reveal-delay-2">
+        <h2>Votre site devrait être <em>votre meilleur commercial.</em></h2>
+        <p>Un site bien conçu convertit 24h/24. Le vôtre est-il à la hauteur ?</p>
+        <a href="mailto:conscience.emotionnelle@gmail.com" class="btn-primary">Démarrer un projet</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 Quentin Convert. Tous droits réservés.</p>
+  <a href="#" class="back-top">↑ Retour</a>
+</footer>
+
+<script>
+// WebGL amber light masses
+const canvas = document.getElementById('bg-canvas');
+const gl = canvas.getContext('webgl2', { alpha: true });
+if (!gl) { canvas.style.display = 'none'; }
+
+function resize() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
+  if (gl) gl.viewport(0, 0, canvas.width, canvas.height);
+}
+window.addEventListener('resize', resize);
+resize();
+
+if (gl) {
+  const vs = gl.createShader(gl.VERTEX_SHADER);
+  gl.shaderSource(vs, `#version 300 es
+    in vec2 a_pos;
+    out vec2 v_uv;
+    void main() {
+      v_uv = a_pos * 0.5 + 0.5;
+      gl_Position = vec4(a_pos, 0.0, 1.0);
+    }`);
+  gl.compileShader(vs);
+
+  const fs = gl.createShader(gl.FRAGMENT_SHADER);
+  gl.shaderSource(fs, `#version 300 es
+    precision highp float;
+    in vec2 v_uv;
+    out vec4 frag;
+    uniform vec2 u_res;
+    uniform float u_time;
+
+    float hash(vec2 p) {
+      return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+    }
+
+    float noise(vec2 p) {
+      vec2 i = floor(p);
+      vec2 f = fract(p);
+      f = f * f * (3.0 - 2.0 * f);
+      return mix(mix(hash(i), hash(i + vec2(1,0)), f.x),
+                 mix(hash(i + vec2(0,1)), hash(i + vec2(1,1)), f.x), f.y);
+    }
+
+    float fbm(vec2 p) {
+      float v = 0.0, a = 0.5;
+      vec2 shift = vec2(100.0);
+      mat2 rot = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.5));
+      for (int i = 0; i < 5; i++) {
+        v += a * noise(p);
+        p = rot * p * 2.0 + shift;
+        a *= 0.5;
+      }
+      return v;
+    }
+
+    void main() {
+      vec2 uv = v_uv;
+      float t = u_time * 0.06;
+
+      float n1 = fbm(uv * 3.5 + vec2(t * 0.2, t * 0.1));
+      float n2 = fbm(uv * 2.8 + vec2(-t * 0.15, t * 0.12) + 3.0);
+      float n3 = fbm(uv * 4.2 + vec2(t * 0.08, -t * 0.09) + 1.5);
+
+      float light = n1 * 0.45 + n2 * 0.35 + n3 * 0.2;
+      light = pow(light, 2.2);
+      light = smoothstep(0.28, 0.75, light);
+
+      float alpha = light * 0.06;
+      vec3 color = mix(vec3(0.83, 0.55, 0.28), vec3(0.76, 0.42, 0.18), n2 * 0.5);
+
+      frag = vec4(color, alpha);
+    }`);
+  gl.compileShader(fs);
+
+  const prog = gl.createProgram();
+  gl.attachShader(prog, vs);
+  gl.attachShader(prog, fs);
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, -1,1, 1,-1, 1,1]), gl.STATIC_DRAW);
+  const aPos = gl.getAttribLocation(prog, 'a_pos');
+  gl.enableVertexAttribArray(aPos);
+  gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+  const uRes = gl.getUniformLocation(prog, 'u_res');
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+
+  function render(ts) {
+    resize();
+    gl.uniform2f(uRes, canvas.width, canvas.height);
+    gl.uniform1f(uTime, ts * 0.001);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) { entry.target.classList.add('is-in'); observer.unobserve(entry.target); }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Nav scroll
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => { nav.classList.toggle('nav-scrolled', window.scrollY > 50); }, { passive: true });
+</script>
+</body>
+</html>
