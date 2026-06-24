@@ -1,323 +1,568 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="scroll-smooth">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quentin Convert — Design Web & SEO</title>
-<style>
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-
-:root{
-  --ease-out-expo:cubic-bezier(0.16,1,0.3,1);
-  --paper:#faf8f5;
-  --paper-alt:#f3efe8;
-  --surface:#fff;
-  --ink:#1a1816;
-  --ink-soft:#4a4640;
-  --ink-muted:#8a8580;
-  --accent:#c2692d;
-  --accent-light:#e8915b;
-  --rule:rgba(26,24,22,0.07);
-  --display:'Playfair Display',Georgia,'Times New Roman',serif;
-  --body:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-  --mono:'SF Mono','JetBrains Mono','Fira Code',monospace;
-}
-
-html{background:var(--paper);color:var(--ink);scroll-behavior:smooth}
-body{font-family:var(--body);-webkit-font-smoothing:antialiased;line-height:1.6;overflow-x:hidden}
-
-canvas#bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.5}
-
-.wrap{max-width:1280px;margin:0 auto;padding:0 64px;position:relative;z-index:1}
-
-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:20px 64px;display:flex;justify-content:space-between;align-items:center;transition:background .4s var(--ease-out-expo),box-shadow .4s}
-nav.scrolled{background:rgba(250,248,245,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 1px 0 var(--rule)}
-nav .logo{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--ink);text-transform:uppercase;text-decoration:none;font-weight:500}
-nav ul{display:flex;gap:36px;list-style:none}
-nav ul a{font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink-soft);text-decoration:none;text-transform:uppercase;transition:color .25s}
-nav ul a:hover{color:var(--accent)}
-
-section{padding:120px 0;position:relative;z-index:1}
-
-.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;margin-bottom:20px}
-
-.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s var(--ease-out-expo),transform .8s var(--ease-out-expo)}
-.reveal.in{opacity:1;transform:translateY(0)}
-.d1{transition-delay:.08s}.d2{transition-delay:.18s}.d3{transition-delay:.30s}.d4{transition-delay:.44s}.d5{transition-delay:.60s}
-
-/* Hero */
-.hero{padding:180px 0 100px;min-height:100vh;display:flex;align-items:center}
-.hero-grid{display:grid;grid-template-columns:1fr .6fr;gap:80px;align-items:center}
-.hero h1{font-family:var(--display);font-size:clamp(44px,6.5vw,80px);font-weight:400;line-height:1.06;letter-spacing:-.02em;margin-bottom:28px}
-.hero h1 i{font-style:italic;color:var(--accent)}
-.hero p{font-size:18px;color:var(--ink-soft);line-height:1.75;max-width:480px;margin-bottom:36px}
-.hero-visual{position:relative;aspect-ratio:1;background:var(--paper-alt);border-radius:2px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.hero-visual svg{width:70%;height:70%}
-.btns{display:flex;gap:14px;flex-wrap:wrap}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:15px 28px;font-family:var(--mono);font-size:12px;letter-spacing:.07em;text-decoration:none;text-transform:uppercase;border-radius:3px;transition:all .3s var(--ease-out-expo);cursor:pointer;border:none}
-.btn-fill{background:var(--ink);color:var(--paper)}
-.btn-fill:hover{background:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(194,105,45,.25)}
-.btn-line{border:1px solid var(--rule);color:var(--ink);background:transparent}
-.btn-line:hover{border-color:var(--accent);color:var(--accent)}
-
-/* Stats strip */
-.stats-strip{background:var(--ink);color:var(--paper);padding:64px 0;margin:0}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:48px}
-.stats-grid .num{font-family:var(--display);font-size:48px;line-height:1;color:var(--accent-light)}
-.stats-grid .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:rgba(255,255,255,.45);text-transform:uppercase;margin-top:10px}
-
-/* Work */
-.work-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px}
-.work-header h2{font-family:var(--display);font-size:40px;font-weight:400;max-width:400px}
-.work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px}
-.w-card{position:relative;background:var(--surface);border-radius:2px;overflow:hidden;aspect-ratio:5/4;cursor:pointer;transition:transform .5s var(--ease-out-expo);border:1px solid var(--rule)}
-.w-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,.08)}
-.w-card svg{width:100%;height:100%;display:block}
-.w-card .info{position:absolute;bottom:0;left:0;right:0;padding:28px;background:linear-gradient(transparent,rgba(255,255,255,.95) 40%)}
-.w-card .info h3{font-family:var(--display);font-size:20px;font-weight:400;color:var(--ink)}
-.w-card .info span{font-size:12px;color:var(--ink-muted);display:block;margin-top:3px}
-
-/* Process */
-.process-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
-.p-card{background:var(--surface);padding:48px 40px;border-radius:2px;border:1px solid var(--rule);position:relative}
-.p-card .step{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:16px}
-.p-card h3{font-family:var(--display);font-size:22px;font-weight:400;margin-bottom:12px}
-.p-card p{color:var(--ink-soft);font-size:14px;line-height:1.7}
-
-/* Two-col */
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
-.two-col h2{font-family:var(--display);font-size:clamp(32px,4vw,48px);font-weight:400;line-height:1.2;margin-bottom:24px}
-.two-col h2 i{font-style:italic;color:var(--accent)}
-.two-col p{color:var(--ink-soft);font-size:17px;line-height:1.8;margin-bottom:16px}
-.insight{background:var(--paper-alt);padding:32px;border-radius:2px;border-left:3px solid var(--accent)}
-.insight p{font-family:var(--display);font-size:18px;font-style:italic;color:var(--ink);margin:0}
-
-/* SEO section */
-.seo-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px}
-.seo-card{background:var(--surface);padding:40px;border:1px solid var(--rule);border-radius:2px}
-.seo-card .tag{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;margin-bottom:12px}
-.seo-card h3{font-family:var(--display);font-size:20px;font-weight:400;margin-bottom:10px}
-.seo-card p{color:var(--ink-soft);font-size:14px;line-height:1.7}
-
-/* CTA */
-.cta{text-align:center;padding:140px 0}
-.cta h2{font-family:var(--display);font-size:clamp(36px,5vw,56px);font-weight:400;max-width:700px;margin:0 auto 20px;line-height:1.15}
-.cta h2 i{font-style:italic;color:var(--accent)}
-.cta p{color:var(--ink-soft);font-size:17px;max-width:440px;margin:0 auto 32px}
-.cta .btns{justify-content:center}
-
-footer{padding:40px 0;border-top:1px solid var(--rule);display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--ink-muted);letter-spacing:.04em}
-footer a{color:var(--ink-soft);text-decoration:none;transition:color .25s}
-footer a:hover{color:var(--accent)}
-
-@media(max-width:900px){
-  .wrap{padding:0 28px}nav{padding:16px 28px}
-  .hero-grid,.two-col{grid-template-columns:1fr;gap:48px}
-  .stats-grid{grid-template-columns:repeat(2,1fr)}
-  .work-grid,.seo-grid,.process-grid{grid-template-columns:1fr}
-  section{padding:72px 0}
-}
-
-@media(prefers-reduced-motion:reduce){
-  .reveal{opacity:1;transform:none;transition:none}
-  canvas#bg{display:none}
-}
-</style>
+<title>Quentin Convert — Design Web & SEO Technique</title>
+<script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        brand: {
+          creme: '#FBF9F6',
+          sable: '#F3EFE9',
+          argile: '#DCD6CD',
+          or: '#C5A880',
+          charcoal: '#1C1C1C',
+          muted: '#66635F'
+        }
+      },
+      fontFamily: {
+        serif: ['Cormorant Garamond', 'serif'],
+        sans: ['Jost', 'sans-serif'],
+      }
+    }
+  }
+}
+</script>
+<style>
+body{font-family:'Jost',sans-serif;background-color:#FBF9F6;color:#1C1C1C;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:#FBF9F6}
+::-webkit-scrollbar-thumb{background:#C5A880;border-radius:3px}
+@media(min-width:1025px){
+  #cursor{width:10px;height:10px;background:#C5A880;border-radius:50%;position:fixed;transform:translate(-50%,-50%);pointer-events:none;z-index:9999;transition:width .3s,height .3s,background .3s}
+  #cursor-ring{width:40px;height:40px;border:1px solid rgba(197,168,128,.4);border-radius:50%;position:fixed;transform:translate(-50%,-50%);pointer-events:none;z-index:9998;transition:width .3s,height .3s,border-color .3s}
+  .hover-active #cursor{width:50px;height:50px;background:rgba(197,168,128,.15);backdrop-filter:blur(2px)}
+  .hover-active #cursor-ring{width:60px;height:60px;border-color:#C5A880}
+}
+.reveal-wrapper{position:relative;overflow:hidden}
+.reveal-curtain{position:absolute;top:0;left:0;width:100%;height:100%;background:#DCD6CD;z-index:10;transform-origin:left}
+</style>
 </head>
-<body>
+<body class="antialiased">
 
-<canvas id="bg"></canvas>
+<div id="cursor" class="hidden lg:block"></div>
+<div id="cursor-ring" class="hidden lg:block"></div>
 
-<nav id="nav">
-  <a href="#" class="logo">Quentin Convert</a>
-  <ul>
-    <li><a href="#work">Projets</a></li>
-    <li><a href="#process">Process</a></li>
-    <li><a href="#seo">SEO</a></li>
-    <li><a href="#cta">Contact</a></li>
-  </ul>
-</nav>
+<!-- PRELOADER -->
+<div id="preloader" class="fixed inset-0 bg-brand-charcoal z-[99999] flex flex-col items-center justify-center text-brand-creme">
+  <div class="overflow-hidden mb-4">
+    <span id="preload-logo" class="block font-serif text-4xl lg:text-5xl tracking-[0.2em] translate-y-full opacity-0">QC</span>
+  </div>
+  <div class="h-[1px] w-40 bg-brand-muted/30 relative overflow-hidden">
+    <div id="preload-bar" class="absolute left-0 top-0 h-full w-0 bg-brand-or"></div>
+  </div>
+  <div class="mt-4 overflow-hidden">
+    <p id="preload-sub" class="font-sans text-xs tracking-widest text-brand-or/80 uppercase translate-y-full opacity-0">Design · Code · SEO</p>
+  </div>
+</div>
 
-<section class="hero">
-  <div class="wrap">
-    <div class="hero-grid">
-      <div>
-        <div class="eyebrow reveal">Design web & SEO technique</div>
-        <h1 class="reveal d1">Votre site est votre <i>meilleur commercial.</i> Faisons-le travailler.</h1>
-        <p class="reveal d2">Je conçois des sites web sur mesure qui chargent vite, rankent haut, et convertissent. Pas de thèmes. Pas de templates. Du code propre et une stratégie SEO qui tient la route.</p>
-        <div class="btns reveal d3">
-          <a href="#work" class="btn btn-fill">Voir mes projets</a>
-          <a href="#cta" class="btn btn-line">Audit gratuit</a>
+<!-- NAV -->
+<header id="header" class="fixed top-0 left-0 w-full z-50 transition-all duration-500 py-6 lg:py-8 border-b border-transparent">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 flex justify-between items-center">
+    <a href="#" class="font-serif text-2xl lg:text-3xl tracking-[0.15em] text-brand-charcoal hover:text-brand-or transition-colors uppercase flex items-center gap-2">
+      <span>Quentin Convert</span>
+      <span class="block w-1.5 h-1.5 bg-brand-or rounded-full"></span>
+    </a>
+    <nav class="hidden md:flex items-center space-x-10">
+      <a href="#work" class="text-xs uppercase tracking-widest font-medium text-brand-charcoal hover:text-brand-or transition-colors">Projets</a>
+      <a href="#process" class="text-xs uppercase tracking-widest font-medium text-brand-charcoal hover:text-brand-or transition-colors">Process</a>
+      <a href="#seo" class="text-xs uppercase tracking-widest font-medium text-brand-charcoal hover:text-brand-or transition-colors">SEO</a>
+      <a href="#simulator" class="text-xs uppercase tracking-widest font-medium text-brand-charcoal hover:text-brand-or transition-colors flex items-center gap-1.5">
+        <span class="w-2 h-2 bg-brand-or rounded-full"></span>Simulateur
+      </a>
+    </nav>
+    <div class="hidden md:block">
+      <a href="#contact" class="px-6 py-3 rounded-full border border-brand-charcoal text-xs uppercase tracking-widest font-medium text-brand-charcoal hover:bg-brand-charcoal hover:text-brand-creme transition-all duration-300">Audit gratuit</a>
+    </div>
+    <button id="menu-btn" class="md:hidden flex flex-col justify-between h-5 w-6 z-50" aria-label="Menu">
+      <span class="w-full h-[1px] bg-current transition-transform duration-300 origin-top-left" id="l1"></span>
+      <span class="w-full h-[1px] bg-current transition-opacity duration-300" id="l2"></span>
+      <span class="w-full h-[1px] bg-current transition-transform duration-300 origin-bottom-left" id="l3"></span>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div id="mobile-menu" class="fixed inset-0 bg-brand-creme z-40 translate-y-full transition-transform duration-500 ease-out flex flex-col justify-between p-8 pt-32">
+  <nav class="flex flex-col space-y-8 text-center">
+    <a href="#work" class="mobile-link font-serif text-3xl text-brand-charcoal hover:text-brand-or transition-colors">Projets</a>
+    <a href="#process" class="mobile-link font-serif text-3xl text-brand-charcoal hover:text-brand-or transition-colors">Process</a>
+    <a href="#seo" class="mobile-link font-serif text-3xl text-brand-charcoal hover:text-brand-or transition-colors">SEO & Performance</a>
+    <a href="#simulator" class="mobile-link font-serif text-3xl text-brand-charcoal hover:text-brand-or transition-colors">Simulateur</a>
+    <a href="#contact" class="mobile-link font-serif text-3xl text-brand-charcoal hover:text-brand-or transition-colors">Contact</a>
+  </nav>
+  <div class="text-center text-xs tracking-widest text-brand-muted/80 border-t border-brand-argile pt-8">
+    <p>QUENTIN CONVERT — TORCY, ÎLE-DE-FRANCE</p>
+  </div>
+</div>
+
+<main>
+
+<!-- HERO -->
+<section class="min-h-screen relative flex items-center pt-24 pb-12 overflow-hidden bg-brand-sable">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+    <div class="lg:col-span-7 flex flex-col space-y-8">
+      <span id="hero-tag" class="inline-block uppercase tracking-[0.3em] text-xs font-semibold text-brand-or">Design Web & SEO Technique</span>
+      <h1 id="hero-title" class="font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-light text-brand-charcoal leading-[1.05] tracking-tight">
+        Votre site est<br>
+        <span class="italic font-normal text-brand-or">votre meilleur</span><br>
+        commercial.
+      </h1>
+      <p id="hero-text" class="text-brand-muted text-base lg:text-lg max-w-lg font-light leading-relaxed">
+        Je conçois des sites web sur mesure qui chargent vite, rankent haut, et convertissent. Design, performance, SEO technique. Sans thèmes, sans templates, sans compromis.
+      </p>
+      <div id="hero-cta" class="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-4">
+        <a href="#simulator" class="px-8 py-4 bg-brand-charcoal text-brand-creme text-xs uppercase tracking-widest font-medium rounded-full hover:bg-brand-or transition-colors duration-300 shadow-lg shadow-brand-charcoal/10 flex items-center gap-2">
+          <span>Estimer mon projet</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+        <a href="#work" class="group flex items-center gap-3 text-xs uppercase tracking-widest font-semibold text-brand-charcoal">
+          <span class="relative py-1">
+            Voir les réalisations
+            <span class="absolute bottom-0 left-0 w-full h-[1px] bg-brand-charcoal group-hover:scale-x-0 transition-transform origin-left duration-300"></span>
+          </span>
+          <span class="w-8 h-8 rounded-full border border-brand-charcoal flex items-center justify-center group-hover:bg-brand-charcoal group-hover:text-brand-creme transition-all duration-300">
+            <i data-lucide="chevron-down" class="w-4 h-4"></i>
+          </span>
+        </a>
+      </div>
+    </div>
+    <div class="lg:col-span-5 relative mt-6 lg:mt-0">
+      <div id="hero-img-wrap" class="relative max-w-md mx-auto lg:ml-auto reveal-wrapper aspect-[3/4] shadow-2xl rounded-2xl overflow-hidden border border-brand-argile/20">
+        <div class="reveal-curtain"></div>
+        <div class="w-full h-full bg-brand-charcoal flex items-center justify-center" id="hero-img">
+          <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" class="w-4/5 h-4/5">
+            <rect width="400" height="500" fill="#1C1C1C"/>
+            <rect x="60" y="100" width="160" height="20" rx="3" fill="#C5A880" opacity=".2"/>
+            <rect x="60" y="136" width="280" height="10" rx="2" fill="#FBF9F6" opacity=".06"/>
+            <rect x="60" y="156" width="220" height="10" rx="2" fill="#FBF9F6" opacity=".06"/>
+            <rect x="60" y="210" width="130" height="130" rx="3" fill="#C5A880" opacity=".1"/>
+            <rect x="210" y="210" width="130" height="130" rx="3" fill="#FBF9F6" opacity=".04"/>
+            <rect x="60" y="370" width="80" height="4" rx="2" fill="#C5A880" opacity=".3"/>
+            <circle cx="340" cy="90" r="50" fill="#C5A880" opacity=".08"/>
+          </svg>
         </div>
       </div>
-      <div class="hero-visual reveal d3">
-        <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
-          <defs><linearGradient id="hg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#c2692d" stop-opacity=".15"/><stop offset="100%" stop-color="#c2692d" stop-opacity=".04"/></linearGradient></defs>
-          <rect width="300" height="300" rx="4" fill="url(#hg)"/>
-          <rect x="40" y="50" width="140" height="16" rx="3" fill="#c2692d" opacity=".2"/>
-          <rect x="40" y="78" width="220" height="8" rx="2" fill="#1a1816" opacity=".06"/>
-          <rect x="40" y="94" width="180" height="8" rx="2" fill="#1a1816" opacity=".06"/>
-          <rect x="40" y="130" width="100" height="100" rx="3" fill="#c2692d" opacity=".08"/>
-          <rect x="156" y="130" width="100" height="100" rx="3" fill="#1a1816" opacity=".04"/>
-          <rect x="40" y="252" width="60" height="4" rx="2" fill="#c2692d" opacity=".25"/>
-          <circle cx="260" cy="60" r="40" fill="#c2692d" opacity=".06"/>
-        </svg>
+      <div id="hero-badge" class="absolute -bottom-6 -left-6 bg-brand-creme p-6 rounded-xl border border-brand-argile/50 shadow-xl hidden md:block max-w-[200px]">
+        <span class="font-serif text-3xl font-light text-brand-or">98/100</span>
+        <p class="text-[10px] tracking-widest uppercase font-semibold text-brand-charcoal mt-1">Score Lighthouse Moyen</p>
       </div>
+    </div>
+  </div>
+  <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-brand-muted/70 opacity-0 translate-y-4" id="scroll-hint">
+    <span class="text-[10px] tracking-[0.2em] uppercase">Découvrir</span>
+    <div class="w-[1px] h-12 bg-gradient-to-b from-brand-muted to-transparent relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-full h-4 bg-brand-or animate-bounce"></div>
     </div>
   </div>
 </section>
 
-<div class="stats-strip">
-  <div class="wrap">
-    <div class="stats-grid">
-      <div class="reveal"><div class="num">60+</div><div class="lbl">Projets livrés</div></div>
-      <div class="reveal d1"><div class="num">98</div><div class="lbl">Score Lighthouse moyen</div></div>
-      <div class="reveal d2"><div class="num">4s</div><div class="lbl">Délai de réponse moyen</div></div>
-      <div class="reveal d3"><div class="num">100%</div><div class="lbl">Sur mesure</div></div>
-    </div>
-  </div>
-</div>
-
-<section id="work">
-  <div class="wrap">
-    <div class="work-header">
-      <div><div class="eyebrow reveal">Projets récents</div><h2 class="reveal d1">Sites qui performent.</h2></div>
-      <span class="reveal d2" style="color:var(--ink-muted);font-size:14px">Design · Dev · SEO</span>
-    </div>
-    <div class="work-grid">
-      <div class="w-card reveal d2">
-        <svg viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg"><rect width="600" height="480" fill="#faf8f5"/><rect x="40" y="60" width="200" height="24" rx="3" fill="#c2692d" opacity=".15"/><rect x="40" y="100" width="300" height="10" rx="2" fill="#1a1816" opacity=".05"/><rect x="40" y="120" width="240" height="10" rx="2" fill="#1a1816" opacity=".05"/><rect x="40" y="170" width="160" height="160" rx="2" fill="#e8e2d8"/><rect x="216" y="170" width="160" height="160" rx="2" fill="#f0ebe3"/><rect x="392" y="170" width="160" height="160" rx="2" fill="#e8e2d8"/></svg>
-        <div class="info"><h3>Camille Roussel Architecture</h3><span>WordPress · SEO · Design — +43% trafic</span></div>
-      </div>
-      <div class="w-card reveal d3">
-        <svg viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg"><rect width="600" height="480" fill="#faf8f5"/><rect x="200" y="80" width="200" height="4" rx="2" fill="#c2692d" opacity=".25"/><rect x="150" y="120" width="300" height="40" rx="3" fill="#e8e2d8"/><rect x="150" y="178" width="200" height="8" rx="2" fill="#1a1816" opacity=".05"/><rect x="150" y="196" width="260" height="8" rx="2" fill="#1a1816" opacity=".05"/><rect x="150" y="240" width="140" height="48" rx="3" fill="#c2692d" opacity=".1"/><circle cx="300" cy="380" r="2" fill="#c2692d" opacity=".4"/></svg>
-        <div class="info"><h3>EmpireOS — Landing Page</h3><span>HTML/CSS pur · Animations · Conversion</span></div>
-      </div>
-      <div class="w-card reveal d2">
-        <svg viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg"><rect width="600" height="480" fill="#faf8f5"/><rect x="40" y="40" width="520" height="1" fill="#1a1816" opacity=".06"/><circle cx="300" cy="160" r="80" fill="#c2692d" opacity=".06"/><rect x="40" y="280" width="160" height="80" rx="2" fill="#e8e2d8"/><rect x="216" y="280" width="160" height="80" rx="2" fill="#f0ebe3"/><rect x="392" y="280" width="160" height="80" rx="2" fill="#e8e2d8"/></svg>
-        <div class="info"><h3>Marie Lemoine — Thérapie</h3><span>One-page · SEO local · Réservations</span></div>
-      </div>
-      <div class="w-card reveal d3">
-        <svg viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg"><rect width="600" height="480" fill="#faf8f5"/><rect x="60" y="80" width="120" height="120" rx="2" fill="#e8e2d8"/><rect x="196" y="80" width="120" height="120" rx="2" fill="#f0ebe3"/><rect x="332" y="80" width="120" height="120" rx="2" fill="#e8e2d8"/><rect x="60" y="240" width="200" height="10" rx="2" fill="#1a1816" opacity=".05"/><rect x="60" y="264" width="160" height="10" rx="2" fill="#1a1816" opacity=".05"/></svg>
-        <div class="info"><h3>Le Temple — Concept Store</h3><span>E-commerce · Shopify · Design</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="process">
-  <div class="wrap">
-    <div class="eyebrow reveal">Comment je travaille</div>
-    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px">
-      <h2 class="reveal d1" style="font-family:var(--display);font-size:40px;font-weight:400;max-width:400px">Un process clair,<br>zéro surprise.</h2>
-    </div>
-    <div class="process-grid">
-      <div class="p-card reveal d2">
-        <div class="step">01. Audit</div>
-        <h3>Je passe votre site au crible</h3>
-        <p>Performance, SEO technique, accessibilité, structure. Vous recevez un rapport complet avec les actions prioritaires classées par impact.</p>
-      </div>
-      <div class="p-card reveal d3">
-        <div class="step">02. Design</div>
-        <h3>Maquette sur mesure</h3>
-        <p>Design unique, pas un template. Typographie, couleurs, mise en page — tout est pensé pour votre audience et vos objectifs.</p>
-      </div>
-      <div class="p-card reveal d4">
-        <div class="step">03. Build & Launch</div>
-        <h3>Développement propre, livraison rapide</h3>
-        <p>Code optimisé, zéro dépendance inutile. Tests cross-browser, mise en ligne, et vous êtes autonome.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="two-col">
+<!-- WORK -->
+<section id="work" class="py-24 lg:py-36 bg-brand-creme border-y border-brand-argile/40">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
       <div>
-        <div class="eyebrow reveal">Pourquoi ça marche</div>
-        <h2 class="reveal d1">Un site rapide est un site <i>qui vend.</i></h2>
-        <p class="reveal d2">53% des visiteurs quittent un site qui met plus de 3 secondes à charger. Chaque seconde de retard, c'est 7% de conversion perdue.</p>
-        <p class="reveal d3">Je traite la performance comme une fonctionnalité — pas un bonus. Lighthouse 95+, Core Web Vitals au vert, temps de chargement sous 1.5s.</p>
+        <span class="text-xs uppercase tracking-[0.3em] font-semibold text-brand-or block mb-2">Portfolio</span>
+        <h2 class="font-serif text-4xl lg:text-5xl font-light text-brand-charcoal">Sites qui performent</h2>
       </div>
-      <div class="insight reveal d3">
-        <p>« Votre site chargeait en 4.2 secondes. Il charge maintenant en 0.8s. Votre trafic organique a augmenté de 43% en 3 mois. »</p>
-        <p style="font-family:var(--mono);font-size:11px;color:var(--ink-muted);margin-top:16px;font-style:normal">— Audit Camille Roussel, juin 2026</p>
+      <div class="flex flex-wrap gap-2" id="filters">
+        <button class="filter-btn px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-medium transition-all duration-300 bg-brand-charcoal text-brand-creme" data-filter="all">Tous</button>
+        <button class="filter-btn px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-medium transition-all duration-300 border border-brand-argile hover:bg-brand-charcoal hover:text-brand-creme" data-filter="wordpress">WordPress</button>
+        <button class="filter-btn px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-medium transition-all duration-300 border border-brand-argile hover:bg-brand-charcoal hover:text-brand-creme" data-filter="surmesure">Sur Mesure</button>
+        <button class="filter-btn px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-medium transition-all duration-300 border border-brand-argile hover:bg-brand-charcoal hover:text-brand-creme" data-filter="seo">SEO</button>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16" id="work-grid">
+      <div class="project-card group" data-category="wordpress" onclick="openProject(0)">
+        <div class="reveal-wrapper aspect-[4/3] rounded-2xl overflow-hidden mb-6 cursor-pointer shadow-lg">
+          <div class="reveal-curtain"></div>
+          <div class="w-full h-full bg-brand-charcoal flex items-center justify-center"><svg viewBox="0 0 600 450" class="w-full h-full"><rect width="600" height="450" fill="#1C1C1C"/><rect x="40" y="60" width="200" height="24" rx="3" fill="#C5A880" opacity=".15"/><rect x="40" y="100" width="320" height="10" rx="2" fill="#FBF9F6" opacity=".05"/><rect x="40" y="120" width="260" height="10" rx="2" fill="#FBF9F6" opacity=".05"/><rect x="40" y="170" width="160" height="160" rx="2" fill="#2a2520"/><rect x="216" y="170" width="160" height="160" rx="2" fill="#332e28"/><rect x="392" y="170" width="160" height="160" rx="2" fill="#2a2520"/></svg></div>
+        </div>
+        <div class="flex justify-between items-start"><div><span class="text-xs text-brand-or uppercase tracking-wider font-medium">Architecture — Paris</span><h3 class="font-serif text-2xl font-light text-brand-charcoal mt-1">Roussel Architecture</h3><p class="text-xs text-brand-muted mt-1">WordPress · SEO · +43% trafic</p></div><div class="w-10 h-10 rounded-full border border-brand-argile flex items-center justify-center group-hover:bg-brand-charcoal group-hover:text-brand-creme transition-all"><i data-lucide="plus" class="w-4 h-4"></i></div></div>
+      </div>
+      <div class="project-card group" data-category="surmesure" onclick="openProject(1)">
+        <div class="reveal-wrapper aspect-[4/3] rounded-2xl overflow-hidden mb-6 cursor-pointer shadow-lg">
+          <div class="reveal-curtain"></div>
+          <div class="w-full h-full bg-brand-charcoal flex items-center justify-center"><svg viewBox="0 0 600 450" class="w-full h-full"><rect width="600" height="450" fill="#1C1C1C"/><rect x="200" y="80" width="200" height="4" rx="2" fill="#C5A880" opacity=".25"/><rect x="140" y="120" width="320" height="40" rx="3" fill="#2a2520"/><rect x="140" y="178" width="220" height="8" rx="2" fill="#FBF9F6" opacity=".05"/><rect x="140" y="196" width="280" height="8" rx="2" fill="#FBF9F6" opacity=".05"/><rect x="140" y="240" width="150" height="48" rx="3" fill="#C5A880" opacity=".12"/><circle cx="300" cy="380" r="2" fill="#C5A880" opacity=".4"/></svg></div>
+        </div>
+        <div class="flex justify-between items-start"><div><span class="text-xs text-brand-or uppercase tracking-wider font-medium">SaaS — Landing Page</span><h3 class="font-serif text-2xl font-light text-brand-charcoal mt-1">EmpireOS</h3><p class="text-xs text-brand-muted mt-1">HTML/CSS pur · Animations · Conversion</p></div><div class="w-10 h-10 rounded-full border border-brand-argile flex items-center justify-center group-hover:bg-brand-charcoal group-hover:text-brand-creme transition-all"><i data-lucide="plus" class="w-4 h-4"></i></div></div>
+      </div>
+      <div class="project-card group" data-category="seo" onclick="openProject(2)">
+        <div class="reveal-wrapper aspect-[4/3] rounded-2xl overflow-hidden mb-6 cursor-pointer shadow-lg">
+          <div class="reveal-curtain"></div>
+          <div class="w-full h-full bg-brand-charcoal flex items-center justify-center"><svg viewBox="0 0 600 450" class="w-full h-full"><rect width="600" height="450" fill="#1C1C1C"/><rect x="40" y="40" width="520" height="1" fill="#C5A880" opacity=".1"/><circle cx="300" cy="150" r="80" fill="#C5A880" opacity=".07"/><rect x="40" y="280" width="160" height="80" rx="2" fill="#2a2520"/><rect x="216" y="280" width="160" height="80" rx="2" fill="#332e28"/><rect x="392" y="280" width="160" height="80" rx="2" fill="#2a2520"/></svg></div>
+        </div>
+        <div class="flex justify-between items-start"><div><span class="text-xs text-brand-or uppercase tracking-wider font-medium">Thérapie — Rennes</span><h3 class="font-serif text-2xl font-light text-brand-charcoal mt-1">Marie Lemoine</h3><p class="text-xs text-brand-muted mt-1">One-page · SEO local · Réservations</p></div><div class="w-10 h-10 rounded-full border border-brand-argile flex items-center justify-center group-hover:bg-brand-charcoal group-hover:text-brand-creme transition-all"><i data-lucide="plus" class="w-4 h-4"></i></div></div>
+      </div>
+      <div class="project-card group" data-category="surmesure" onclick="openProject(3)">
+        <div class="reveal-wrapper aspect-[4/3] rounded-2xl overflow-hidden mb-6 cursor-pointer shadow-lg">
+          <div class="reveal-curtain"></div>
+          <div class="w-full h-full bg-brand-charcoal flex items-center justify-center"><svg viewBox="0 0 600 450" class="w-full h-full"><rect width="600" height="450" fill="#1C1C1C"/><rect x="60" y="80" width="120" height="120" rx="2" fill="#2a2520"/><rect x="196" y="80" width="120" height="120" rx="2" fill="#332e28"/><rect x="332" y="80" width="120" height="120" rx="2" fill="#2a2520"/><rect x="60" y="240" width="200" height="10" rx="2" fill="#FBF9F6" opacity=".05"/><rect x="60" y="264" width="160" height="10" rx="2" fill="#FBF9F6" opacity=".05"/></svg></div>
+        </div>
+        <div class="flex justify-between items-start"><div><span class="text-xs text-brand-or uppercase tracking-wider font-medium">E-commerce — Paris</span><h3 class="font-serif text-2xl font-light text-brand-charcoal mt-1">Le Temple Concept Store</h3><p class="text-xs text-brand-muted mt-1">Shopify · Design · UX</p></div><div class="w-10 h-10 rounded-full border border-brand-argile flex items-center justify-center group-hover:bg-brand-charcoal group-hover:text-brand-creme transition-all"><i data-lucide="plus" class="w-4 h-4"></i></div></div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="seo">
-  <div class="wrap">
-    <div class="eyebrow reveal">SEO</div>
-    <h2 class="reveal d1" style="font-family:var(--display);font-size:40px;font-weight:400;max-width:500px;margin-bottom:48px">Trouvable. Lisible. <i>Cliqué.</i></h2>
-    <div class="seo-grid">
-      <div class="seo-card reveal d2"><div class="tag">Technique</div><h3>Core Web Vitals</h3><p>LCP, FID, CLS optimisés. Votre site passe les critères Google avec de la marge.</p></div>
-      <div class="seo-card reveal d2"><div class="tag">Contenu</div><h3>Structure sémantique</h3><p>Balises, schema.org, hiérarchie de contenu. Google comprend votre site du premier coup.</p></div>
-      <div class="seo-card reveal d3"><div class="tag">Local</div><h3>SEO géolocalisé</h3><p>Google My Business, mots-clés locaux, citations. Vous apparaissez quand vos clients cherchent.</p></div>
-      <div class="seo-card reveal d3"><div class="tag">Audit</div><h3>Rapport mensuel</h3><p>Suivi des positions, trafic organique, opportunités de contenu. Vous savez exactement où vous en êtes.</p></div>
+<!-- PROCESS -->
+<section id="process" class="py-24 lg:py-36 bg-brand-creme">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="text-center max-w-3xl mx-auto mb-20">
+      <span class="text-xs uppercase tracking-[0.3em] font-semibold text-brand-or block mb-2">Méthodologie</span>
+      <h2 class="font-serif text-4xl lg:text-5xl font-light text-brand-charcoal mb-6">De l'audit au lancement</h2>
+      <p class="text-brand-muted font-light leading-relaxed">Un process en trois phases. Zéro surprise, livraison rapide.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16 relative">
+      <div class="hidden md:block absolute top-12 left-1/4 right-1/4 h-[1px] bg-brand-argile/60 -z-0"></div>
+      <div class="step-card flex flex-col items-center md:items-start text-center md:text-left relative z-10">
+        <div class="w-14 h-14 rounded-full bg-brand-sable border border-brand-or flex items-center justify-center font-serif text-xl font-light text-brand-or mb-6 shadow-md">01</div>
+        <h3 class="font-serif text-2xl font-light text-brand-charcoal mb-4">Audit Complet</h3>
+        <p class="text-brand-muted font-light text-sm leading-relaxed">J'analyse votre site existant : performance, SEO technique, structure, accessibilité. Vous recevez un rapport avec les actions prioritaires classées par impact.</p>
+      </div>
+      <div class="step-card flex flex-col items-center md:items-start text-center md:text-left relative z-10">
+        <div class="w-14 h-14 rounded-full bg-brand-sable border border-brand-or flex items-center justify-center font-serif text-xl font-light text-brand-or mb-6 shadow-md">02</div>
+        <h3 class="font-serif text-2xl font-light text-brand-charcoal mb-4">Design & Build</h3>
+        <p class="text-brand-muted font-light text-sm leading-relaxed">Maquette sur mesure, développement propre, code optimisé. Pas de thèmes achetés, pas de templates recyclés. Votre site est unique.</p>
+      </div>
+      <div class="step-card flex flex-col items-center md:items-start text-center md:text-left relative z-10">
+        <div class="w-14 h-14 rounded-full bg-brand-sable border border-brand-or flex items-center justify-center font-serif text-xl font-light text-brand-or mb-6 shadow-md">03</div>
+        <h3 class="font-serif text-2xl font-light text-brand-charcoal mb-4">SEO & Lancement</h3>
+        <p class="text-brand-muted font-light text-sm leading-relaxed">Optimisation pour Google, Core Web Vitals au vert, mise en ligne. Vous êtes autonome, votre site est visible.</p>
+      </div>
     </div>
   </div>
 </section>
 
-<div class="cta" id="cta">
-  <div class="wrap">
-    <h2 class="reveal">Prêt à avoir un site <i>qui travaille</i> pour vous ?</h2>
-    <p class="reveal d1">Audit gratuit de votre site actuel. 48h. Zéro engagement.</p>
-    <div class="btns reveal d2">
-      <a href="mailto:conscience.emotionnelle@gmail.com" class="btn btn-fill">Demander un audit</a>
-      <a href="tel:+33753197320" class="btn btn-line">07 53 19 73 20</a>
+<!-- SEO SECTION -->
+<section id="seo" class="py-24 lg:py-36 bg-brand-sable border-y border-brand-argile/40">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+      <div class="lg:col-span-5 flex flex-col space-y-6">
+        <span class="text-xs uppercase tracking-[0.3em] font-semibold text-brand-or">Performance & SEO</span>
+        <h2 class="font-serif text-4xl lg:text-5xl font-light text-brand-charcoal leading-tight">Trouvable.<br>Rapide.<br><span class="italic text-brand-or">Cliqué.</span></h2>
+        <p class="text-brand-muted font-light leading-relaxed">53% des visiteurs quittent un site qui met plus de 3 secondes à charger. Je traite la performance comme une fonctionnalité, pas un bonus.</p>
+        <div class="flex items-center gap-4 bg-brand-creme p-4 rounded-xl border border-brand-argile">
+          <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+          <span class="text-xs text-brand-charcoal font-medium">Lighthouse 95+ garanti sur tous les projets</span>
+        </div>
+      </div>
+      <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="bg-brand-creme p-6 rounded-2xl border border-brand-argile">
+          <span class="text-[10px] uppercase tracking-widest text-brand-or font-medium">Technique</span>
+          <h3 class="font-serif text-lg text-brand-charcoal mt-2 mb-1">Core Web Vitals</h3>
+          <p class="text-xs text-brand-muted leading-relaxed">LCP, INP, CLS optimisés. Votre site passe les critères Google avec de la marge.</p>
+        </div>
+        <div class="bg-brand-creme p-6 rounded-2xl border border-brand-argile">
+          <span class="text-[10px] uppercase tracking-widest text-brand-or font-medium">Contenu</span>
+          <h3 class="font-serif text-lg text-brand-charcoal mt-2 mb-1">Structure Sémantique</h3>
+          <p class="text-xs text-brand-muted leading-relaxed">Schema.org, hiérarchie de contenu. Google comprend votre site du premier coup.</p>
+        </div>
+        <div class="bg-brand-creme p-6 rounded-2xl border border-brand-argile">
+          <span class="text-[10px] uppercase tracking-widest text-brand-or font-medium">Local</span>
+          <h3 class="font-serif text-lg text-brand-charcoal mt-2 mb-1">SEO Géolocalisé</h3>
+          <p class="text-xs text-brand-muted leading-relaxed">Google Business Profile, mots-clés locaux, citations. Vous apparaissez quand vos clients cherchent.</p>
+        </div>
+        <div class="bg-brand-creme p-6 rounded-2xl border border-brand-argile">
+          <span class="text-[10px] uppercase tracking-widest text-brand-or font-medium">Suivi</span>
+          <h3 class="font-serif text-lg text-brand-charcoal mt-2 mb-1">Rapport Mensuel</h3>
+          <p class="text-xs text-brand-muted leading-relaxed">Positions, trafic organique, opportunités. Vous savez exactement où vous en êtes.</p>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
-<footer class="wrap">
-  <span>© 2026 Quentin Convert — Torcy, Île-de-France</span>
-  <a href="#">↑ Haut</a>
+<!-- SIMULATOR -->
+<section id="simulator" class="py-24 lg:py-36 bg-brand-creme border-t border-brand-argile/30">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+      <div class="lg:col-span-5 flex flex-col space-y-6">
+        <span class="text-xs uppercase tracking-[0.3em] font-semibold text-brand-or block">Simulateur</span>
+        <h2 class="font-serif text-4xl lg:text-5xl font-light text-brand-charcoal leading-tight">Estimez votre projet en 30 secondes</h2>
+        <p class="text-brand-muted font-light leading-relaxed">Sélectionnez le type de site et les fonctionnalités souhaitées. Budget indicatif immédiat basé sur mes tarifs réels.</p>
+        <div class="flex items-center gap-4 bg-brand-sable p-4 rounded-xl border border-brand-argile">
+          <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span class="text-xs text-brand-charcoal font-medium">Chiffrage en ligne interactif</span>
+        </div>
+      </div>
+      <div class="lg:col-span-7 bg-brand-creme p-8 rounded-3xl border border-brand-argile shadow-xl">
+        <div class="flex justify-between items-center mb-8 border-b border-brand-argile/40 pb-4">
+          <span class="text-[10px] uppercase tracking-widest text-brand-muted/70">Configuration</span>
+          <span id="sim-step" class="text-xs font-semibold text-brand-or">Étape 1 sur 3</span>
+        </div>
+        <div id="sim-1" class="space-y-6">
+          <h3 class="font-serif text-xl text-brand-charcoal">1. Type de site ?</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="border-2 border-brand-argile rounded-2xl p-4 flex flex-col justify-between aspect-square hover:border-brand-or cursor-pointer transition-all" onclick="simSelect('vitrine',400)" id="opt-vitrine"><i data-lucide="layout" class="w-8 h-8 text-brand-or"></i><div><span class="block font-medium text-sm text-brand-charcoal">Site Vitrine</span><span class="text-[10px] text-brand-muted">3-5 pages</span></div></div>
+            <div class="border-2 border-brand-argile rounded-2xl p-4 flex flex-col justify-between aspect-square hover:border-brand-or cursor-pointer transition-all" onclick="simSelect('wordpress',650)" id="opt-wordpress"><i data-lucide="globe" class="w-8 h-8 text-brand-or"></i><div><span class="block font-medium text-sm text-brand-charcoal">WordPress Premium</span><span class="text-[10px] text-brand-muted">6-15 pages</span></div></div>
+            <div class="border-2 border-brand-argile rounded-2xl p-4 flex flex-col justify-between aspect-square hover:border-brand-or cursor-pointer transition-all" onclick="simSelect('surmesure',1200)" id="opt-surmesure"><i data-lucide="code" class="w-8 h-8 text-brand-or"></i><div><span class="block font-medium text-sm text-brand-charcoal">Sur Mesure</span><span class="text-[10px] text-brand-muted">HTML/CSS pur</span></div></div>
+            <div class="border-2 border-brand-argile rounded-2xl p-4 flex flex-col justify-between aspect-square hover:border-brand-or cursor-pointer transition-all" onclick="simSelect('seo',300)" id="opt-seo"><i data-lucide="search" class="w-8 h-8 text-brand-or"></i><div><span class="block font-medium text-sm text-brand-charcoal">Audit SEO Seul</span><span class="text-[10px] text-brand-muted">Analyse + rapport</span></div></div>
+          </div>
+          <div class="flex justify-end"><button onclick="simNext(2)" class="px-6 py-3 bg-brand-charcoal text-brand-creme text-xs uppercase tracking-widest rounded-full hover:bg-brand-or transition-colors">Suivant</button></div>
+        </div>
+        <div id="sim-2" class="space-y-6 hidden">
+          <h3 class="font-serif text-xl text-brand-charcoal">2. Fonctionnalités ?</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="border border-brand-argile rounded-xl p-4 cursor-pointer hover:border-brand-or transition-all flex gap-3 items-center sim-feature" data-mult="0" data-name="SEO"><div class="w-10 h-10 rounded-lg bg-brand-sable flex items-center justify-center">🔍</div><div><h4 class="font-medium text-sm text-brand-charcoal">SEO complet</h4><p class="text-[10px] text-brand-muted">Meta, schema, GSC</p></div></div>
+            <div class="border border-brand-argile rounded-xl p-4 cursor-pointer hover:border-brand-or transition-all flex gap-3 items-center sim-feature" data-mult="300" data-name="Multilingue"><div class="w-10 h-10 rounded-lg bg-brand-sable flex items-center justify-center">🌐</div><div><h4 class="font-medium text-sm text-brand-charcoal">Multilingue</h4><p class="text-[10px] text-brand-muted">+300€</p></div></div>
+            <div class="border border-brand-argile rounded-xl p-4 cursor-pointer hover:border-brand-or transition-all flex gap-3 items-center sim-feature" data-mult="200" data-name="Blog"><div class="w-10 h-10 rounded-lg bg-brand-sable flex items-center justify-center">📝</div><div><h4 class="font-medium text-sm text-brand-charcoal">Blog / Actualités</h4><p class="text-[10px] text-brand-muted">+200€</p></div></div>
+            <div class="border border-brand-argile rounded-xl p-4 cursor-pointer hover:border-brand-or transition-all flex gap-3 items-center sim-feature" data-mult="150" data-name="Formulaire"><div class="w-10 h-10 rounded-lg bg-brand-sable flex items-center justify-center">📬</div><div><h4 class="font-medium text-sm text-brand-charcoal">Formulaire avancé</h4><p class="text-[10px] text-brand-muted">+150€</p></div></div>
+          </div>
+          <div class="flex justify-between pt-4">
+            <button onclick="simNext(1)" class="px-6 py-3 border border-brand-argile text-brand-charcoal text-xs uppercase tracking-widest rounded-full hover:bg-brand-sable transition-colors">Retour</button>
+            <button onclick="simNext(3)" class="px-6 py-3 bg-brand-charcoal text-brand-creme text-xs uppercase tracking-widest rounded-full hover:bg-brand-or transition-colors">Suivant</button>
+          </div>
+        </div>
+        <div id="sim-3" class="space-y-6 hidden">
+          <h3 class="font-serif text-xl text-brand-charcoal">3. Votre estimation</h3>
+          <div class="space-y-4">
+            <label class="block text-xs uppercase tracking-widest text-brand-muted font-medium">Nombre de pages</label>
+            <div class="flex items-center gap-4">
+              <input type="range" id="page-range" min="3" max="30" value="5" class="w-full accent-brand-or" oninput="simCalc()">
+              <span id="page-val" class="text-lg font-serif font-semibold text-brand-charcoal bg-brand-sable px-4 py-2 rounded-xl border border-brand-argile min-w-[80px] text-center">5 pages</span>
+            </div>
+          </div>
+          <div class="bg-brand-charcoal text-brand-creme p-6 rounded-2xl text-center space-y-2 mt-8">
+            <span class="text-xs uppercase tracking-widest text-brand-or">Budget indicatif</span>
+            <div class="font-serif text-3xl sm:text-4xl font-light text-brand-creme">
+              <span id="sim-price">0</span> €
+            </div>
+            <p class="text-[10px] text-brand-muted/80 font-light leading-relaxed">Design sur mesure, développement, SEO technique, livraison 1-3 semaines.</p>
+          </div>
+          <div class="flex justify-between pt-4">
+            <button onclick="simNext(2)" class="px-6 py-3 border border-brand-argile text-brand-charcoal text-xs uppercase tracking-widest rounded-full hover:bg-brand-sable transition-colors">Retour</button>
+            <button onclick="simToContact()" class="px-6 py-3 bg-brand-or text-brand-creme text-xs uppercase tracking-widest rounded-full hover:bg-brand-charcoal transition-colors flex items-center gap-2"><span>Valider & Contact</span><i data-lucide="check" class="w-4 h-4"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="py-24 lg:py-36 bg-brand-creme">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+      <div class="lg:col-span-5 flex flex-col justify-between">
+        <div class="space-y-6">
+          <span class="text-xs uppercase tracking-[0.3em] font-semibold text-brand-or block">Contact</span>
+          <h2 class="font-serif text-4xl lg:text-5xl font-light text-brand-charcoal leading-tight">Parlons de votre projet</h2>
+          <p class="text-brand-muted font-light leading-relaxed">Audit gratuit de votre site actuel sous 48h. Zéro engagement. Vous saurez exactement ce qui freine votre site et comment le corriger.</p>
+        </div>
+        <div class="space-y-8 mt-12 lg:mt-0">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-full bg-brand-sable border border-brand-argile flex items-center justify-center text-brand-or"><i data-lucide="phone" class="w-4 h-4"></i></div>
+            <div><h4 class="font-serif text-lg text-brand-charcoal">Téléphone</h4><p class="text-xs text-brand-muted font-light mt-1">07 53 19 73 20</p></div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-full bg-brand-sable border border-brand-argile flex items-center justify-center text-brand-or"><i data-lucide="mail" class="w-4 h-4"></i></div>
+            <div><h4 class="font-serif text-lg text-brand-charcoal">Email</h4><p class="text-xs text-brand-muted font-light mt-1">conscience.emotionnelle@gmail.com</p></div>
+          </div>
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-full bg-brand-sable border border-brand-argile flex items-center justify-center text-brand-or"><i data-lucide="map-pin" class="w-4 h-4"></i></div>
+            <div><h4 class="font-serif text-lg text-brand-charcoal">Localisation</h4><p class="text-xs text-brand-muted font-light mt-1">Torcy, Île-de-France</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-7 bg-brand-creme p-8 rounded-3xl border border-brand-argile">
+        <form id="contact-form" onsubmit="handleSubmit(event)" class="space-y-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="space-y-2"><label class="block text-xs uppercase tracking-widest text-brand-muted font-medium">Nom complet *</label><input type="text" required name="name" placeholder="Ex: Camille Roussel" class="w-full bg-transparent border-b border-brand-argile py-3 focus:outline-none focus:border-brand-or text-brand-charcoal font-light transition-colors"></div>
+            <div class="space-y-2"><label class="block text-xs uppercase tracking-widest text-brand-muted font-medium">Email *</label><input type="email" required name="email" placeholder="Ex: camille@domaine.fr" class="w-full bg-transparent border-b border-brand-argile py-3 focus:outline-none focus:border-brand-or text-brand-charcoal font-light transition-colors"></div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="space-y-2"><label class="block text-xs uppercase tracking-widest text-brand-muted font-medium">Téléphone</label><input type="tel" name="phone" placeholder="Ex: 06 12 34 56 78" class="w-full bg-transparent border-b border-brand-argile py-3 focus:outline-none focus:border-brand-or text-brand-charcoal font-light transition-colors"></div>
+            <div class="space-y-2"><label class="block text-xs uppercase tracking-widest text-brand-muted font-medium">Site actuel (URL)</label><input type="text" name="url" placeholder="Ex: mon-site.com" class="w-full bg-transparent border-b border-brand-argile py-3 focus:outline-none focus:border-brand-or text-brand-charcoal font-light transition-colors"></div>
+          </div>
+          <div class="space-y-2">
+            <label class="block text-xs uppercase tracking-widest text-brand-muted font-medium">Votre projet</label>
+            <textarea id="sim-notes" name="notes" rows="4" placeholder="Décrivez votre besoin..." class="w-full bg-transparent border-b border-brand-argile py-3 focus:outline-none focus:border-brand-or text-brand-charcoal font-light transition-colors resize-none"></textarea>
+          </div>
+          <button type="submit" class="w-full py-4 bg-brand-charcoal text-brand-creme text-xs uppercase tracking-widest font-semibold rounded-full hover:bg-brand-or transition-colors flex items-center justify-center gap-2"><span>Demander un audit gratuit</span><i data-lucide="send" class="w-4 h-4"></i></button>
+        </form>
+        <div id="form-ok" class="hidden mt-6 bg-brand-sable p-6 rounded-2xl border border-brand-or/40 text-center space-y-4">
+          <div class="w-12 h-12 rounded-full bg-brand-or/10 flex items-center justify-center mx-auto text-brand-or"><i data-lucide="check-circle-2" class="w-6 h-6"></i></div>
+          <h3 class="font-serif text-2xl font-light text-brand-charcoal">Demande reçue</h3>
+          <p class="text-xs text-brand-muted max-w-md mx-auto leading-relaxed">Je vous envoie l'audit sous 48h. On en discute ensuite.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="bg-brand-charcoal text-brand-creme py-16 lg:py-24">
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+    <div class="md:col-span-4 space-y-6">
+      <span class="font-serif text-3xl tracking-[0.15em] text-brand-creme block">Quentin Convert</span>
+      <p class="text-xs text-brand-muted font-light leading-relaxed max-w-sm">Design web, développement et SEO technique. Des sites qui travaillent pendant que vous dormez.</p>
+    </div>
+    <div class="md:col-span-2 space-y-4">
+      <h4 class="text-xs uppercase tracking-widest text-brand-or font-semibold">Navigation</h4>
+      <ul class="space-y-2 text-xs text-brand-muted font-light">
+        <li><a href="#work" class="hover:text-brand-creme transition-colors">Projets</a></li>
+        <li><a href="#process" class="hover:text-brand-creme transition-colors">Process</a></li>
+        <li><a href="#seo" class="hover:text-brand-creme transition-colors">SEO</a></li>
+        <li><a href="#simulator" class="hover:text-brand-creme transition-colors">Simulateur</a></li>
+      </ul>
+    </div>
+    <div class="md:col-span-3 space-y-4">
+      <h4 class="text-xs uppercase tracking-widest text-brand-or font-semibold">Services</h4>
+      <ul class="space-y-2 text-xs text-brand-muted font-light">
+        <li>Design web sur mesure</li>
+        <li>Développement WordPress</li>
+        <li>SEO technique</li>
+        <li>Audit de performance</li>
+      </ul>
+    </div>
+    <div class="md:col-span-3 space-y-4">
+      <h4 class="text-xs uppercase tracking-widest text-brand-or font-semibold">Contact</h4>
+      <ul class="space-y-2 text-xs text-brand-muted font-light">
+        <li>07 53 19 73 20</li>
+        <li>conscience.emotionnelle@gmail.com</li>
+        <li>Torcy, Île-de-France</li>
+      </ul>
+    </div>
+  </div>
+  <div class="max-w-7xl mx-auto px-6 lg:px-12 mt-16 pt-8 border-t border-brand-argile/10 flex flex-col sm:flex-row justify-between items-center text-[10px] text-brand-muted/70 tracking-widest uppercase gap-4">
+    <p>© 2026 Quentin Convert. Tous droits réservés.</p>
+    <p>Design & Code par Quentin Convert</p>
+  </div>
 </footer>
 
-<script>
-// Canvas particles — subtil
-const c=document.getElementById('bg');
-const g=c.getContext('2d');
-let W,H;
-function rs(){const d=Math.min(window.devicePixelRatio||1,2);W=window.innerWidth;H=window.innerHeight;c.width=W*d;c.height=H*d;c.style.width=W+'px';c.style.height=H+'px';g.scale(d,d)}
-window.addEventListener('resize',rs);rs();
+<!-- PROJECT DRAWER -->
+<div id="drawer" class="fixed inset-y-0 right-0 w-full md:max-w-2xl bg-brand-creme z-50 shadow-2xl translate-x-full transition-transform duration-500 ease-out border-l border-brand-argile flex flex-col">
+  <div class="p-6 border-b border-brand-argile flex justify-between items-center bg-brand-sable">
+    <div><span id="drawer-tag" class="text-[10px] uppercase tracking-widest text-brand-or"></span><h3 id="drawer-title" class="font-serif text-2xl font-light text-brand-charcoal"></h3></div>
+    <button onclick="closeProject()" class="w-10 h-10 rounded-full border border-brand-argile flex items-center justify-center hover:bg-brand-charcoal hover:text-brand-creme transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
+  </div>
+  <div class="p-8 space-y-8 overflow-y-auto flex-1">
+    <div class="aspect-[16/10] rounded-xl overflow-hidden shadow-lg" id="drawer-img"></div>
+    <div class="space-y-4"><h4 class="font-serif text-xl text-brand-charcoal">Détails du projet</h4><p id="drawer-desc" class="text-brand-muted text-sm font-light leading-relaxed"></p></div>
+    <div class="border-t border-brand-argile pt-6 grid grid-cols-2 gap-6">
+      <div><span class="text-[10px] uppercase tracking-widest text-brand-or font-medium block">Stack technique</span><p id="drawer-stack" class="text-sm text-brand-charcoal font-light mt-1"></p></div>
+      <div><span class="text-[10px] uppercase tracking-widest text-brand-or font-medium block">Résultats</span><p id="drawer-results" class="text-sm text-brand-charcoal font-light mt-1"></p></div>
+    </div>
+  </div>
+  <div class="p-6 border-t border-brand-argile bg-brand-sable"><a href="#contact" onclick="closeProject()" class="px-6 py-3 bg-brand-charcoal text-brand-creme text-xs uppercase tracking-widest font-medium rounded-full hover:bg-brand-or transition-colors flex-1 text-center block">Un projet similaire ?</a></div>
+</div>
 
-const pts=Array.from({length:20},()=>({
-  x:Math.random()*W,y:Math.random()*H,
-  r:60+Math.random()*120,
-  vx:(Math.random()-.5)*.15,vy:(Math.random()-.5)*.15,
-  a:.015+Math.random()*.025
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+const projects = [
+  {title:"Camille Roussel Architecture",tag:"WordPress — Paris",desc:"Audit complet, refonte design, optimisation SEO technique. Site vitrine WordPress passé de 4.2s à 0.8s de chargement. Structure sémantique refaite, meta descriptions, HTTPS forcé, cache optimisé. Résultat : +43% de trafic organique en 3 mois.",stack:"WordPress, PHP 8.3, Yoast SEO, WebP, Cache",results:"+43% trafic · 0.8s chargement · Lighthouse 98"},
+  {title:"EmpireOS — Landing Page",tag:"Sur Mesure — SaaS",desc:"Page de vente one-page pour un agent IA de conciergerie. Design premium, copywriting Don Draper, animations GSAP, scroll reveals. L'équation 2500€ → 199€ en hero. Formulaire de conversion optimisé.",stack:"HTML/CSS pur, GSAP, IntersectionObserver",results:"Design primé · Conversion optimisée"},
+  {title:"Marie Lemoine — Thérapie",tag:"SEO Local — Rennes",desc:"Site one-page pour une thérapeute. SEO local complet : Google Business Profile, mots-clés Rennes, schema.org Practitioner. Design apaisant, réservation en ligne, formulaire de contact.",stack:"HTML/CSS, Schema.org, GMB",results:"Page 1 Google · Réservations ×3"},
+  {title:"Le Temple — Concept Store",tag:"E-commerce — Paris",desc:"Boutique Shopify design sur mesure. Collection de produits, filtres, page produit optimisée SEO. Design épuré qui met en valeur les créateurs.",stack:"Shopify, Liquid, SEO produit",results:"Conversion +28% · Panier moyen +15%"}
+];
+
+function openProject(i){
+  const d=document.getElementById('drawer');
+  document.getElementById('drawer-tag').textContent=projects[i].tag;
+  document.getElementById('drawer-title').textContent=projects[i].title;
+  document.getElementById('drawer-desc').textContent=projects[i].desc;
+  document.getElementById('drawer-stack').textContent=projects[i].stack;
+  document.getElementById('drawer-results').textContent=projects[i].results;
+  d.classList.remove('translate-x-full');document.body.style.overflow='hidden';
+}
+function closeProject(){document.getElementById('drawer').classList.add('translate-x-full');document.body.style.overflow='';}
+
+// Cursor
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+if(cur&&ring){document.addEventListener('mousemove',e=>{gsap.to(cur,{x:e.clientX,y:e.clientY,duration:.1});gsap.to(ring,{x:e.clientX,y:e.clientY,duration:.3})});document.querySelectorAll('a,button,[onclick],input,textarea,label').forEach(el=>{el.addEventListener('mouseenter',()=>document.body.classList.add('hover-active'));el.addEventListener('mouseleave',()=>document.body.classList.remove('hover-active'))})}
+
+// Preloader
+window.addEventListener('load',()=>{
+  lucide.createIcons();
+  const tl=gsap.timeline();
+  tl.to('#preload-bar',{width:'100%',duration:1.5,ease:'power2.inOut'});
+  tl.to(['#preload-logo','#preload-sub'],{y:0,opacity:1,duration:.8,stagger:.2,ease:'power3.out'},'-.8');
+  tl.to('#preloader',{clipPath:'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)',duration:1.2,ease:'power4.inOut'},'+=.2');
+  tl.from('#header',{y:-50,opacity:0,duration:1,ease:'power3.out'},'-.4');
+  tl.from('#hero-tag',{opacity:0,y:30,duration:.8,ease:'power3.out'},'-.8');
+  tl.from('#hero-title',{opacity:0,y:40,duration:1,ease:'power3.out'},'-.6');
+  tl.from('#hero-text',{opacity:0,y:30,duration:.8,ease:'power3.out'},'-.5');
+  tl.from('#hero-cta',{opacity:0,y:30,duration:.8,ease:'power3.out'},'-.4');
+  tl.to('#hero-img-wrap .reveal-curtain',{scaleX:0,duration:1.2,ease:'power4.inOut'},'-1.2');
+  tl.from('#hero-badge',{opacity:0,x:-30,duration:.8,ease:'power3.out'},'-.6');
+  tl.to('#scroll-hint',{opacity:1,y:0,duration:.8,ease:'power3.out'},'-.4');
+});
+
+// Header scroll
+window.addEventListener('scroll',()=>{
+  const h=document.getElementById('header');
+  if(window.scrollY>50){h.classList.add('bg-brand-creme/90','backdrop-blur-md','py-4','border-brand-argile/40','shadow-sm');h.classList.remove('py-6','lg:py-8','border-transparent')}
+  else{h.classList.remove('bg-brand-creme/90','backdrop-blur-md','py-4','border-brand-argile/40','shadow-sm');h.classList.add('py-6','lg:py-8','border-transparent')}
+});
+
+// Mobile menu
+let menuOpen=false;
+document.getElementById('menu-btn').addEventListener('click',()=>{
+  menuOpen=!menuOpen;
+  const m=document.getElementById('mobile-menu');
+  if(menuOpen){m.classList.remove('translate-y-full');document.getElementById('l1').classList.add('rotate-45','translate-x-1','translate-y-1');document.getElementById('l2').classList.add('opacity-0');document.getElementById('l3').classList.add('-rotate-45','translate-x-1','-translate-y-1')}
+  else{m.classList.add('translate-y-full');document.getElementById('l1').classList.remove('rotate-45','translate-x-1','translate-y-1');document.getElementById('l2').classList.remove('opacity-0');document.getElementById('l3').classList.remove('-rotate-45','translate-x-1','-translate-y-1')}
+});
+document.querySelectorAll('.mobile-link').forEach(l=>l.addEventListener('click',()=>{menuOpen=false;document.getElementById('mobile-menu').classList.add('translate-y-full')}));
+
+// Scroll reveals
+gsap.utils.toArray('.project-card').forEach(c=>{const t=c.querySelector('.reveal-curtain');gsap.to(t,{scrollTrigger:{trigger:c,start:'top 85%'},scaleX:0,duration:1.2,ease:'power4.inOut'})});
+gsap.from('.step-card',{scrollTrigger:{trigger:'#process',start:'top 75%'},opacity:0,y:50,stagger:.2,duration:.8,ease:'power3.out'});
+
+// Filters
+document.querySelectorAll('.filter-btn').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.filter-btn').forEach(b=>{b.classList.remove('bg-brand-charcoal','text-brand-creme');b.classList.add('border','border-brand-argile')});
+  btn.classList.add('bg-brand-charcoal','text-brand-creme');btn.classList.remove('border','border-brand-argile');
+  const f=btn.dataset.filter;
+  gsap.to('.project-card',{scale:.9,opacity:0,duration:.3,stagger:.05,onComplete:()=>{
+    document.querySelectorAll('.project-card').forEach(c=>{c.style.display=(f==='all'||c.dataset.category===f)?'block':'none'});
+    gsap.to('.project-card',{scale:1,opacity:1,duration:.4,stagger:.05});
+  }});
 }));
 
-function draw(){
-  g.clearRect(0,0,W,H);
-  for(let p of pts){
-    p.x+=p.vx;p.y+=p.vy;
-    if(p.x<-p.r)p.x=W+p.r;if(p.x>W+p.r)p.x=-p.r;
-    if(p.y<-p.r)p.y=H+p.r;if(p.y>H+p.r)p.y=-p.r;
-    const grd=g.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r);
-    grd.addColorStop(0,`rgba(194,105,45,${p.a*2})`);
-    grd.addColorStop(.5,`rgba(194,105,45,${p.a})`);
-    grd.addColorStop(1,'rgba(194,105,45,0)');
-    g.fillStyle=grd;g.beginPath();g.arc(p.x,p.y,p.r,0,Math.PI*2);g.fill();
-  }
-  requestAnimationFrame(draw);
+// Simulator
+let simBase=400,simFeats=0,simPages=5;
+function simSelect(t,p){simBase=p;document.querySelectorAll('#sim-1 [class*=\"border-2\"]').forEach(el=>el.classList.remove('border-brand-or','bg-brand-or/5'));document.getElementById('opt-'+t).classList.add('border-brand-or','bg-brand-or/5');simCalc()}
+function simNext(s){document.getElementById('sim-1').classList.add('hidden');document.getElementById('sim-2').classList.add('hidden');document.getElementById('sim-3').classList.add('hidden');document.getElementById('sim-'+s).classList.remove('hidden');document.getElementById('sim-step').textContent='Étape '+s+' sur 3';if(s===3)simCalc()}
+function simCalc(){
+  const p=document.getElementById('page-range').value;simPages=parseInt(p);document.getElementById('page-val').textContent=p+' pages';
+  const active=document.querySelectorAll('.sim-feature.bg-brand-or\\/5, .sim-feature.border-brand-or');
+  simFeats=0;active.forEach(f=>simFeats+=parseInt(f.dataset.mult||0));
+  const total=Math.round((simBase+simFeats)*(simPages/5));
+  const el=document.getElementById('sim-price'),target=total;
+  gsap.fromTo(el,{textContent:parseInt(el.textContent)||0},{textContent:target,duration:1,ease:'power2.out',snap:{textContent:1},onUpdate:()=>{el.textContent=parseInt(el.textContent).toLocaleString('fr-FR')}});
 }
-requestAnimationFrame(draw);
+document.querySelectorAll('.sim-feature').forEach(f=>f.addEventListener('click',()=>{
+  f.classList.toggle('border-brand-or');f.classList.toggle('bg-brand-or/5');simCalc();
+}));
+function simToContact(){
+  const price=document.getElementById('sim-price').textContent;
+  document.getElementById('sim-notes').value='Simulation : '+document.querySelector('[class*=\"border-or\"][class*=\"border-2\"] span')?.textContent+' · '+simPages+' pages · Budget estimé '+price+' €';
+  document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+}
 
-// Reveals
-const ob=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ob.unobserve(e.target)}})},{threshold:.1,rootMargin:'0px 0px -20px 0px'});
-document.querySelectorAll('.reveal').forEach(el=>ob.observe(el));
+function handleSubmit(e){
+  e.preventDefault();
+  const btn=e.target.querySelector('button');
+  btn.disabled=true;btn.innerHTML='<span>Envoi en cours...</span><div class=\"w-4 h-4 border-2 border-brand-creme border-t-transparent rounded-full animate-spin\"></div>';
+  setTimeout(()=>{e.target.classList.add('hidden');document.getElementById('form-ok').classList.remove('hidden')},1500);
+}
 
-// Nav
-const n=document.getElementById('nav');
-window.addEventListener('scroll',()=>n.classList.toggle('scrolled',window.scrollY>50),{passive:true});
+// Init
+document.getElementById('page-range').addEventListener('input',simCalc);
+simCalc();
 </script>
 </body>
 </html>
