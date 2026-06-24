@@ -11,136 +11,350 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <style>
+/* ═══════════ RESET & VARIABLES ═══════════ */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --creme:#FBF9F6;--sable:#F3EFE9;--argile:#DCD6CD;--or:#C5A880;--charcoal:#1C1C1C;--muted:#66635F;
-  --ease: cubic-bezier(0.16,1,0.3,1);
+  --albatre:#F6F3ED;
+  --argile:#EAE3D5;
+  --bronze:#8C7C65;
+  --anthracite:#1A1A19;
+  --bronze-fade:rgba(140,124,101,.35);
+  --bronze-light:rgba(140,124,101,.08);
+  --ease:cubic-bezier(0.16,1,0.3,1);
+  --ease-out: cubic-bezier(0.33,1,0.68,1);
 }
-html{background:var(--creme);color:var(--charcoal)}
+html{background:var(--albatre);color:var(--anthracite)}
 html.lenis{height:auto}.lenis.lenis-smooth{scroll-behavior:auto}
-body{font-family:'Jost',sans-serif;font-weight:300;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{
+  font-family:'Jost',sans-serif;
+  font-weight:300;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
 ::-webkit-scrollbar{width:6px}
-::-webkit-scrollbar-track{background:var(--creme)}
-::-webkit-scrollbar-thumb{background:var(--or);border-radius:3px}
+::-webkit-scrollbar-track{background:var(--albatre)}
+::-webkit-scrollbar-thumb{background:var(--bronze);border-radius:3px}
 
-/* Curseur */
-@media(min-width:1025px){
-  #cursor{width:10px;height:10px;background:var(--or);border-radius:50%;position:fixed;transform:translate(-50%,-50%);pointer-events:none;z-index:9999;transition:width .4s var(--ease),height .4s,background .4s;display:flex;align-items:center;justify-content:center;font-size:8px;letter-spacing:.1em;color:transparent;font-family:'Jost',sans-serif}
-  #cursor-ring{width:50px;height:50px;border:1px solid rgba(197,168,128,.3);border-radius:50%;position:fixed;transform:translate(-50%,-50%);pointer-events:none;z-index:9998;transition:width .5s var(--ease),height .5s,border-color .5s}
-  .hover-img #cursor{width:90px;height:90px;background:rgba(197,168,128,.1);backdrop-filter:blur(6px);color:var(--or)}
-  .hover-img #cursor-ring{width:100px;height:100px;border-color:var(--or)}
+/* ═══════════ LOADER ═══════════ */
+#loader{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--anthracite);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+#loader-counter{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(80px,16vw,180px);
+  font-weight:300;color:var(--albatre);line-height:1;
+}
+#loader-line{
+  width:clamp(200px,30vw,360px);height:1px;background:var(--bronze-fade);
+  margin-top:32px;position:relative;overflow:hidden;
+}
+#loader-progress{
+  position:absolute;top:0;left:0;height:100%;width:0%;
+  background:var(--bronze);
+}
+#loader-sub{
+  font-size:10px;letter-spacing:.3em;color:var(--bronze);
+  text-transform:uppercase;font-weight:400;margin-top:24px;
 }
 
-/* Nav */
-#nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:36px 48px;display:flex;justify-content:space-between;align-items:center;transition:background .6s var(--ease),padding .6s}
-#nav.scrolled{background:rgba(251,249,246,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:20px 48px}
-.logo{font-family:'Cormorant Garamond',serif;font-size:26px;letter-spacing:.18em;text-decoration:none;color:#fff;text-transform:uppercase;mix-blend-mode:difference;font-weight:400}
-.nav-cta{font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:12px 24px;border-radius:999px;border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.8);text-decoration:none;font-weight:400;transition:all .5s}
-.nav-cta:hover{background:#fff;color:var(--charcoal);border-color:#fff}
+/* ═══════════ CURSEUR ═══════════ */
+@media(min-width:1025px){
+  #cursor{width:12px;height:12px;background:var(--bronze);border-radius:50%;position:fixed;transform:translate(-50%,-50%);pointer-events:none;z-index:9998;mix-blend-mode:difference;transition:width .5s var(--ease),height .5s}
+  #cursor-ring{width:60px;height:60px;border:1px solid var(--bronze-fade);border-radius:50%;position:fixed;transform:translate(-50%,-50%);pointer-events:none;z-index:9997;transition:width .6s var(--ease),height .6s,border-color .6s}
+  .hover-matter #cursor{width:100px;height:100px;background:rgba(140,124,101,.15);mix-blend-mode:normal;backdrop-filter:blur(8px);color:var(--bronze);font-size:8px;display:flex;align-items:center;justify-content:center;letter-spacing:.1em}
+  .hover-project #cursor{width:130px;height:130px;background:rgba(26,26,25,.08);mix-blend-mode:normal;backdrop-filter:blur(12px);color:var(--anthracite);font-size:9px;display:flex;align-items:center;justify-content:center;letter-spacing:.14em}
+}
 
-/* Wrap */
-.wrap{max-width:1400px;margin:0 auto;padding:0 64px}
+/* ═══════════ NAV ═══════════ */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;
+  padding:40px 64px;display:flex;justify-content:space-between;align-items:center;
+  transition:background .7s var(--ease),padding .7s;
+  mix-blend-mode:difference;
+}
+#nav.scrolled{background:rgba(246,243,237,.85);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);padding:20px 64px;mix-blend-mode:normal}
+.logo{
+  font-family:'Cormorant Garamond',serif;font-size:24px;
+  letter-spacing:.2em;text-decoration:none;color:#fff;
+  text-transform:uppercase;font-weight:400;
+}
+#nav.scrolled .logo{color:var(--anthracite)}
+#nav.scrolled .nav-cta{border-color:var(--bronze);color:var(--bronze)}
+#nav.scrolled .nav-cta:hover{background:var(--bronze);color:#fff}
+.nav-cta{
+  font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  padding:12px 28px;border-radius:999px;
+  border:1px solid rgba(255,255,255,.25);
+  color:rgba(255,255,255,.8);text-decoration:none;
+  font-weight:400;transition:all .5s var(--ease);
+}
+.nav-cta:hover{background:#fff;color:var(--anthracite);border-color:#fff}
 
-/* Hero */
-.hero{height:100vh;display:flex;align-items:flex-end;padding-bottom:120px;background:var(--charcoal);position:relative;overflow:hidden}
+/* ═══════════ HERO ═══════════ */
+.hero{
+  height:100vh;display:flex;align-items:flex-end;
+  padding-bottom:clamp(80px,12vh,140px);
+  background:var(--anthracite);position:relative;overflow:hidden;
+}
 .hero-bg{position:absolute;inset:0}
 .hero-bg svg{width:100%;height:100%}
-.hero .wrap{position:relative;z-index:2;padding-top:160px}
-.hero-eyebrow{font-size:9px;letter-spacing:.32em;color:var(--or);text-transform:uppercase;font-weight:400;margin-bottom:20px}
-.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(42px,7vw,90px);font-weight:300;line-height:1.04;color:#fff;max-width:900px}
-.hero h1 em{font-style:italic;font-weight:400;color:var(--or)}
-.hero .lede{color:rgba(255,255,255,.5);font-size:16px;max-width:480px;line-height:1.75;margin-top:24px;font-weight:300}
-.hero-actions{display:flex;gap:16px;margin-top:40px;flex-wrap:wrap}
-.btn-fill{display:inline-block;padding:16px 32px;background:var(--or);color:var(--charcoal);font-size:11px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;border-radius:999px;font-weight:400;transition:all .5s}
-.btn-fill:hover{background:#fff}
-.btn-ghost{display:inline-block;padding:16px 32px;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);font-size:11px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none;border-radius:999px;font-weight:400;transition:all .5s}
-.btn-ghost:hover{border-color:var(--or);color:var(--or)}
-.scroll-hint{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);text-align:center;z-index:2}
-.scroll-hint span{display:block;font-size:9px;letter-spacing:.24em;color:rgba(255,255,255,.3);text-transform:uppercase}
-.scroll-line{width:1px;height:56px;background:rgba(255,255,255,.08);margin:10px auto 0;position:relative;overflow:hidden}
-.scroll-dot{position:absolute;top:0;left:0;width:100%;height:20px;background:var(--or)}
+.hero .wrap{position:relative;z-index:2;padding-top:160px;max-width:1400px;margin:0 auto;padding-left:64px;padding-right:64px}
+.hero-eyebrow{
+  font-size:9px;letter-spacing:.36em;color:var(--bronze);
+  text-transform:uppercase;font-weight:400;margin-bottom:24px;
+}
+.hero h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(44px,7vw,96px);font-weight:300;line-height:1.04;
+  color:var(--albatre);max-width:860px;
+}
+.hero h1 em{font-style:italic;font-weight:400;color:var(--bronze)}
+.hero .lede{
+  color:rgba(246,243,237,.45);font-size:16px;max-width:480px;
+  line-height:1.8;margin-top:28px;font-weight:300;
+}
+.hero-actions{display:flex;gap:16px;margin-top:44px;flex-wrap:wrap}
+.btn-fill{
+  display:inline-block;padding:18px 36px;background:var(--bronze);
+  color:var(--anthracite);font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;text-decoration:none;border-radius:999px;
+  font-weight:400;transition:all .5s var(--ease);
+}
+.btn-fill:hover{background:var(--albatre);color:var(--anthracite)}
+.btn-ghost{
+  display:inline-block;padding:18px 36px;
+  border:1px solid rgba(246,243,237,.18);
+  color:rgba(246,243,237,.65);font-size:10px;
+  letter-spacing:.16em;text-transform:uppercase;
+  text-decoration:none;border-radius:999px;
+  font-weight:400;transition:all .5s var(--ease);
+}
+.btn-ghost:hover{border-color:var(--bronze);color:var(--bronze)}
+.scroll-hint{position:absolute;bottom:48px;left:50%;transform:translateX(-50%);text-align:center;z-index:2}
+.scroll-hint .line{width:1px;height:64px;background:var(--bronze-fade);margin:0 auto;position:relative;overflow:hidden}
+.scroll-hint .dot{position:absolute;top:0;left:0;width:100%;height:24px;background:var(--bronze)}
 
-/* Sections */
-section{padding:140px 0}
-section.alt{background:var(--sable)}
-.sec-eyebrow{font-size:9px;letter-spacing:.3em;color:var(--or);text-transform:uppercase;font-weight:400;display:block;margin-bottom:16px}
-h2{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,56px);font-weight:300;line-height:1.15}
-p.sec-desc{color:var(--muted);font-size:15px;max-width:500px;line-height:1.7;margin-top:12px;font-weight:300}
+/* ═══════════ SECTIONS ═══════════ */
+section{padding:clamp(100px,16vh,180px) 0}
+section.alt{background:var(--argile)}
+.wrap{max-width:1400px;margin:0 auto;padding:0 clamp(24px,6vw,64px)}
+.sec-eyebrow{
+  font-size:9px;letter-spacing:.34em;color:var(--bronze);
+  text-transform:uppercase;font-weight:400;display:block;margin-bottom:20px;
+}
+h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(34px,5vw,60px);font-weight:300;line-height:1.12;
+}
+.sec-desc{
+  color:var(--bronze);font-size:15px;max-width:520px;
+  line-height:1.8;margin-top:14px;font-weight:300;opacity:.75;
+}
 
-/* Prestations */
-.presta-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:72px}
-.p-card{background:var(--sable);padding:64px 48px;position:relative;overflow:hidden;transition:transform .5s var(--ease)}
-.p-card:hover{transform:translateY(-6px)}
-.p-card .chiffre{position:absolute;top:16px;right:28px;font-family:'Cormorant Garamond',serif;font-size:120px;color:var(--argile);opacity:.18;line-height:1;font-weight:300}
-.p-card h3{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;margin-bottom:12px;position:relative}
-.p-card p{font-size:13px;color:var(--muted);line-height:1.8;font-weight:300}
-.p-card .price{font-family:'Cormorant Garamond',serif;font-size:12px;color:rgba(102,99,95,.35);font-style:italic;margin-top:20px;display:block}
+/* ═══════════ LIGNES ARCHITECTURALES ═══════════ */
+.arch-lines{position:relative;overflow:hidden}
+.arch-lines svg{width:100%;height:auto;opacity:.12}
+.arch-lines svg line,.arch-lines svg path{stroke:var(--bronze);stroke-width:1}
+.arch-horiz{position:absolute;left:0;right:0;height:1px;background:var(--bronze-light);transform-origin:left center;transform:scaleX(0)}
+.arch-vert{position:absolute;top:0;bottom:0;width:1px;background:var(--bronze-light);transform-origin:top center;transform:scaleY(0)}
 
-/* Projets — asymétrique */
-.projets-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:60px}
-.projets-grid .big{grid-row:span 2}
-.proj-card{position:relative;overflow:hidden;border-radius:4px;cursor:pointer;transition:transform .6s var(--ease)}
-.proj-card:hover{transform:translateY(-8px)}
-.proj-card svg{width:100%;height:100%;display:block}
-.proj-card .info{position:absolute;bottom:0;left:0;right:0;padding:36px;background:linear-gradient(transparent,rgba(28,28,28,.92) 50%)}
-.proj-card .info span{font-size:9px;letter-spacing:.14em;color:var(--or);text-transform:uppercase;font-weight:400}
-.proj-card .info h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:#fff;margin-top:4px}
-.proj-card .info p{font-size:11px;color:rgba(255,255,255,.35);margin-top:3px;font-weight:300}
-/* Débordement / asymétrie */
-.proj-offset{margin-top:-60px;margin-left:40px}
-.proj-pull{margin-top:40px;margin-right:-20px}
+/* ═══════════ PHILOSOPHIE ═══════════ */
+.philo-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:clamp(60px,10vw,120px);
+  margin-top:80px;align-items:center;
+}
+.philo-visual{aspect-ratio:3/4;background:var(--anthracite);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.philo-visual svg{width:70%}
+.philo-text p{
+  font-size:15px;color:var(--bronze);line-height:2.1;margin-bottom:28px;font-weight:300;
+}
+.philo-quote{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:20px;color:var(--anthracite);padding-top:28px;
+  border-top:1px solid var(--bronze-light);margin-top:32px;line-height:1.5;
+}
+.philo-quote cite{
+  display:block;font-family:'Jost',sans-serif;font-style:normal;
+  font-size:9px;letter-spacing:.16em;color:var(--bronze);
+  text-transform:uppercase;margin-top:14px;font-weight:400;
+}
 
-/* About — texte qui chevauche l'image */
-.about-block{display:grid;grid-template-columns:1fr 1.2fr;gap:0;margin-top:60px;align-items:start}
-.about-img{aspect-ratio:4/5;background:var(--charcoal);border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;z-index:1}
-.about-text{background:var(--creme);padding:60px;border-radius:8px;margin-left:-40px;margin-top:60px;position:relative;z-index:2;box-shadow:0 20px 60px rgba(0,0,0,.04)}
-.about-text p{font-size:14px;color:var(--muted);line-height:1.9;margin-bottom:14px;font-weight:300}
-.about-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--charcoal);padding-top:20px;border-top:1px solid var(--argile);margin-top:20px}
-.about-quote cite{display:block;font-family:'Jost',sans-serif;font-style:normal;font-size:9px;letter-spacing:.14em;color:var(--or);text-transform:uppercase;margin-top:10px;font-weight:400}
+/* ═══════════ PROJETS — SLIT REVEAL ═══════════ */
+.projects-header{margin-bottom:clamp(60px,10vh,100px)}
+.project-row{
+  display:grid;grid-template-columns:1.2fr 0.8fr;gap:clamp(40px,8vw,100px);
+  align-items:center;margin-bottom:clamp(80px,14vh,160px);
+  position:relative;
+}
+.project-row:nth-child(even){grid-template-columns:0.8fr 1.2fr}
+.project-row:nth-child(even) .project-content{order:-1}
+.project-visual{
+  aspect-ratio:4/3;position:relative;overflow:hidden;
+  background:var(--anthracite);display:flex;align-items:center;justify-content:center;
+}
+.project-visual svg{width:80%}
+/* Slit reveal — deux panneaux qui s'écartent */
+.slit-reveal{position:absolute;inset:0;z-index:3;pointer-events:none}
+.slit-panel{
+  position:absolute;inset:0;background:var(--anthracite);
+  clip-path:inset(0 0 50% 0);
+}
+.slit-panel.bottom{clip-path:inset(50% 0 0 0)}
+.project-content{padding:40px 0}
+.project-number{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(100px,14vw,160px);
+  color:var(--argile);line-height:1;font-weight:300;opacity:.5;margin-bottom:-20px;
+}
+.project-content h3{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,42px);
+  font-weight:300;line-height:1.15;margin-bottom:16px;
+}
+.project-content .loc{
+  font-size:10px;letter-spacing:.2em;color:var(--bronze);
+  text-transform:uppercase;font-weight:400;display:block;margin-bottom:12px;
+}
+.project-content p{
+  font-size:14px;color:var(--bronze);line-height:1.9;font-weight:300;
+  margin-bottom:28px;opacity:.8;
+}
+.project-meta{display:flex;gap:32px;padding-top:24px;border-top:1px solid var(--bronze-light)}
+.project-meta-item .lbl{font-size:9px;letter-spacing:.14em;color:var(--bronze);text-transform:uppercase;font-weight:400}
+.project-meta-item .val{font-size:14px;color:var(--anthracite);margin-top:4px;font-weight:300}
 
-/* Journal */
-.journal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:56px}
-.j-card{background:#fff;border-radius:4px;overflow:hidden;text-decoration:none;color:inherit;transition:transform .5s var(--ease)}
-.j-card:hover{transform:translateY(-6px)}
-.j-img{aspect-ratio:16/10;background:var(--charcoal);display:flex;align-items:center;justify-content:center}
-.j-text{padding:28px}
-.j-tag{font-size:9px;letter-spacing:.14em;color:var(--or);text-transform:uppercase;font-weight:400}
-.j-card h3{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;margin:8px 0}
-.j-card p{font-size:12px;color:var(--muted);line-height:1.6;font-weight:300}
-.j-date{font-size:10px;color:rgba(102,99,95,.4);margin-top:8px}
+/* ═══════════ MATIÈROTHÈQUE ═══════════ */
+.matter-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:80px}
+.matter-card{
+  background:var(--albatre);padding:clamp(40px,6vw,72px) clamp(28px,4vw,48px);
+  position:relative;cursor:pointer;transition:background .6s var(--ease);
+  overflow:hidden;
+}
+.matter-card:hover{background:#fff}
+.matter-card .idx{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(60px,8vw,90px);
+  color:var(--argile);line-height:1;font-weight:300;opacity:.5;
+}
+.matter-card h3{
+  font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;
+  margin:12px 0 8px;
+}
+.matter-card .sub{
+  font-size:11px;letter-spacing:.14em;color:var(--bronze);
+  text-transform:uppercase;font-weight:400;
+}
+.matter-card .desc{
+  font-size:13px;color:var(--bronze);line-height:1.8;margin-top:16px;
+  font-weight:300;opacity:.7;max-height:0;overflow:hidden;
+  transition:max-height .6s var(--ease),opacity .4s,margin .6s;
+}
+.matter-card:hover .desc{max-height:120px;opacity:.8;margin-top:20px}
+/* Texture pattern — cercles concentriques */
+.matter-ring{
+  position:absolute;right:-40px;top:-40px;width:200px;height:200px;
+  border-radius:50%;border:1px solid var(--bronze-light);
+  opacity:0;transition:opacity .6s var(--ease),transform .6s var(--ease);
+  transform:scale(.8);
+}
+.matter-card:hover .matter-ring{opacity:.4;transform:scale(1)}
 
-/* Contact */
-.contact-block{display:grid;grid-template-columns:1fr 1.3fr;gap:80px;margin-top:60px;align-items:start}
-.contact-info h2{margin-bottom:12px}
-.contact-info>p{color:var(--muted);font-size:14px;line-height:1.8;margin-bottom:40px;font-weight:300}
-.contact-detail{margin-bottom:24px}
-.contact-detail .lbl{font-size:9px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;font-weight:400}
-.contact-detail .val{font-size:15px;color:var(--charcoal);margin-top:3px}
-.contact-form{background:#fff;padding:48px;border-radius:8px}
-.contact-form label{display:block;font-size:9px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px;font-weight:400}
-.contact-form input,.contact-form textarea{width:100%;border:none;border-bottom:1px solid var(--argile);padding:14px 0;font-family:'Jost',sans-serif;font-size:14px;font-weight:300;color:var(--charcoal);outline:none;margin-bottom:24px;transition:border-color .3s;background:transparent}
-.contact-form input:focus,.contact-form textarea:focus{border-bottom-color:var(--or)}
-.contact-form textarea{resize:none}
-.contact-form button{width:100%;padding:18px;background:var(--charcoal);color:#fff;border:none;border-radius:999px;font-family:'Jost',sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;font-weight:400;transition:background .5s}
-.contact-form button:hover{background:var(--or)}
+/* ═══════════ BRIEF ARCHITECTURAL ═══════════ */
+.brief-wrap{max-width:720px;margin:0 auto}
+.brief-steps{
+  background:var(--albatre);border-radius:2px;
+  position:relative;overflow:hidden;
+}
+.brief-step{
+  padding:clamp(40px,6vw,64px);display:none;
+}
+.brief-step.active{display:block}
+.brief-progress{
+  height:2px;background:var(--argile);margin-bottom:48px;border-radius:1px;
+  overflow:hidden;
+}
+.brief-progress-bar{
+  height:100%;background:var(--bronze);width:0%;
+  transition:width .8s var(--ease);
+}
+.brief-step .q-num{
+  font-size:9px;letter-spacing:.2em;color:var(--bronze);
+  text-transform:uppercase;font-weight:400;display:block;margin-bottom:20px;
+}
+.brief-step h3{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3.5vw,36px);
+  font-weight:300;line-height:1.25;margin-bottom:32px;
+}
+.brief-input{
+  width:100%;border:none;border-bottom:1px solid var(--argile);
+  background:transparent;padding:20px 0;font-family:'Jost',sans-serif;
+  font-size:clamp(16px,2vw,20px);font-weight:300;color:var(--anthracite);
+  outline:none;transition:border-color .4s;
+}
+.brief-input:focus{border-bottom-color:var(--bronze)}
+.brief-textarea{
+  width:100%;border:none;border-bottom:1px solid var(--argile);
+  background:transparent;padding:20px 0;font-family:'Jost',sans-serif;
+  font-size:16px;font-weight:300;color:var(--anthracite);outline:none;
+  resize:none;min-height:100px;transition:border-color .4s;
+}
+.brief-textarea:focus{border-bottom-color:var(--bronze)}
+.brief-choices{display:flex;flex-wrap:wrap;gap:12px}
+.brief-choice{
+  padding:14px 28px;border:1px solid var(--argile);border-radius:999px;
+  font-size:13px;font-weight:300;cursor:pointer;transition:all .4s var(--ease);
+  background:transparent;font-family:'Jost',sans-serif;color:var(--bronze);
+}
+.brief-choice:hover,.brief-choice.selected{border-color:var(--bronze);background:var(--bronze);color:#fff}
+.brief-nav{display:flex;justify-content:space-between;margin-top:48px;gap:16px}
+.brief-back{
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  background:none;border:none;color:var(--bronze);cursor:pointer;
+  font-family:'Jost',sans-serif;font-weight:400;opacity:.6;
+  transition:opacity .3s;
+}
+.brief-back:hover{opacity:1}
+.brief-next{
+  padding:16px 36px;background:var(--anthracite);color:var(--albatre);
+  border:none;border-radius:999px;font-family:'Jost',sans-serif;
+  font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+  cursor:pointer;font-weight:400;transition:all .5s var(--ease);
+}
+.brief-next:hover{background:var(--bronze)}
+.brief-done{
+  display:none;text-align:center;padding:clamp(40px,6vw,64px);
+}
+.brief-done h3{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(24px,3.5vw,36px);
+  font-weight:300;margin-bottom:12px;
+}
+.brief-done p{color:var(--bronze);font-size:15px;font-weight:300;line-height:1.8}
 
-footer{background:var(--charcoal);padding:80px 0;color:rgba(255,255,255,.4)}
-footer .fgrid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:60px}
-footer h4{font-family:'Jost',sans-serif;font-weight:400;font-size:9px;letter-spacing:.16em;color:var(--or);text-transform:uppercase;margin-bottom:16px}
-footer p,footer li{font-size:12px;line-height:2.2;font-weight:300}
+/* ═══════════ FOOTER ═══════════ */
+footer{
+  background:var(--anthracite);padding:clamp(60px,10vh,100px) 0 40px;
+  color:rgba(246,243,237,.35);
+}
+footer .fgrid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:clamp(40px,8vw,80px)}
+footer h4{font-weight:400;font-size:9px;letter-spacing:.18em;color:var(--bronze);text-transform:uppercase;margin-bottom:18px}
+footer p,footer li{font-size:12px;line-height:2.4;font-weight:300}
 footer ul{list-style:none}
-footer a{color:rgba(255,255,255,.4);text-decoration:none;transition:color .3s;font-weight:300}
-footer a:hover{color:#fff}
-footer .fbottom{margin-top:56px;padding-top:28px;border-top:1px solid rgba(255,255,255,.06);text-align:center;font-size:9px;letter-spacing:.16em;text-transform:uppercase}
+footer a{color:rgba(246,243,237,.35);text-decoration:none;transition:color .3s;font-weight:300}
+footer a:hover{color:var(--bronze)}
+footer .fbottom{margin-top:60px;padding-top:28px;border-top:1px solid rgba(246,243,237,.04);text-align:center;font-size:9px;letter-spacing:.18em;text-transform:uppercase}
 
+/* ═══════════ RESPONSIVE ═══════════ */
 @media(max-width:900px){
-  .wrap{padding:0 28px}#nav{padding:24px 28px}.logo{font-size:20px}
-  .hero h1{font-size:clamp(32px,9vw,56px)}
-  .presta-grid,.about-block,.contact-block,.journal-grid{grid-template-columns:1fr}
-  .about-text{margin-left:0;margin-top:24px}
-  .projets-grid{grid-template-columns:1fr}
-  .proj-offset{margin-top:0;margin-left:0}.proj-pull{margin-right:0}
+  #nav{padding:28px 24px}.logo{font-size:18px}
+  #nav.scrolled{padding:16px 24px}
+  .hero h1{font-size:clamp(28px,8vw,48px)}
+  .hero .wrap{padding:160px 24px 0}
+  .philo-grid{grid-template-columns:1fr;gap:40px;margin-top:40px}
+  .project-row,.project-row:nth-child(even){grid-template-columns:1fr;gap:32px}
+  .project-row:nth-child(even) .project-content{order:0}
+  .matter-grid{grid-template-columns:1fr;margin-top:40px}
   section{padding:80px 0}
+  .wrap{padding:0 24px}
 }
 
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -148,205 +362,495 @@ footer .fbottom{margin-top:56px;padding-top:28px;border-top:1px solid rgba(255,2
 </head>
 <body>
 
+<!-- ═══════════ LOADER ═══════════ -->
+<div id="loader">
+  <div id="loader-counter">00</div>
+  <div id="loader-line"><div id="loader-progress"></div></div>
+  <div id="loader-sub">Camille Roussel · Architecture d'Intérieur</div>
+</div>
+
+<!-- ═══════════ CURSEUR ═══════════ -->
 <div id="cursor" class="hidden"></div>
 <div id="cursor-ring" class="hidden"></div>
 
+<!-- ═══════════ NAV ═══════════ -->
 <nav id="nav">
   <a href="#" class="logo">Camille Roussel</a>
-  <a href="#contact" class="nav-cta">Premier rendez-vous</a>
+  <a href="#brief" class="nav-cta">Votre projet</a>
 </nav>
 
-<!-- HERO -->
+<!-- ═══════════ HERO ═══════════ -->
 <section class="hero">
   <div class="hero-bg">
-    <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
-      <rect width="1440" height="900" fill="#1C1C1C"/>
-      <rect x="0" y="0" width="500" height="900" fill="#1a1612"/>
-      <rect x="600" y="120" width="350" height="250" rx="2" fill="#2a2520"/>
-      <rect x="750" y="520" width="450" height="320" rx="2" fill="#242018"/>
-      <line x1="500" y1="0" x2="500" y2="900" stroke="#C5A880" stroke-opacity=".05" stroke-width="1"/>
-      <circle cx="1050" cy="220" r="200" fill="#C5A880" opacity=".03"/>
+    <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1440" height="900" fill="#1A1A19"/>
+      <!-- Lignes architecturales -->
+      <line id="hero-line-h" x1="0" y1="300" x2="1440" y2="300" stroke="#8C7C65" stroke-opacity=".06" stroke-width="1"/>
+      <line id="hero-line-v1" x1="360" y1="0" x2="360" y2="900" stroke="#8C7C65" stroke-opacity=".04" stroke-width="1"/>
+      <line id="hero-line-v2" x1="1080" y1="0" x2="1080" y2="900" stroke="#8C7C65" stroke-opacity=".04" stroke-width="1"/>
+      <!-- Blocs abstraits -->
+      <rect x="380" y="100" width="220" height="160" rx="1" fill="#8C7C65" opacity=".04"/>
+      <rect x="840" y="500" width="300" height="200" rx="1" fill="#8C7C65" opacity=".05"/>
+      <rect x="200" y="600" width="160" height="120" rx="1" fill="#EAE3D5" opacity=".04"/>
+      <!-- Cercle bronzé -->
+      <circle cx="1200" cy="200" r="280" fill="none" stroke="#8C7C65" stroke-opacity=".03" stroke-width="1"/>
+      <circle cx="1200" cy="200" r="180" fill="#8C7C65" opacity=".02"/>
+      <!-- Points de construction -->
+      <circle cx="360" cy="300" r="4" fill="#8C7C65" opacity=".15"/>
+      <circle cx="1080" cy="300" r="4" fill="#8C7C65" opacity=".15"/>
     </svg>
   </div>
   <div class="wrap">
-    <div class="hero-eyebrow">Architecte d'Intérieur — Rennes</div>
-    <h1>L'équilibre parfait entre <em>rigueur architecturale</em> et douceur organique.</h1>
-    <p class="lede">Je conçois des espaces qui ne ressemblent qu'à vous. De la première esquisse au dernier détail, chaque projet est une création singulière, ancrée dans votre histoire.</p>
+    <div class="hero-eyebrow">Architecte d'Intérieur · Rennes</div>
+    <h1>Des espaces <em>silencieux</em> pour âmes exigeantes.</h1>
+    <p class="lede">Je conçois des intérieurs qui ne ressemblent qu'à vous. De l'intention architecturale au détail ultime, chaque projet est une création singulière.</p>
     <div class="hero-actions">
-      <a href="#projets" class="btn-fill">Découvrir mes réalisations</a>
-      <a href="#prestations" class="btn-ghost">Comment je travaille</a>
+      <a href="#projets" class="btn-fill">Découvrir les projets</a>
+      <a href="#brief" class="btn-ghost">Votre brief architectural</a>
     </div>
   </div>
   <div class="scroll-hint">
-    <span>Découvrir</span>
-    <div class="scroll-line"><div class="scroll-dot"></div></div>
+    <div class="line"><div class="dot"></div></div>
   </div>
 </section>
 
-<!-- PRESTATIONS -->
-<section id="prestations">
+<!-- ═══════════ PHILOSOPHIE ═══════════ -->
+<section id="philosophie">
   <div class="wrap">
-    <span class="sec-eyebrow">Mon accompagnement</span>
-    <h2>De l'intention au détail ultime</h2>
-    <p class="sec-desc">Chaque projet suit un cheminement précis, de la première conversation jusqu'à la touche décorative finale. Un process en quatre mouvements, sans surprise.</p>
-    <div class="presta-grid">
-      <div class="p-card"><div class="chiffre">I</div><h3>La Rencontre</h3><p>Premier échange pour comprendre votre vision, vos besoins, votre manière de vivre. Analyse de l'existant, relevé des contraintes et des potentiels. Le socle de tout le projet.</p><span class="price">À partir de 350€ — Étude préliminaire</span></div>
-      <div class="p-card"><div class="chiffre">II</div><h3>La Sculpture</h3><p>Modélisation 3D, plans techniques, sélection des matériaux nobles. Vous visualisez chaque volume, chaque texture. Le projet prend forme sous vos yeux.</p><span class="price">À partir de 700€ — Conception détaillée</span></div>
-      <div class="p-card"><div class="chiffre">III</div><h3>L'Orchestration</h3><p>Coordination des artisans d'excellence, suivi de chantier rigoureux, levée de réserves. Je suis votre interlocutrice unique pour un chantier maîtrisé.</p><span class="price">10-15% du montant des travaux</span></div>
-      <div class="p-card"><div class="chiffre">IV</div><h3>La Révélation</h3><p>Mobilier, luminaires, textiles, objets. La dernière couche qui donne son âme à l'espace. Shopping accompagné, mise en scène des volumes.</p><span class="price">À partir de 500€ — Décoration & styling</span></div>
+    <span class="sec-eyebrow">Philosophie</span>
+    <div class="philo-grid">
+      <div class="philo-visual">
+        <!-- Lignes architecturales style bleu de travail -->
+        <svg viewBox="0 0 200 280" width="60%">
+          <rect x="20" y="30" width="160" height="220" fill="none" stroke="#8C7C65" stroke-width=".5" opacity=".3"/>
+          <line x1="20" y1="100" x2="180" y2="100" stroke="#8C7C65" stroke-width=".5" opacity=".2"/>
+          <line x1="20" y1="170" x2="180" y2="170" stroke="#8C7C65" stroke-width=".5" opacity=".2"/>
+          <line x1="100" y1="30" x2="100" y2="250" stroke="#8C7C65" stroke-width=".5" opacity=".2"/>
+          <rect x="40" y="60" width="60" height="60" fill="none" stroke="#8C7C65" stroke-width=".7" opacity=".4"/>
+          <rect x="120" y="140" width="40" height="50" fill="none" stroke="#8C7C65" stroke-width=".7" opacity=".4"/>
+          <circle cx="160" cy="80" r="3" fill="#8C7C65" opacity=".4"/>
+          <circle cx="40" cy="200" r="3" fill="#8C7C65" opacity=".4"/>
+        </svg>
+      </div>
+      <div class="philo-text">
+        <p>Diplômée de l'École de Design de Nantes, je pratique l'architecture d'intérieur depuis 2016. Mon approche mêle rigueur constructive et sensibilité décorative pour créer des espaces qui fonctionnent autant qu'ils émeuvent.</p>
+        <p>Je crois qu'un intérieur réussi est celui où l'on se sent bien sans savoir exactement pourquoi. Cette évidence se construit dans les détails — un axe de vue, une texture sous la main, une source de lumière qui caresse un mur à la tombée du jour.</p>
+        <div class="philo-quote">« Camille a su comprendre exactement ce que nous voulions, tout en apportant des idées auxquelles nous n'aurions jamais pensé. »<cite>— Marie &amp; Antoine L., Rennes</cite></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- PROJETS — asymétrique -->
+<!-- ═══════════ PROJETS — SLIT REVEAL ═══════════ -->
 <section id="projets" class="alt">
   <div class="wrap">
-    <span class="sec-eyebrow">Portfolio</span>
-    <h2>Écrins réalisés</h2>
-    <div class="projets-grid">
-      <div class="proj-card big" onclick="openProject('zellige')" style="aspect-ratio:3/4">
-        <svg viewBox="0 0 600 800" class="hover-img-target"><rect width="600" height="800" fill="#1C1C1C"/><rect x="40" y="80" width="220" height="180" rx="2" fill="#2a2520"/><rect x="280" y="120" width="280" height="140" rx="2" fill="#332e28"/><rect x="40" y="360" width="520" height="2" fill="#C5A880" opacity=".08"/><rect x="40" y="440" width="180" height="100" rx="2" fill="#C5A880" opacity=".07"/><rect x="240" y="440" width="320" height="100" rx="2" fill="#201c16"/></svg>
-        <div class="info"><span>Rennes</span><h3>Projet Zellige</h3><p>Cuisine d'architecte · 18m²</p></div>
+    <div class="projects-header">
+      <span class="sec-eyebrow">Portfolio</span>
+      <h2>Écrins réalisés</h2>
+    </div>
+
+    <!-- Projet 1: Zellige -->
+    <div class="project-row" id="proj-1">
+      <div class="project-visual">
+        <svg viewBox="0 0 600 450">
+          <rect width="600" height="450" fill="#1A1A19"/>
+          <rect x="50" y="60" width="220" height="180" rx="1" fill="#262320"/>
+          <rect x="290" y="60" width="260" height="100" rx="1" fill="#2E2A25"/>
+          <rect x="290" y="180" width="120" height="140" rx="1" fill="#1F1C18"/>
+          <rect x="430" y="340" width="120" height="70" rx="1" fill="#8C7C65" opacity=".1"/>
+          <line x1="50" y1="280" x2="550" y2="280" stroke="#8C7C65" stroke-width=".5" opacity=".1"/>
+          <rect x="50" y="310" width="300" height="2" fill="#8C7C65" opacity=".15"/>
+        </svg>
+        <div class="slit-reveal" id="slit-1">
+          <div class="slit-panel top"></div>
+          <div class="slit-panel bottom"></div>
+        </div>
       </div>
-      <div class="proj-card proj-offset" onclick="openProject('travertin')" style="aspect-ratio:16/10">
-        <svg viewBox="0 0 600 375" class="hover-img-target"><rect width="600" height="375" fill="#1C1C1C"/><circle cx="300" cy="160" r="100" fill="#25201a"/><rect x="180" y="120" width="240" height="80" rx="2" fill="#2e2820"/></svg>
-        <div class="info"><span>Saint-Malo</span><h3>Espace Travertin</h3><p>Bain privé · 12m²</p></div>
+      <div class="project-content">
+        <div class="project-number">I</div>
+        <span class="loc">Rennes · Cuisine</span>
+        <h3>Projet Zellige</h3>
+        <p>Cuisine de 18m² dans le centre historique de Rennes. Îlot central en chêne massif, crédence en zellige artisanal marocain. Lumière traversante repensée.</p>
+        <div class="project-meta">
+          <div class="project-meta-item"><span class="lbl">Matériaux</span><span class="val">Chêne, Zellige, Noyer</span></div>
+          <div class="project-meta-item"><span class="lbl">Durée</span><span class="val">6 semaines</span></div>
+        </div>
       </div>
-      <div class="proj-card proj-pull" onclick="openProject('odyssee')" style="aspect-ratio:16/10">
-        <svg viewBox="0 0 600 375" class="hover-img-target"><rect width="600" height="375" fill="#1C1C1C"/><rect x="60" y="50" width="180" height="200" rx="2" fill="#25201a"/><rect x="270" y="90" width="270" height="150" rx="2" fill="#2e2820"/><rect x="60" y="290" width="480" height="2" fill="#C5A880" opacity=".08"/></svg>
-        <div class="info"><span>Rennes</span><h3>Appartement Odyssée</h3><p>Haussmannien · 80m²</p></div>
+    </div>
+
+    <!-- Projet 2: Travertin -->
+    <div class="project-row" id="proj-2">
+      <div class="project-visual">
+        <svg viewBox="0 0 600 450">
+          <rect width="600" height="450" fill="#1A1A19"/>
+          <circle cx="280" cy="200" r="160" fill="none" stroke="#8C7C65" stroke-width=".5" opacity=".08"/>
+          <rect x="80" y="120" width="200" height="180" rx="1" fill="#262320"/>
+          <rect x="320" y="160" width="200" height="140" rx="1" fill="#2E2A25"/>
+          <line x1="80" y1="350" x2="520" y2="350" stroke="#8C7C65" stroke-width=".5" opacity=".1"/>
+        </svg>
+        <div class="slit-reveal" id="slit-2">
+          <div class="slit-panel top"></div>
+          <div class="slit-panel bottom"></div>
+        </div>
+      </div>
+      <div class="project-content">
+        <div class="project-number">II</div>
+        <span class="loc">Saint-Malo · Bain privé</span>
+        <h3>Espace Travertin</h3>
+        <p>Salle d'eau minérale de 12m². Vasque en travertin brut, robinetterie laiton brossé. Fenêtre zénithale sans vis-à-vis, béton ciré aux murs.</p>
+        <div class="project-meta">
+          <div class="project-meta-item"><span class="lbl">Matériaux</span><span class="val">Travertin, Béton ciré, Laiton</span></div>
+          <div class="project-meta-item"><span class="lbl">Durée</span><span class="val">4 semaines</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Projet 3: Odyssée -->
+    <div class="project-row" id="proj-3">
+      <div class="project-visual">
+        <svg viewBox="0 0 600 450">
+          <rect width="600" height="450" fill="#1A1A19"/>
+          <rect x="40" y="40" width="160" height="200" rx="1" fill="#262320"/>
+          <rect x="230" y="60" width="330" height="150" rx="1" fill="#2E2A25"/>
+          <rect x="40" y="280" width="520" height="130" rx="1" fill="#1F1C18"/>
+          <line x1="40" y1="260" x2="560" y2="260" stroke="#8C7C65" stroke-width=".5" opacity=".1"/>
+        </svg>
+        <div class="slit-reveal" id="slit-3">
+          <div class="slit-panel top"></div>
+          <div class="slit-panel bottom"></div>
+        </div>
+      </div>
+      <div class="project-content">
+        <div class="project-number">III</div>
+        <span class="loc">Rennes · Haussmannien</span>
+        <h3>Appartement Odyssée</h3>
+        <p>Rénovation intégrale de 80m² sous les toits. Moulures d'époque restaurées, parquet Hongrie, verrière atelier. Alliance du classicisme et de la modernité.</p>
+        <div class="project-meta">
+          <div class="project-meta-item"><span class="lbl">Matériaux</span><span class="val">Parquet Hongrie, Verrière acier</span></div>
+          <div class="project-meta-item"><span class="lbl">Durée</span><span class="val">4 mois</span></div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- À PROPOS — chevauchement -->
-<section id="apropos">
+<!-- ═══════════ MATIÈROTHÈQUE INTERACTIVE ═══════════ -->
+<section id="matieres">
   <div class="wrap">
-    <span class="sec-eyebrow">À propos</span>
-    <h2>Architecte d'intérieur.<br>Une vision, des espaces qui respirent.</h2>
-    <div class="about-block">
-      <div class="about-img">
-        <svg viewBox="0 0 200 250" width="100"><rect width="200" height="250" fill="#1C1C1C"/><circle cx="100" cy="100" r="60" fill="#C5A880" opacity=".08"/><rect x="70" y="170" width="60" height="2" fill="#C5A880" opacity=".15"/></svg>
+    <span class="sec-eyebrow">Matièrothèque</span>
+    <h2>Le laboratoire<br>des textures</h2>
+    <p class="sec-desc">Chaque projet commence par le choix des matières. Parcourez les accords de texture qui définissent mon travail.</p>
+    <div class="matter-grid">
+      <div class="matter-card hover-matter">
+        <div class="matter-ring"></div>
+        <div class="idx">01</div>
+        <h3>Travertin</h3>
+        <span class="sub">Pierre naturelle</span>
+        <p class="desc">Pierre calcaire aux veinures irrégulières. Surface poreuse, teintes crème à noisette. Idéal en vasque, sol ou parement mural pour une présence minérale brute.</p>
       </div>
-      <div class="about-text">
-        <p>Diplômée de l'École de Design de Nantes, j'exerce depuis 2016. Mon approche mêle rigueur architecturale et sensibilité décorative pour créer des espaces qui fonctionnent autant qu'ils émeuvent. Chaque projet est une conversation entre les volumes, la lumière et les matières.</p>
-        <p>Je crois qu'un intérieur réussi est celui où l'on se sent bien sans savoir exactement pourquoi. Cette évidence se construit dans les détails : un axe de vue, une texture sous la main, une source de lumière qui caresse un mur à la tombée du jour.</p>
-        <div class="about-quote">"Camille a su comprendre exactement ce que nous voulions, tout en apportant des idées auxquelles nous n'aurions jamais pensé."<cite>— Marie & Antoine L., Rennes</cite></div>
+      <div class="matter-card hover-matter">
+        <div class="matter-ring"></div>
+        <div class="idx">02</div>
+        <h3>Chêne Bruni</h3>
+        <span class="sub">Bois massif</span>
+        <p class="desc">Chêne européen brossé et huilé foncé. Patine chaleureuse, fil droit. Parquets, menuiseries et mobilier sur mesure. Vieillit en beauté.</p>
+      </div>
+      <div class="matter-card hover-matter">
+        <div class="matter-ring"></div>
+        <div class="idx">03</div>
+        <h3>Chaux Ciselée</h3>
+        <span class="sub">Enduit mural</span>
+        <p class="desc">Enduit à la chaux appliqué à la taloche, nuancé main. Surface respirante, veloutée, jamais uniforme. La signature d'un mur vivant.</p>
+      </div>
+      <div class="matter-card hover-matter">
+        <div class="matter-ring"></div>
+        <div class="idx">04</div>
+        <h3>Zellige</h3>
+        <span class="sub">Céramique artisanale</span>
+        <p class="desc">Carreaux de terre cuite émaillée, cuits au four traditionnel. Reflets irréguliers, couleurs vibrantes. Crédences, salles d'eau, niches.</p>
+      </div>
+      <div class="matter-card hover-matter">
+        <div class="matter-ring"></div>
+        <div class="idx">05</div>
+        <h3>Béton Ciré</h3>
+        <span class="sub">Revêtement continu</span>
+        <p class="desc">Mortier fin teinté dans la masse, poncé et patiné. Sans joint, sensuel au toucher. Sols, murs, douches à l'italienne — un minimalisme radical.</p>
+      </div>
+      <div class="matter-card hover-matter">
+        <div class="matter-ring"></div>
+        <div class="idx">06</div>
+        <h3>Laiton Brossé</h3>
+        <span class="sub">Métal noble</span>
+        <p class="desc">Alliage cuivre-zinc satiné, chaleureux sans ostentation. Robinetterie, poignées, luminaires. Se patine lentement pour une profondeur unique.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- JOURNAL -->
-<section class="alt">
+<!-- ═══════════ BRIEF ARCHITECTURAL ═══════════ -->
+<section id="brief" class="alt">
   <div class="wrap">
-    <span class="sec-eyebrow">Le Journal</span>
-    <h2>Conseils & Inspirations</h2>
-    <div class="journal-grid">
-      <a href="#" class="j-card">
-        <div class="j-img"><svg viewBox="0 0 400 180" width="100%"><rect width="400" height="180" fill="#1C1C1C"/><rect x="60" y="50" width="120" height="70" rx="2" fill="#2a2520"/></svg></div>
-        <div class="j-text"><span class="j-tag">Rénovation</span><h3>Rénover sa cuisine : les étapes clés</h3><p>Du plan de travail aux matériaux.</p><span class="j-date">12 juin 2026</span></div>
-      </a>
-      <a href="#" class="j-card">
-        <div class="j-img"><svg viewBox="0 0 400 180" width="100%"><rect width="400" height="180" fill="#1C1C1C"/><circle cx="200" cy="90" r="50" fill="#C5A880" opacity=".06"/></svg></div>
-        <div class="j-text"><span class="j-tag">Décoration</span><h3>Comment choisir les bons luminaires</h3><p>L'éclairage fait 50% de l'ambiance.</p><span class="j-date">3 mai 2026</span></div>
-      </a>
-      <a href="#" class="j-card">
-        <div class="j-img"><svg viewBox="0 0 400 180" width="100%"><rect width="400" height="180" fill="#1C1C1C"/><rect x="40" y="50" width="140" height="80" rx="2" fill="#2a2520"/></svg></div>
-        <div class="j-text"><span class="j-tag">Matériaux</span><h3>Le guide des matériaux durables</h3><p>Les matières qui traversent le temps.</p><span class="j-date">18 avril 2026</span></div>
-      </a>
-    </div>
-  </div>
-</section>
+    <div class="brief-wrap">
+      <span class="sec-eyebrow">Votre projet</span>
+      <h2 style="margin-bottom:48px">Le Brief<br>Architectural</h2>
+      <div class="brief-steps">
+        <div class="brief-progress"><div class="brief-progress-bar" id="brief-bar"></div></div>
 
-<!-- CONTACT -->
-<section id="contact">
-  <div class="wrap">
-    <span class="sec-eyebrow">Contact</span>
-    <div class="contact-block">
-      <div class="contact-info">
-        <h2>Écrivons les premiers mots de votre histoire</h2>
-        <p>Que vous ayez un projet défini ou une envie encore floue, prenons le temps d'en parler. Premier échange sans engagement.</p>
-        <div class="contact-detail"><span class="lbl">Par téléphone</span><span class="val">06 XX XX XX XX</span></div>
-        <div class="contact-detail"><span class="lbl">Par email</span><span class="val">camille@rousselcamille.fr</span></div>
-        <div class="contact-detail"><span class="lbl">Le studio</span><span class="val">Rennes, Bretagne</span></div>
+        <!-- Étape 1 -->
+        <div class="brief-step active" data-step="1">
+          <span class="q-num">Question 1/5</span>
+          <h3>Quel espace souhaitez-vous transformer&nbsp;?</h3>
+          <div class="brief-choices">
+            <button class="brief-choice" onclick="selectChoice(this,'Cuisine')">Cuisine</button>
+            <button class="brief-choice" onclick="selectChoice(this,'Salle de bain')">Salle de bain</button>
+            <button class="brief-choice" onclick="selectChoice(this,'Salon / Séjour')">Salon / Séjour</button>
+            <button class="brief-choice" onclick="selectChoice(this,'Appartement entier')">Appartement entier</button>
+            <button class="brief-choice" onclick="selectChoice(this,'Maison')">Maison</button>
+            <button class="brief-choice" onclick="selectChoice(this,'Autre')">Autre</button>
+          </div>
+        </div>
+
+        <!-- Étape 2 -->
+        <div class="brief-step" data-step="2">
+          <span class="q-num">Question 2/5</span>
+          <h3>Où se situe votre projet&nbsp;?</h3>
+          <input type="text" class="brief-input" placeholder="Rennes, Saint-Malo, Bruz..." id="brief-lieu">
+        </div>
+
+        <!-- Étape 3 -->
+        <div class="brief-step" data-step="3">
+          <span class="q-num">Question 3/5</span>
+          <h3>Quel est le mot qui définit l'ambiance que vous recherchez&nbsp;?</h3>
+          <div class="brief-choices">
+            <button class="brief-choice" onclick="selectChoice(this,'Minérale')">Minérale</button>
+            <button class="brief-choice" onclick="selectChoice(this,'Chaleureuse')">Chaleureuse</button>
+            <button class="brief-choice" onclick="selectChoice(this,'Épurée')">Épurée</button>
+            <button class="brief-choice" onclick="selectChoice(this,'Audacieuse')">Audacieuse</button>
+            <button class="brief-choice" onclick="selectChoice(this,'Intemporelle')">Intemporelle</button>
+            <button class="brief-choice" onclick="selectChoice(this,'Organique')">Organique</button>
+          </div>
+        </div>
+
+        <!-- Étape 4 -->
+        <div class="brief-step" data-step="4">
+          <span class="q-num">Question 4/5</span>
+          <h3>Quel budget envisagez-vous pour cette transformation&nbsp;?</h3>
+          <div class="brief-choices">
+            <button class="brief-choice" onclick="selectChoice(this,'5 000€ — 10 000€')">5 000€ — 10 000€</button>
+            <button class="brief-choice" onclick="selectChoice(this,'10 000€ — 25 000€')">10 000€ — 25 000€</button>
+            <button class="brief-choice" onclick="selectChoice(this,'25 000€ — 50 000€')">25 000€ — 50 000€</button>
+            <button class="brief-choice" onclick="selectChoice(this,'+ de 50 000€')">+ de 50 000€</button>
+            <button class="brief-choice" onclick="selectChoice(this,'Je ne sais pas encore')">Je ne sais pas encore</button>
+          </div>
+        </div>
+
+        <!-- Étape 5 -->
+        <div class="brief-step" data-step="5">
+          <span class="q-num">Question 5/5</span>
+          <h3>Parlez-moi de votre vision. Qu'est-ce qui rendra cet espace <em style="font-style:italic;font-weight:400;color:var(--bronze)">unique</em>&nbsp;?</h3>
+          <textarea class="brief-textarea" placeholder="Vos envies, vos contraintes, ce qui vous inspire..." id="brief-vision"></textarea>
+        </div>
+
+        <!-- Done -->
+        <div class="brief-done" id="brief-done">
+          <h3>Votre brief est prêt.</h3>
+          <p>Je vous recontacterai personnellement dans les 48 heures pour un premier échange. Préparez vos inspirations — nous allons créer quelque chose d'exceptionnel.</p>
+        </div>
+
+        <div class="brief-nav" id="brief-nav">
+          <button class="brief-back" id="brief-back-btn" onclick="prevBrief()" style="visibility:hidden">← Retour</button>
+          <button class="brief-next" id="brief-next-btn" onclick="nextBrief()">Continuer</button>
+        </div>
       </div>
-      <form class="contact-form" onsubmit="handleSubmit(event)">
-        <label>Comment vous appelez-vous ?</label><input type="text" required placeholder="Votre nom">
-        <label>Votre adresse email</label><input type="email" required placeholder="vous@email.fr">
-        <label>Où se situe votre projet ?</label><input type="text" placeholder="Rennes, Saint-Malo...">
-        <label>Parlez-moi de votre projet</label><textarea rows="3" placeholder="Vos envies, vos contraintes, votre budget..."></textarea>
-        <button type="submit">Prendre rendez-vous</button>
-      </form>
     </div>
   </div>
 </section>
 
+<!-- ═══════════ FOOTER ═══════════ -->
 <footer>
   <div class="wrap">
     <div class="fgrid">
-      <div><h4>Camille Roussel</h4><p>Architecte d'intérieur à Rennes. Rénovation, agencement et décoration sur mesure depuis 2016.</p></div>
-      <div><h4>Navigation</h4><ul><li><a href="#prestations">Prestations</a></li><li><a href="#projets">Projets</a></li><li><a href="#apropos">À propos</a></li><li><a href="#contact">Contact</a></li></ul></div>
-      <div><h4>Le studio</h4><ul><li>Rennes, Bretagne</li><li>camille@rousselcamille.fr</li></ul></div>
+      <div>
+        <h4>Camille Roussel</h4>
+        <p>Architecte d'intérieur à Rennes. Rénovation, agencement et décoration sur mesure depuis 2016. Chaque projet est une création singulière, ancrée dans votre histoire.</p>
+      </div>
+      <div>
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#philosophie">Philosophie</a></li>
+          <li><a href="#projets">Projets</a></li>
+          <li><a href="#matieres">Matièrothèque</a></li>
+          <li><a href="#brief">Brief architectural</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Le Studio</h4>
+        <ul>
+          <li>Rennes, Bretagne</li>
+          <li>camille@rousselcamille.fr</li>
+        </ul>
+      </div>
     </div>
-    <div class="fbottom">© 2026 Camille Roussel Architecture d'Intérieur. Tous droits réservés.</div>
+    <div class="fbottom">© 2026 Camille Roussel Architecture d'Intérieur</div>
   </div>
 </footer>
 
+<!-- ═══════════ SCRIPTS ═══════════ -->
 <script>
 gsap.registerPlugin(ScrollTrigger);
 
-// Lenis
-const lenis=new Lenis({duration:1.5,easing:t=>1-Math.pow(1-t,3),smoothWheel:true});
-function raf(t){lenis.raf(t);requestAnimationFrame(raf)}requestAnimationFrame(raf);
-document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)lenis.scrollTo(t,{offset:0,duration:1.8})}));
-
-// Curseur
-const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
-if(cur&&ring&&window.innerWidth>1024){
-  cur.classList.remove('hidden');ring.classList.remove('hidden');
-  let mx=0,my=0,cx=0,cy=0;
-  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
-  function anim(){cx+=(mx-cx)*.12;cy+=(my-cy)*.12;gsap.set(cur,{x:cx,y:cy});gsap.set(ring,{x:cx,y:cy});requestAnimationFrame(anim)}anim();
-  document.querySelectorAll('.proj-card').forEach(el=>{
-    el.addEventListener('mouseenter',()=>{cur.textContent='Découvrir';cur.style.width='90px';cur.style.height='90px';cur.style.background='rgba(197,168,128,.1)';cur.style.backdropFilter='blur(6px)';cur.style.color='#C5A880';ring.style.width='100px';ring.style.height='100px';ring.style.borderColor='#C5A880'});
-    el.addEventListener('mouseleave',()=>{cur.textContent='';cur.style.width='10px';cur.style.height='10px';cur.style.background='#C5A880';cur.style.backdropFilter='none';cur.style.color='transparent';ring.style.width='50px';ring.style.height='50px';ring.style.borderColor='rgba(197,168,128,.3)'});
+/* ── LOADER ── */
+(function loaderAnim(){
+  const counter = document.getElementById('loader-counter');
+  const bar = document.getElementById('loader-progress');
+  const loader = document.getElementById('loader');
+  let v=0; const target=100;
+  const tl = gsap.timeline({onUpdate:()=>{
+    v=Math.round(tl.progress()*target);
+    counter.textContent=String(v).padStart(2,'0');
+    bar.style.width=(tl.progress()*100)+'%';
+  }});
+  tl.to({},{duration:2.2});
+  tl.call(()=>{
+    gsap.to(loader,{opacity:0,duration:.8,ease:'power3.in',onComplete:()=>{
+      loader.style.display='none';
+      document.body.style.overflow='';
+    }});
   });
-}
+  document.body.style.overflow='hidden';
+})();
 
-// Nav scroll
-window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50),{passive:true});
+/* ── LENIS ── */
+const lenis = new Lenis({duration:1.8,easing:t=>1-Math.pow(1-t,3),smoothWheel:true});
+function raf(t){lenis.raf(t);requestAnimationFrame(raf)}requestAnimationFrame(raf);
+document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',e=>{
+  e.preventDefault();const t=document.querySelector(a.getAttribute('href'));
+  if(t)lenis.scrollTo(t,{offset:0,duration:2});
+}));
 
-// Scroll hint
-gsap.to('.scroll-dot',{y:36,duration:2,ease:'power1.inOut',repeat:-1,yoyo:true});
+/* ── CURSEUR ── */
+(function cursInit(){
+  const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+  if(!cur||!ring||window.innerWidth<1025)return;
+  cur.classList.remove('hidden');ring.classList.remove('hidden');
+  let mx=0,my=0,sx=0,sy=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+  function anim(){
+    sx+=(mx-sx)*.1;sy+=(my-sy)*.1;
+    rx+=(mx-rx)*.05;ry+=(my-ry)*.05;
+    gsap.set(cur,{x:sx,y:sy});gsap.set(ring,{x:rx,y:ry});
+    requestAnimationFrame(anim);
+  }anim();
+  // Hover classes
+  document.querySelectorAll('.hover-matter').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cur.textContent='Explorer';cur.classList.add('hover-matter');ring.style.width='110px';ring.style.height='110px';ring.style.borderColor='var(--bronze)'});
+    el.addEventListener('mouseleave',()=>{cur.textContent='';cur.classList.remove('hover-matter');ring.style.width='60px';ring.style.height='60px';ring.style.borderColor='var(--bronze-fade)'});
+  });
+  document.querySelectorAll('.project-visual').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cur.textContent='Voir le projet';cur.classList.add('hover-project');ring.style.width='150px';ring.style.height='150px';ring.style.borderColor='var(--bronze)'});
+    el.addEventListener('mouseleave',()=>{cur.textContent='';cur.classList.remove('hover-project');ring.style.width='60px';ring.style.height='60px';ring.style.borderColor='var(--bronze-fade)'});
+  });
+})();
 
-// Scroll reveals
-gsap.utils.toArray('.p-card,.proj-card,.j-card,.about-text,.contact-form').forEach(el=>{
-  gsap.fromTo(el,{opacity:0,y:40},{opacity:1,y:0,scrollTrigger:{trigger:el,start:'top 90%'},duration:1,ease:'power3.out'});
+/* ── NAV SCROLL ── */
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50)},{passive:true});
+
+/* ── SCROLL HINT ── */
+gsap.to('.scroll-hint .dot',{y:40,duration:2.2,ease:'power1.inOut',repeat:-1,yoyo:true});
+
+/* ── HERO STAGGER ── */
+(function heroEnter(){
+  const tl=gsap.timeline({delay:.4});
+  tl.from('.hero-eyebrow',{opacity:0,y:32,duration:1,ease:'power4.out'});
+  tl.from('.hero h1',{opacity:0,y:48,duration:1.3,ease:'power4.out'},'-.6');
+  tl.from('.hero .lede',{opacity:0,y:24,duration:1,ease:'power4.out'},'-.7');
+  tl.from('.hero-actions',{opacity:0,y:20,duration:.8,ease:'power4.out'},'-.6');
+  tl.from('.scroll-hint',{opacity:0,duration:.6},'-.4');
+})();
+
+/* ── PHILO REVEAL ── */
+gsap.from('.philo-visual',{scrollTrigger:{trigger:'.philo-grid',start:'top 80%'},opacity:0,x:-60,duration:1.4,ease:'power3.out'});
+gsap.from('.philo-text',{scrollTrigger:{trigger:'.philo-grid',start:'top 80%'},opacity:0,x:40,duration:1.4,ease:'power3.out'});
+
+/* ── SLIT REVEAL ── */
+(function slitReveals(){
+  document.querySelectorAll('.project-row').forEach(row=>{
+    const slit=row.querySelector('.slit-reveal');
+    if(!slit)return;
+    const top=slit.querySelector('.slit-panel.top');
+    const bottom=slit.querySelector('.slit-panel.bottom');
+    if(!top||!bottom)return;
+
+    gsap.set(top,{clipPath:'inset(0 0 50% 0)'});
+    gsap.set(bottom,{clipPath:'inset(50% 0 0 0)'});
+
+    ScrollTrigger.create({
+      trigger:row,start:'top 75%',
+      onEnter:()=>{
+        gsap.to(top,{clipPath:'inset(0 0 100% 0)',duration:1.3,ease:'power4.inOut'});
+        gsap.to(bottom,{clipPath:'inset(100% 0 0 0)',duration:1.3,ease:'power4.inOut'});
+      },
+      once:true
+    });
+  });
+})();
+
+/* ── PROJECT CONTENT REVEAL ── */
+gsap.utils.toArray('.project-content').forEach(el=>{
+  gsap.from(el,{scrollTrigger:{trigger:el,start:'top 82%'},opacity:0,y:50,duration:1.2,ease:'power3.out',delay:.3});
 });
 
-// Hero stagger
-const tl=gsap.timeline();
-tl.from('.hero-eyebrow',{opacity:0,y:30,duration:1,ease:'power4.out'});
-tl.from('.hero h1',{opacity:0,y:40,duration:1.2,ease:'power4.out'},'-.6');
-tl.from('.hero .lede',{opacity:0,y:20,duration:1,ease:'power4.out'},'-.7');
-tl.from('.hero-actions',{opacity:0,y:20,duration:.8,ease:'power4.out'},'-.6');
-tl.from('.scroll-hint',{opacity:0,duration:.6},'-.4');
+/* ── MATIÈROTHÈQUE REVEAL ── */
+gsap.utils.toArray('.matter-card').forEach((el,i)=>{
+  gsap.from(el,{scrollTrigger:{trigger:el,start:'top 88%'},opacity:0,y:40,duration:.9,ease:'power3.out',delay:i*.08});
+});
 
-// Project modal
-const pdata={
-  zellige:{title:'Projet Zellige',tag:'Rennes — Cuisine d\'architecte',desc:'Cuisine de 18m² repensée dans le centre de Rennes. Îlot central en chêne massif, crédence en zellige artisanal. Meubles bas en noyer, sol en pierre naturelle.',mat:'Chêne massif, Zellige, Noyer',budget:'18 000€ · 6 semaines'},
-  travertin:{title:'Espace Travertin',tag:'Saint-Malo — Bain privé',desc:'Salle d\'eau minimaliste de 12m². Béton ciré, vasque en travertin brut, robinetterie laiton brossé. Fenêtre zénithale sans vis-à-vis.',mat:'Béton ciré, Travertin, Laiton',budget:'9 500€ · 4 semaines'},
-  odyssee:{title:'Appartement Odyssée',tag:'Rennes — Haussmannien',desc:'Rénovation de 80m² sous les toits. Moulures restaurées, parquet Hongrie, verrière atelier. Dialogue entre classicisme et modernité.',mat:'Parquet Hongrie, Verrière acier',budget:'55 000€ · 4 mois'}
-};
-function openProject(k){
-  const d=pdata[k];
-  let m=document.getElementById('modal');
-  if(!m){m=document.createElement('div');m.id='modal';m.style.cssText='position:fixed;inset:0;background:rgba(28,28,28,.7);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;cursor:pointer';m.onclick=()=>m.remove();document.body.appendChild(m)}
-  m.innerHTML=`<div style="background:#fff;border-radius:12px;max-width:440px;padding:36px;cursor:default" onclick="event.stopPropagation()"><span style="font-size:9px;letter-spacing:.14em;color:#C5A880;text-transform:uppercase;font-family:Jost,sans-serif">${d.tag}</span><h3 style="font-family:Cormorant Garamond,serif;font-size:26px;font-weight:300;margin:8px 0 16px">${d.title}</h3><p style="font-family:Jost,sans-serif;font-size:13px;color:#66635F;line-height:1.7;font-weight:300;margin-bottom:20px">${d.desc}</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:16px;border-top:1px solid #DCD6CD"><div><span style="font-size:9px;letter-spacing:.1em;color:#C5A880;text-transform:uppercase;font-family:Jost,sans-serif">Matériaux</span><p style="font-family:Jost,sans-serif;font-size:13px;font-weight:300;margin-top:4px">${d.mat}</p></div><div><span style="font-size:9px;letter-spacing:.1em;color:#C5A880;text-transform:uppercase;font-family:Jost,sans-serif">Budget</span><p style="font-family:Jost,sans-serif;font-size:13px;font-weight:300;margin-top:4px">${d.budget}</p></div></div></div>`;
+/* ── BRIEF ARCHITECTURAL ── */
+let briefStep=1;const maxSteps=5;const briefAnswers={};
+function updateBriefUI(){
+  document.querySelectorAll('.brief-step').forEach(s=>s.classList.remove('active'));
+  const cur=document.querySelector(`.brief-step[data-step="${briefStep}"]`);
+  if(cur)cur.classList.add('active');
+  document.getElementById('brief-bar').style.width=((briefStep-1)/maxSteps*100)+'%';
+  document.getElementById('brief-back-btn').style.visibility=briefStep===1?'hidden':'visible';
+  document.getElementById('brief-next-btn').textContent=briefStep===maxSteps?'Envoyer':'Continuer';
 }
-function handleSubmit(e){e.preventDefault();const b=e.target.querySelector('button');b.textContent='Envoyé ✓';b.style.background='#C5A880';setTimeout(()=>{b.textContent='Prendre rendez-vous';b.style.background='#1C1C1C'},2000)}
+function nextBrief(){
+  if(briefStep===maxSteps){
+    // Collect last answer
+    const ta=document.getElementById('brief-vision');
+    if(ta&&ta.value.trim()){briefAnswers['vision']=ta.value.trim()}
+    // Show done
+    document.querySelectorAll('.brief-step').forEach(s=>s.classList.remove('active'));
+    document.getElementById('brief-done').style.display='block';
+    document.getElementById('brief-nav').style.display='none';
+    gsap.from('#brief-done',{opacity:0,y:30,duration:.8,ease:'power3.out'});
+    document.getElementById('brief-bar').style.width='100%';
+    return;
+  }
+  // Collect current step answer
+  const cur=document.querySelector(`.brief-step[data-step="${briefStep}"]`);
+  if(!cur)return;
+  // Check if there's a selected choice
+  const sel=cur.querySelector('.brief-choice.selected');
+  if(sel){briefAnswers['q'+briefStep]=sel.textContent}
+  // Or text input
+  const inp=cur.querySelector('.brief-input');
+  if(inp&&inp.value.trim()){briefAnswers['q'+briefStep]=inp.value.trim()}
+
+  briefStep++;
+  updateBriefUI();
+}
+function prevBrief(){
+  if(briefStep<=1)return;
+  briefStep--;
+  updateBriefUI();
+}
+function selectChoice(btn,val){
+  // Deselect siblings
+  btn.parentElement.querySelectorAll('.brief-choice').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
 </script>
 </body>
 </html>
