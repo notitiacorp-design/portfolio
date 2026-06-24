@@ -89,29 +89,38 @@ body{
 
 /* ═══════════ HERO ═══════════ */
 .hero{
-  height:100vh;display:flex;align-items:center;
+  height:100vh;display:grid;grid-template-columns:1fr 1fr;
   position:relative;overflow:hidden;
-  background:var(--argile);
+  background:var(--albatre);
 }
-.hero-bg{position:absolute;inset:0}
-.hero-bg img{width:100%;height:100%;object-fit:cover;display:block}
-.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(245,241,234,.82) 0%,rgba(245,241,234,.3) 40%,rgba(45,41,38,.15) 100%)}
-.hero .wrap{position:relative;z-index:2;max-width:1400px;margin:0 auto;padding:0 clamp(24px,6vw,64px)}
+.hero-img{
+  position:relative;overflow:hidden;height:100vh;
+}
+.hero-img img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(245,241,234,.15))}
+.hero-text{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:0 clamp(32px,6vw,80px);position:relative;
+}
+.hero-text::before{
+  content:'';position:absolute;left:0;top:15%;bottom:15%;width:1px;
+  background:var(--bronze-light);
+}
 .hero-eyebrow{
   font-size:9px;letter-spacing:.36em;color:var(--bronze);
-  text-transform:uppercase;font-weight:400;margin-bottom:24px;
+  text-transform:uppercase;font-weight:400;margin-bottom:28px;
 }
 .hero h1{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(38px,6vw,80px);font-weight:300;line-height:1.08;
-  color:var(--anthracite);max-width:720px;
+  font-size:clamp(32px,5vw,64px);font-weight:300;line-height:1.1;
+  color:var(--anthracite);
 }
 .hero h1 em{font-style:italic;font-weight:400;color:var(--bronze)}
 .hero .lede{
-  color:var(--sable);font-size:16px;max-width:440px;
-  line-height:1.8;margin-top:24px;font-weight:300;
+  color:var(--sable);font-size:15px;max-width:380px;
+  line-height:1.8;margin-top:20px;font-weight:300;
 }
-.hero-actions{display:flex;gap:14px;margin-top:40px;flex-wrap:wrap}
+.hero-actions{display:flex;gap:14px;margin-top:36px;flex-wrap:wrap}
 .btn-fill{
   display:inline-block;padding:18px 36px;background:var(--bronze);
   color:var(--albatre);font-size:10px;letter-spacing:.16em;
@@ -128,9 +137,12 @@ body{
   font-weight:400;transition:all .5s var(--ease);
 }
 .btn-ghost:hover{border-color:var(--bronze);background:var(--bronze);color:var(--albatre)}
-.scroll-hint{position:absolute;bottom:48px;left:50%;transform:translateX(-50%);text-align:center;z-index:2}
-.scroll-hint .line{width:1px;height:64px;background:var(--bronze-fade);margin:0 auto;position:relative;overflow:hidden}
-.scroll-hint .dot{position:absolute;top:0;left:0;width:100%;height:24px;background:var(--bronze)}
+.scroll-hint{position:absolute;bottom:48px;left:50%;transform:translateX(-50%);text-align:center;z-index:5}
+.scroll-hint .line{width:1px;height:56px;background:var(--bronze-fade);margin:0 auto;position:relative;overflow:hidden}
+.scroll-hint .dot{position:absolute;top:0;left:0;width:100%;height:20px;background:var(--bronze)}
+
+/* ═══════════ SIGNATURE LINE ═══════════ */
+.sig-line{width:1px;height:80px;background:var(--bronze-light);margin:0 auto 40px}
 
 /* ═══════════ SECTIONS ═══════════ */
 section{padding:clamp(100px,16vh,180px) 0}
@@ -179,35 +191,58 @@ h2{
   text-transform:uppercase;margin-top:14px;font-weight:400;
 }
 
-/* ═══════════ PROJETS ═══════════ */
+/* ═══════════ QUOTE BLOCK ═══════════ */
+.quote-block{
+  background:var(--anthracite);padding:clamp(80px,14vh,140px) 0;
+  text-align:center;position:relative;
+}
+.quote-block .wrap{max-width:800px}
+.quote-block h2{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(24px,4vw,40px);font-weight:300;line-height:1.35;
+  color:var(--albatre);
+}
+.quote-block cite{
+  display:block;font-family:'Jost',sans-serif;font-style:normal;
+  font-size:10px;letter-spacing:.2em;color:var(--bronze);
+  text-transform:uppercase;margin-top:24px;font-weight:400;
+}
+.quote-block .sig-line{margin:0 auto 0;margin-top:60px}
+
+/* ═══════════ PARALLAX ═══════════ */
+.parallax-wrap{overflow:hidden}
+.parallax-img{will-change:transform}
+
+/* ═══════════ PROJETS — FULL BLEED ═══════════ */
 .projects-header{margin-bottom:clamp(60px,10vh,100px)}
 .project-row{
-  margin-bottom:clamp(100px,16vh,180px);
-  position:relative;
+  margin-bottom:clamp(100px,16vh,180px);position:relative;
 }
 .project-visual{
-  aspect-ratio:16/9;position:relative;overflow:hidden;
-  background:var(--argile);margin-bottom:clamp(28px,4vw,48px);
+  aspect-ratio:21/9;position:relative;overflow:hidden;
+  background:var(--argile);
 }
 .project-visual img{width:100%;height:100%;object-fit:cover;display:block}
-.project-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(45,41,38,.08));pointer-events:none;z-index:2}
-.project-content{max-width:720px}
+.project-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(45,41,38,.12));pointer-events:none;z-index:2}
+.project-content{
+  max-width:620px;padding:clamp(24px,4vw,40px) 0 0;
+  margin-left:clamp(20px,6vw,80px);
+}
 .project-content .loc{
-  font-size:10px;letter-spacing:.2em;color:var(--bronze);
-  text-transform:uppercase;font-weight:400;display:block;margin-bottom:12px;
+  font-size:10px;letter-spacing:.22em;color:var(--bronze);
+  text-transform:uppercase;font-weight:400;display:block;margin-bottom:10px;
 }
 .project-content h3{
   font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,48px);
-  font-weight:300;line-height:1.12;margin-bottom:12px;
+  font-weight:300;line-height:1.1;margin-bottom:10px;
 }
 .project-content .tagline{
   font-size:clamp(15px,2vw,18px);color:var(--sable);font-weight:300;
-  line-height:1.6;margin-bottom:28px;font-style:italic;
+  line-height:1.6;margin-bottom:24px;font-style:italic;
 }
-.project-meta{display:flex;gap:40px;padding-top:24px;border-top:1px solid var(--bronze-light)}
+.project-meta{display:flex;gap:40px;padding-top:20px;border-top:1px solid var(--bronze-light)}
 .project-meta-item .lbl{font-size:9px;letter-spacing:.14em;color:var(--bronze);text-transform:uppercase;font-weight:400}
 .project-meta-item .val{font-size:14px;color:var(--anthracite);margin-top:4px;font-weight:300}
-/* Slit reveal */
 .slit-reveal{position:absolute;inset:0;z-index:3;pointer-events:none}
 .slit-panel{position:absolute;inset:0;background:var(--albatre)}
 .slit-panel.top{clip-path:inset(0 0 50% 0)}
@@ -334,8 +369,13 @@ footer .fbottom{margin-top:60px;padding-top:28px;border-top:1px solid rgba(245,2
 @media(max-width:900px){
   #nav{padding:28px 24px}.logo{font-size:18px}
   #nav.scrolled{padding:16px 24px}
+  .hero{grid-template-columns:1fr}
+  .hero-img{height:50vh}
+  .hero-text{padding:40px 28px}
+  .hero-text::before{display:none}
   .hero h1{font-size:clamp(28px,8vw,48px)}
   .philo-grid{grid-template-columns:1fr;gap:40px;margin-top:40px}
+  .matter-grid{grid-template-columns:1fr;margin-top:40px}
   section{padding:80px 0}
   .wrap{padding:0 24px}
 }
@@ -364,10 +404,10 @@ footer .fbottom{margin-top:60px;padding-top:28px;border-top:1px solid rgba(245,2
 
 <!-- ═══════════ HERO ═══════════ -->
 <section class="hero">
-  <div class="hero-bg">
-    <img src="https://images.unsplash.com/photo-1616137466211-f907aec70cc3?w=1600&q=85&fit=crop" alt="Intérieur chaleureux">
+  <div class="hero-img">
+    <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=1000&q=85&fit=crop" alt="Architecture d'intérieur">
   </div>
-  <div class="wrap">
+  <div class="hero-text">
     <div class="hero-eyebrow">Architecte d'Intérieur · Rennes</div>
     <h1>Des espaces <em>silencieux</em> pour âmes exigeantes.</h1>
     <p class="lede">Je conçois des intérieurs qui ne ressemblent qu'à vous. De l'intention architecturale au détail ultime, chaque projet est une création singulière.</p>
@@ -395,6 +435,15 @@ footer .fbottom{margin-top:60px;padding-top:28px;border-top:1px solid rgba(245,2
         <div class="philo-quote">« Camille a su comprendre exactement ce que nous voulions, tout en apportant des idées auxquelles nous n'aurions jamais pensé. »<cite>— Marie &amp; Antoine L., Rennes</cite></div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ═══════════ QUOTE ═══════════ -->
+<section class="quote-block">
+  <div class="wrap">
+    <div class="sig-line"></div>
+    <h2>« Un intérieur réussi est celui où l'on se sent bien sans savoir exactement pourquoi. Cette évidence se construit dans les détails. »</h2>
+    <cite>Camille Roussel</cite>
   </div>
 </section>
 
@@ -677,17 +726,19 @@ gsap.to('.scroll-hint .dot',{y:40,duration:2.2,ease:'power1.inOut',repeat:-1,yoy
 
 /* ── HERO STAGGER ── */
 (function heroEnter(){
-  const tl=gsap.timeline({delay:.4});
-  tl.from('.hero-eyebrow',{opacity:0,y:32,duration:1,ease:'power4.out'});
-  tl.from('.hero h1',{opacity:0,y:48,duration:1.3,ease:'power4.out'},'-.6');
-  tl.from('.hero .lede',{opacity:0,y:24,duration:1,ease:'power4.out'},'-.7');
-  tl.from('.hero-actions',{opacity:0,y:20,duration:.8,ease:'power4.out'},'-.6');
-  tl.from('.scroll-hint',{opacity:0,duration:.6},'-.4');
+  const tl=gsap.timeline({delay:1.6});
+  tl.from('.hero-img',{opacity:0,scale:1.04,duration:1.6,ease:'power3.out'});
+  tl.from('.hero-eyebrow',{opacity:0,y:24,duration:.9,ease:'power4.out'},'-.8');
+  tl.from('.hero h1',{opacity:0,y:36,duration:1.1,ease:'power4.out'},'-.6');
+  tl.from('.hero .lede',{opacity:0,y:20,duration:.9,ease:'power4.out'},'-.7');
+  tl.from('.hero-actions',{opacity:0,y:16,duration:.7,ease:'power4.out'},'-.5');
+  tl.from('.scroll-hint',{opacity:0,duration:.5},'-.3');
 })();
 
 /* ── PHILO REVEAL ── */
 gsap.from('.philo-visual',{scrollTrigger:{trigger:'.philo-grid',start:'top 80%'},opacity:0,x:-60,duration:1.4,ease:'power3.out'});
 gsap.from('.philo-text',{scrollTrigger:{trigger:'.philo-grid',start:'top 80%'},opacity:0,x:40,duration:1.4,ease:'power3.out'});
+gsap.to('.philo-visual img',{scrollTrigger:{trigger:'.philo-grid',start:'top bottom',end:'bottom top',scrub:1},y:'-6%',ease:'none'});
 
 /* ── SLIT REVEAL ── */
 (function slitReveals(){
@@ -716,6 +767,19 @@ gsap.from('.philo-text',{scrollTrigger:{trigger:'.philo-grid',start:'top 80%'},o
 gsap.utils.toArray('.project-content').forEach(el=>{
   gsap.from(el,{scrollTrigger:{trigger:el,start:'top 82%'},opacity:0,y:50,duration:1.2,ease:'power3.out',delay:.3});
 });
+
+/* ── PARALLAX ON PROJECT IMAGES ── */
+document.querySelectorAll('.project-visual img').forEach(img=>{
+  gsap.to(img,{
+    scrollTrigger:{trigger:img.closest('.project-row'),start:'top bottom',end:'bottom top',scrub:1},
+    y:'-8%',ease:'none'
+  });
+});
+
+/* ── QUOTE BLOCK REVEAL ── */
+gsap.from('.quote-block .sig-line',{scrollTrigger:{trigger:'.quote-block',start:'top 75%'},scaleY:0,transformOrigin:'top center',duration:1,ease:'power3.out'});
+gsap.from('.quote-block h2',{scrollTrigger:{trigger:'.quote-block',start:'top 75%'},opacity:0,y:30,duration:1.2,ease:'power3.out',delay:.3});
+gsap.from('.quote-block cite',{scrollTrigger:{trigger:'.quote-block',start:'top 75%'},opacity:0,y:20,duration:.8,ease:'power3.out',delay:.5});
 
 /* ── MATIÈROTHÈQUE REVEAL ── */
 gsap.utils.toArray('.matter-card').forEach((el,i)=>{
