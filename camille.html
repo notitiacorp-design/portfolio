@@ -42,22 +42,19 @@ body{
   background:var(--anthracite);
   display:flex;flex-direction:column;align-items:center;justify-content:center;
 }
-#loader-counter{
+#loader-name{
   font-family:'Cormorant Garamond',serif;
-  font-size:clamp(80px,16vw,180px);
-  font-weight:300;color:var(--albatre);line-height:1;
+  font-size:clamp(24px,4vw,36px);
+  font-weight:300;color:var(--albatre);letter-spacing:.24em;
+  text-transform:uppercase;
 }
-#loader-line{
-  width:clamp(200px,30vw,360px);height:1px;background:var(--bronze-fade);
-  margin-top:32px;position:relative;overflow:hidden;
-}
-#loader-progress{
-  position:absolute;top:0;left:0;height:100%;width:0%;
-  background:var(--bronze);
+#loader-rule{
+  width:0;height:1px;background:var(--bronze);
+  margin:24px 0 28px;transition:none;
 }
 #loader-sub{
-  font-size:10px;letter-spacing:.3em;color:var(--bronze);
-  text-transform:uppercase;font-weight:400;margin-top:24px;
+  font-size:10px;letter-spacing:.32em;color:var(--bronze);
+  text-transform:uppercase;font-weight:400;opacity:0;
 }
 
 /* ═══════════ CURSEUR ═══════════ */
@@ -166,8 +163,10 @@ h2{
   display:grid;grid-template-columns:1fr 1fr;gap:clamp(60px,10vw,120px);
   margin-top:80px;align-items:center;
 }
-.philo-visual{aspect-ratio:3/4;background:var(--anthracite);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.philo-visual svg{width:70%}
+.philo-visual{aspect-ratio:3/4;background:var(--anthracite);position:relative;overflow:hidden}
+.philo-visual img,.project-visual img{width:100%;height:100%;object-fit:cover;display:block}
+.philo-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(31,29,26,.25),transparent 60%);pointer-events:none}
+.project-visual::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(31,29,26,.15));pointer-events:none;z-index:2}
 .philo-text p{
   font-size:15px;color:var(--bronze);line-height:2.1;margin-bottom:28px;font-weight:300;
 }
@@ -193,9 +192,8 @@ h2{
 .project-row:nth-child(even) .project-content{order:-1}
 .project-visual{
   aspect-ratio:4/3;position:relative;overflow:hidden;
-  background:var(--anthracite);display:flex;align-items:center;justify-content:center;
+  background:var(--anthracite);
 }
-.project-visual svg{width:80%}
 /* Slit reveal — deux panneaux qui s'écartent */
 .slit-reveal{position:absolute;inset:0;z-index:3;pointer-events:none}
 .slit-panel{
@@ -364,9 +362,9 @@ footer .fbottom{margin-top:60px;padding-top:28px;border-top:1px solid rgba(246,2
 
 <!-- ═══════════ LOADER ═══════════ -->
 <div id="loader">
-  <div id="loader-counter">00</div>
-  <div id="loader-line"><div id="loader-progress"></div></div>
-  <div id="loader-sub">Camille Roussel · Architecture d'Intérieur</div>
+  <div id="loader-name">Camille Roussel</div>
+  <div id="loader-rule"></div>
+  <div id="loader-sub">Architecture d'Intérieur · Rennes</div>
 </div>
 
 <!-- ═══════════ CURSEUR ═══════════ -->
@@ -420,17 +418,7 @@ footer .fbottom{margin-top:60px;padding-top:28px;border-top:1px solid rgba(246,2
     <span class="sec-eyebrow">Philosophie</span>
     <div class="philo-grid">
       <div class="philo-visual">
-        <!-- Lignes architecturales style bleu de travail -->
-        <svg viewBox="0 0 200 280" width="60%">
-          <rect x="20" y="30" width="160" height="220" fill="none" stroke="#8B7860" stroke-width=".5" opacity=".3"/>
-          <line x1="20" y1="100" x2="180" y2="100" stroke="#8B7860" stroke-width=".5" opacity=".2"/>
-          <line x1="20" y1="170" x2="180" y2="170" stroke="#8B7860" stroke-width=".5" opacity=".2"/>
-          <line x1="100" y1="30" x2="100" y2="250" stroke="#8B7860" stroke-width=".5" opacity=".2"/>
-          <rect x="40" y="60" width="60" height="60" fill="none" stroke="#8B7860" stroke-width=".7" opacity=".4"/>
-          <rect x="120" y="140" width="40" height="50" fill="none" stroke="#8B7860" stroke-width=".7" opacity=".4"/>
-          <circle cx="160" cy="80" r="3" fill="#8B7860" opacity=".4"/>
-          <circle cx="40" cy="200" r="3" fill="#8B7860" opacity=".4"/>
-        </svg>
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=85&fit=crop" alt="Studio d'architecture" loading="lazy">
       </div>
       <div class="philo-text">
         <p>Diplômée de l'École de Design de Nantes, je pratique l'architecture d'intérieur depuis 2016. Mon approche mêle rigueur constructive et sensibilité décorative pour créer des espaces qui fonctionnent autant qu'ils émeuvent.</p>
@@ -452,15 +440,7 @@ footer .fbottom{margin-top:60px;padding-top:28px;border-top:1px solid rgba(246,2
     <!-- Projet 1: Zellige -->
     <div class="project-row" id="proj-1">
       <div class="project-visual">
-        <svg viewBox="0 0 600 450">
-          <rect width="600" height="450" fill="#1F1D1A"/>
-          <rect x="50" y="60" width="220" height="180" rx="1" fill="#262320"/>
-          <rect x="290" y="60" width="260" height="100" rx="1" fill="#2E2A25"/>
-          <rect x="290" y="180" width="120" height="140" rx="1" fill="#1F1C18"/>
-          <rect x="430" y="340" width="120" height="70" rx="1" fill="#8B7860" opacity=".1"/>
-          <line x1="50" y1="280" x2="550" y2="280" stroke="#8B7860" stroke-width=".5" opacity=".1"/>
-          <rect x="50" y="310" width="300" height="2" fill="#8B7860" opacity=".15"/>
-        </svg>
+        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=85&fit=crop" alt="Projet Zellige — Cuisine" loading="lazy">
         <div class="slit-reveal" id="slit-1">
           <div class="slit-panel top"></div>
           <div class="slit-panel bottom"></div>
@@ -481,13 +461,7 @@ footer .fbottom{margin-top:60px;padding-top:28px;border-top:1px solid rgba(246,2
     <!-- Projet 2: Travertin -->
     <div class="project-row" id="proj-2">
       <div class="project-visual">
-        <svg viewBox="0 0 600 450">
-          <rect width="600" height="450" fill="#1F1D1A"/>
-          <circle cx="280" cy="200" r="160" fill="none" stroke="#8B7860" stroke-width=".5" opacity=".08"/>
-          <rect x="80" y="120" width="200" height="180" rx="1" fill="#262320"/>
-          <rect x="320" y="160" width="200" height="140" rx="1" fill="#2E2A25"/>
-          <line x1="80" y1="350" x2="520" y2="350" stroke="#8B7860" stroke-width=".5" opacity=".1"/>
-        </svg>
+        <img src="https://images.unsplash.com/photo-1604709178681-8239c1f2f5b5?w=800&q=85&fit=crop" alt="Espace Travertin — Bain privé" loading="lazy">
         <div class="slit-reveal" id="slit-2">
           <div class="slit-panel top"></div>
           <div class="slit-panel bottom"></div>
@@ -508,13 +482,7 @@ footer .fbottom{margin-top:60px;padding-top:28px;border-top:1px solid rgba(246,2
     <!-- Projet 3: Odyssée -->
     <div class="project-row" id="proj-3">
       <div class="project-visual">
-        <svg viewBox="0 0 600 450">
-          <rect width="600" height="450" fill="#1F1D1A"/>
-          <rect x="40" y="40" width="160" height="200" rx="1" fill="#262320"/>
-          <rect x="230" y="60" width="330" height="150" rx="1" fill="#2E2A25"/>
-          <rect x="40" y="280" width="520" height="130" rx="1" fill="#1F1C18"/>
-          <line x1="40" y1="260" x2="560" y2="260" stroke="#8B7860" stroke-width=".5" opacity=".1"/>
-        </svg>
+        <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=85&fit=crop" alt="Appartement Odyssée — Haussmannien" loading="lazy">
         <div class="slit-reveal" id="slit-3">
           <div class="slit-panel top"></div>
           <div class="slit-panel bottom"></div>
@@ -701,23 +669,18 @@ gsap.registerPlugin(ScrollTrigger);
 
 /* ── LOADER ── */
 (function loaderAnim(){
-  const counter = document.getElementById('loader-counter');
-  const bar = document.getElementById('loader-progress');
-  const loader = document.getElementById('loader');
-  let v=0; const target=100;
-  const tl = gsap.timeline({onUpdate:()=>{
-    v=Math.round(tl.progress()*target);
-    counter.textContent=String(v).padStart(2,'0');
-    bar.style.width=(tl.progress()*100)+'%';
-  }});
-  tl.to({},{duration:2.2});
-  tl.call(()=>{
-    gsap.to(loader,{opacity:0,duration:.8,ease:'power3.in',onComplete:()=>{
-      loader.style.display='none';
-      document.body.style.overflow='';
-    }});
-  });
+  const loader=document.getElementById('loader');
+  const rule=document.getElementById('loader-rule');
+  const sub=document.getElementById('loader-sub');
   document.body.style.overflow='hidden';
+  const tl=gsap.timeline({onComplete:()=>{
+    gsap.to(loader,{opacity:0,duration:.9,ease:'power3.in',onComplete:()=>{
+      loader.style.display='none';document.body.style.overflow='';
+    }});
+  }});
+  tl.to(rule,{width:'clamp(180px,24vw,300px)',duration:1.4,ease:'power3.inOut'});
+  tl.to(sub,{opacity:1,duration:.8,ease:'power2.out'},'-.4');
+  tl.to({},{duration:.8}); // pause
 })();
 
 /* ── LENIS ── */
