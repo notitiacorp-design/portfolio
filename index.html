@@ -173,13 +173,13 @@ body{font-family:'Jost',sans-serif;background-color:#FBF9F6;color:#1C1C1C;overfl
     <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
       <div>
         <span class="text-xs uppercase tracking-[0.3em] font-semibold text-brand-or block mb-2">Portfolio</span>
-        <h2 class="font-serif text-4xl lg:text-5xl font-light text-brand-charcoal">Sites qui performent</h2>
+        <h2 class="font-serif text-4xl lg:text-5xl font-light text-brand-charcoal">Projets &amp; réalisations</h2>
       </div>
       <div class="flex flex-wrap gap-2" id="filters">
         <button class="filter-btn px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-medium transition-all duration-300 bg-brand-charcoal text-brand-creme" data-filter="all">Tous</button>
-        <button class="filter-btn px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-medium transition-all duration-300 border border-brand-argile hover:bg-brand-charcoal hover:text-brand-creme" data-filter="wordpress">WordPress</button>
-        <button class="filter-btn px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-medium transition-all duration-300 border border-brand-argile hover:bg-brand-charcoal hover:text-brand-creme" data-filter="surmesure">Sur Mesure</button>
-        <button class="filter-btn px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-medium transition-all duration-300 border border-brand-argile hover:bg-brand-charcoal hover:text-brand-creme" data-filter="seo">SEO</button>
+        <button class="filter-btn px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-medium transition-all duration-300 border border-brand-argile hover:bg-brand-charcoal hover:text-brand-creme" data-filter="vitrine">Sites Vitrines</button>
+        <button class="filter-btn px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-medium transition-all duration-300 border border-brand-argile hover:bg-brand-charcoal hover:text-brand-creme" data-filter="saas">SaaS & Produits</button>
+        <button class="filter-btn px-5 py-2.5 rounded-full text-xs uppercase tracking-wider font-medium transition-all duration-300 border border-brand-argile hover:bg-brand-charcoal hover:text-brand-creme" data-filter="data">R&D & Data</button>
       </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16" id="work-grid">
@@ -450,34 +450,74 @@ body{font-family:'Jost',sans-serif;background-color:#FBF9F6;color:#1C1C1C;overfl
   <div class="p-8 space-y-8 overflow-y-auto flex-1">
     <div class="aspect-[16/10] rounded-xl overflow-hidden shadow-lg" id="drawer-img"></div>
     <div class="space-y-4"><h4 class="font-serif text-xl text-brand-charcoal">Détails du projet</h4><p id="drawer-desc" class="text-brand-muted text-sm font-light leading-relaxed"></p></div>
-    <div class="border-t border-brand-argile pt-6 grid grid-cols-2 gap-6">
-      <div><span class="text-[10px] uppercase tracking-widest text-brand-or font-medium block">Stack technique</span><p id="drawer-stack" class="text-sm text-brand-charcoal font-light mt-1"></p></div>
-      <div><span class="text-[10px] uppercase tracking-widest text-brand-or font-medium block">Résultats</span><p id="drawer-results" class="text-sm text-brand-charcoal font-light mt-1"></p></div>
+    <div class="border-t border-brand-argile pt-6">
+      <span class="text-[10px] uppercase tracking-widest text-brand-or font-medium block">Stack technique</span>
+      <p id="drawer-stack" class="text-sm text-brand-charcoal font-light mt-1"></p>
     </div>
   </div>
-  <div class="p-6 border-t border-brand-argile bg-brand-sable"><a href="#contact" onclick="closeProject()" class="px-6 py-3 bg-brand-charcoal text-brand-creme text-xs uppercase tracking-widest font-medium rounded-full hover:bg-brand-or transition-colors flex-1 text-center block">Un projet similaire ?</a></div>
+  <div class="p-6 border-t border-brand-argile bg-brand-sable flex items-center gap-4">
+    <a id="drawer-link" href="#" target="_blank" rel="noopener" class="px-6 py-3 bg-brand-charcoal text-brand-creme text-xs uppercase tracking-widest font-medium rounded-full hover:bg-brand-or transition-colors flex-1 text-center block">Voir le site en ligne ↗</a>
+    <a href="#contact" onclick="closeProject()" class="px-6 py-3 border border-brand-charcoal text-brand-charcoal text-xs uppercase tracking-widest font-medium rounded-full hover:bg-brand-charcoal hover:text-brand-creme transition-colors text-center whitespace-nowrap">Un projet similaire ?</a>
+  </div>
 </div>
 
 <script>
 gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
-  {title:"Camille Roussel Architecture",tag:"WordPress — Paris",desc:"Audit complet, refonte design, optimisation SEO technique. Site vitrine WordPress passé de 4.2s à 0.8s de chargement. Structure sémantique refaite, meta descriptions, HTTPS forcé, cache optimisé. Résultat : +43% de trafic organique en 3 mois.",stack:"WordPress, PHP 8.3, Yoast SEO, WebP, Cache",results:"+43% trafic · 0.8s chargement · Lighthouse 98"},
-  {title:"EmpireOS — Landing Page",tag:"Sur Mesure — SaaS",desc:"Page de vente one-page pour un agent IA de conciergerie. Design premium, copywriting Don Draper, animations GSAP, scroll reveals. L'équation 2500€ → 199€ en hero. Formulaire de conversion optimisé.",stack:"HTML/CSS pur, GSAP, IntersectionObserver",results:"Design primé · Conversion optimisée"},
-  {title:"Marie Lemoine — Thérapie",tag:"SEO Local — Rennes",desc:"Site one-page pour une thérapeute. SEO local complet : Google Business Profile, mots-clés Rennes, schema.org Practitioner. Design apaisant, réservation en ligne, formulaire de contact.",stack:"HTML/CSS, Schema.org, GMB",results:"Page 1 Google · Réservations ×3"},
-  {title:"Le Temple — Concept Store",tag:"E-commerce — Paris",desc:"Boutique Shopify design sur mesure. Collection de produits, filtres, page produit optimisée SEO. Design épuré qui met en valeur les créateurs.",stack:"Shopify, Liquid, SEO produit",results:"Conversion +28% · Panier moyen +15%"}
+  {title:"Carlos Dias",tag:"Médecine chinoise — Hypnose",cat:"vitrine",sub:"One-page · Prise de RDV",desc:"Site vitrine pour un praticien en médecine chinoise et hypnose. Présentation de l'approche, des soins et prise de rendez-vous. Design apaisant adapté au bien-être.",stack:"HTML/CSS pur · responsive · formulaire",url:"https://notitiacorp-design.github.io/carlos-dias/",img:"shots/carlos-dias.jpg"},
+  {title:"Lucie Arnulf",tag:"Thérapie DEE — Éditorial",cat:"vitrine",sub:"One-page · Anti-slop",desc:"Site professionnel pour une praticienne en Thérapie en Dynamique Émotionnelle Exprimée. Direction éditoriale anti-slop, sobre et premium.",stack:"HTML/CSS pur · serif · direction éditoriale",url:"https://notitiacorp-design.github.io/lucie-arnulf/",img:"shots/lucie-arnulf.jpg"},
+  {title:"T.C.E Plombier Chauffagiste",tag:"Artisanat — Bourg-la-Reine",cat:"vitrine",sub:"One-page · Maquette",desc:"Maquette de site pour un plombier-chauffagiste de Bourg-la-Reine (92). Présentation des services de plomberie et chauffage, zone d'intervention.",stack:"HTML/CSS pur · responsive",url:"https://notitiacorp-design.github.io/tce-plombier-92/",img:"shots/tce-plombier-92.jpg"},
+  {title:"Les Vélos du Brennus",tag:"Location vélos — Béziers",cat:"vitrine",sub:"One-page · Canal du Midi",desc:"Site vitrine pour une location de vélos électriques à Béziers, sur le Canal du Midi. Parcours, vélos et tarifs mis en avant.",stack:"HTML/CSS pur · responsive",url:"https://notitiacorp-design.github.io/velos-du-brennus/",img:"shots/velos-du-brennus.jpg"},
+  {title:"Dorian Jourliac",tag:"Ostéopathie — Béziers",cat:"vitrine",sub:"One-page · SEO local",desc:"Site one-page pour un ostéopathe D.O. à Béziers. Pratique, prise de rendez-vous, informations pratiques et localisation.",stack:"HTML/CSS pur · SEO local · formulaire",url:"https://notitiacorp-design.github.io/jourliac-osteopathe/",img:"shots/jourliac-osteopathe.jpg"},
+  {title:"L'Arrivage",tag:"Restaurant — Cap d'Agde",cat:"vitrine",sub:"One-page · Poissons & fruits de mer",desc:"Site vitrine pour le restaurant L'Arrivage au Cap d'Agde, spécialisé poissons et fruits de mer. Carte et ambiance mises en valeur.",stack:"HTML/CSS pur · responsive",url:"https://notitiacorp-design.github.io/larrivage-vitrine/",img:"shots/larrivage-vitrine.jpg"},
+  {title:"SKN Paris Riviera",tag:"Cosmétique — Skin",cat:"vitrine",sub:"One-page · Identité de marque",desc:"Site vitrine pour SKN Paris, marque de cosmétique « Primal Science for Modern Skin ». Direction éditoriale autour de la peau dans son état naturel.",stack:"HTML/CSS pur · direction éditoriale",url:"https://notitiacorp-design.github.io/skn-paris-riviera/",img:"shots/skn-paris-riviera.jpg"},
+  {title:"MUSTER TV",tag:"Média — WebTV",cat:"vitrine",sub:"One-page · Contenus vidéo",desc:"Site pour MUSTER TV, plateforme WebTV. Présentation des contenus vidéo et de l'univers de la chaîne.",stack:"HTML/CSS pur · responsive",url:"https://notitiacorp-design.github.io/steven-webtv/",img:"shots/steven-webtv.jpg"},
+  {title:"Le Studio des Émotifs",tag:"Collectif créatif — L'Isle-Adam",cat:"vitrine",sub:"Site vitrine · Maquette",desc:"Maquette de site vitrine pour Le Studio des Émotifs, collectif créatif à L'Isle-Adam (Val d'Oise). Direction éditoriale singulière.",stack:"HTML/CSS pur · direction éditoriale",url:"https://notitiacorp-design.github.io/studio-des-emotifs/",img:"shots/studio-des-emotifs.jpg"},
+  {title:"A2G Transports",tag:"Transport routier — Bagnolet",cat:"vitrine",sub:"Identité « manifeste de fret »",desc:"Maquette pour A2G Transports, transporteur routier de fret. Identité singulière « manifeste de fret » : typographie industrielle, jaune de sécurité, animations riches.",stack:"HTML/CSS · Anton/Space Mono · Ken Burns",url:"https://notitiacorp-design.github.io/a2g-transports-demo/",img:"shots/a2g-transports-demo.jpg"},
+  {title:"Mairie de Saint-Martin",tag:"Collectivité — Démo",cat:"vitrine",sub:"Site institutionnel",desc:"Site web démo pour la commune fictive de Saint-Martin-de-l'Hérault, conçu comme portfolio pour des collectivités locales.",stack:"HTML/CSS pur · responsive",url:"https://notitiacorp-design.github.io/mairie-demo-site/",img:"shots/mairie-demo-site.jpg"},
+  {title:"Accompagnateur en Montagne",tag:"Template — Caroux",cat:"vitrine",sub:"Template one-page réutilisable",desc:"Template de site vitrine one-page pour un accompagnateur en montagne dans le Massif du Caroux. HTML/CSS pur, facilement personnalisable.",stack:"HTML/CSS pur · template responsive",url:"https://notitiacorp-design.github.io/guide-caroux-template/",img:"shots/guide-caroux-template.jpg"},
+  {title:"BE Pilot — Product Tour",tag:"SaaS BTP — Démo",cat:"saas",sub:"Product tour interactif",desc:"Product tour interactif pour BE Pilot, logiciel BTP. Démonstration guidée des fonctionnalités pour les prospects.",stack:"HTML/CSS · interactions · animations",url:"https://notitiacorp-design.github.io/be-pilot-demo-tour/",img:"shots/be-pilot-demo-tour.jpg"},
+  {title:"BE Pilot × Ragueneau",tag:"SaaS BTP — Landing",cat:"saas",sub:"Landing page personnalisée",desc:"Landing page de vente personnalisée BE Pilot pour Ragueneau Cuisines Pro. Message adapté à la cible cuisinistes.",stack:"HTML/CSS · landing page",url:"https://notitiacorp-design.github.io/be-pilot-ragueneau/",img:"shots/be-pilot-ragueneau.jpg"},
+  {title:"EmpireOS",tag:"Conciergerie — IA",cat:"saas",sub:"Landing page · Conversion",desc:"Page de vente pour EmpireOS, agent IA de back-office pour conciergerie. Design premium, copywriting orienté conversion.",stack:"HTML/CSS pur · GSAP · animations",url:"https://notitiacorp-design.github.io/empireos/",img:"shots/empireos.jpg"},
+  {title:"VIVE — Founders Edition",tag:"Health Concierge — Pre-sell",cat:"saas",sub:"Landing page presell",desc:"Landing page de prévente Founders Edition pour VIVE, application de conciergerie santé premium.",stack:"HTML/CSS · landing page",url:"https://notitiacorp-design.github.io/vive-landing/",img:"shots/vive-landing.jpg"},
+  {title:"Notitia",tag:"Assistant digital — IA",cat:"saas",sub:"Site produit",desc:"Site de présentation de Notitia, assistant digital et créateur de sites web. Positionnement produit et services.",stack:"HTML/CSS pur",url:"https://notitiacorp-design.github.io/notitia/",img:"shots/notitia.jpg"},
+  {title:"Notitia Corp",tag:"Logiciels — IA",cat:"saas",sub:"Site vitrine premium",desc:"Site vitrine premium pour Notitia Corp, logiciels sur-mesure dopés à l'IA.",stack:"HTML/CSS pur · direction premium",url:"https://notitiacorp-design.github.io/notitia-corp/",img:"shots/notitia-corp.jpg"},
+  {title:"Notitia — Sites & SEO",tag:"Agence — WordPress",cat:"saas",sub:"Site principal",desc:"Site principal Notitia, positionné sites WordPress & référencement. Présentation des services web.",stack:"HTML/CSS · WordPress · SEO",url:"https://notitiacorp-design.github.io/notitiacorp-design/",img:"shots/notitiacorp-design.jpg"},
+  {title:"Notitia KPI Dashboard",tag:"Dashboard — Analytics",cat:"saas",sub:"Tableau de bord",desc:"Dashboard KPI pour Notitia. Visualisation des indicateurs clés de performance.",stack:"HTML/CSS · visualisation de données",url:"https://notitiacorp-design.github.io/kpi-dashboard/",img:"shots/kpi-dashboard.jpg"},
+  {title:"Ronnie Extensions — Fiches",tag:"E-commerce — Amazon",cat:"saas",sub:"Fiches produits",desc:"Présentations de produits Amazon pour Ronnie Extensions. Mise en page de fiches produits.",stack:"HTML/CSS · présentation produit",url:"https://notitiacorp-design.github.io/manuella-amazon-listings/",img:"shots/manuella-amazon-listings.jpg"},
+  {title:"Fe16N2 Workbench",tag:"Matériaux — DFT",cat:"data",sub:"Aimants permanents",desc:"Workbench open-source de cartographie computationnelle de la stabilisation du alpha-Fe16N2. Mining DFT assisté par IA pour des aimants permanents sans terres rares.",stack:"HTML · data science · DFT",url:"https://notitiacorp-design.github.io/fe16n2-workbench/",img:"shots/fe16n2-workbench.jpg"},
+  {title:"DAC Reality Check",tag:"Climat — Direct Air Capture",cat:"data",sub:"Analyse thermodynamique",desc:"Reality check thermodynamique sur la capture directe de l'air. Mining de littérature assisté par IA exposant l'écart entre promesses de coût et limites physiques.",stack:"HTML · analyse de données",url:"https://notitiacorp-design.github.io/dac-reality-check/",img:"shots/dac-reality-check.jpg"},
+  {title:"Sodium-Ion Workbench",tag:"Batteries — Matériaux",cat:"data",sub:"Analyse de cathodes",desc:"Workbench open-source d'analyse de cathodes de batteries sodium-ion. Reverse-engineering de matériaux critiques avec mining de littérature assisté par IA.",stack:"HTML · data science",url:"https://notitiacorp-design.github.io/sodium-ion-workbench/",img:"shots/sodium-ion-workbench.jpg"},
+  {title:"Context Fidelity Leaderboard",tag:"LLM — Évaluation",cat:"data",sub:"Stress tests d'attention",desc:"Audit de fidélité contextuelle des LLM : heatmaps d'attention, protocole reproductible, stress tests needle-in-haystack.",stack:"Python · HTML · protocole d'évaluation",url:"https://notitiacorp-design.github.io/long-context-fidelity-leaderboard/",img:"shots/long-context-fidelity-leaderboard.jpg"}
 ];
 
 function openProject(i){
+  const p=projects[i];
   const d=document.getElementById('drawer');
-  document.getElementById('drawer-tag').textContent=projects[i].tag;
-  document.getElementById('drawer-title').textContent=projects[i].title;
-  document.getElementById('drawer-desc').textContent=projects[i].desc;
-  document.getElementById('drawer-stack').textContent=projects[i].stack;
-  document.getElementById('drawer-results').textContent=projects[i].results;
+  document.getElementById('drawer-tag').textContent=p.tag;
+  document.getElementById('drawer-title').textContent=p.title;
+  document.getElementById('drawer-desc').textContent=p.desc;
+  document.getElementById('drawer-stack').textContent=p.stack;
+  document.getElementById('drawer-img').innerHTML='<img src="'+p.img+'" alt="'+p.title+'" class="w-full h-full object-cover" loading="lazy">';
+  document.getElementById('drawer-link').href=p.url;
   d.classList.remove('translate-x-full');document.body.style.overflow='hidden';
 }
 function closeProject(){document.getElementById('drawer').classList.add('translate-x-full');document.body.style.overflow='';}
+
+// Génération des cartes projets
+(function(){
+  const grid=document.getElementById('work-grid');
+  grid.innerHTML='';
+  projects.forEach((p,i)=>{
+    const c=document.createElement('div');
+    c.className='project-card group';
+    c.dataset.category=p.cat;
+    c.onclick=function(){openProject(i)};
+    c.innerHTML='<div class="reveal-wrapper aspect-[4/3] rounded-2xl overflow-hidden mb-6 cursor-pointer shadow-lg"><div class="reveal-curtain"></div><img src="'+p.img+'" alt="'+p.title+'" class="w-full h-full object-cover" loading="lazy"></div><div class="flex justify-between items-start gap-4"><div><span class="text-xs text-brand-or uppercase tracking-wider font-medium">'+p.tag+'</span><h3 class="font-serif text-2xl font-light text-brand-charcoal mt-1">'+p.title+'</h3><p class="text-xs text-brand-muted mt-1">'+p.sub+'</p></div><div class="w-10 h-10 shrink-0 rounded-full border border-brand-argile flex items-center justify-center group-hover:bg-brand-charcoal group-hover:text-brand-creme transition-all">↗</div></div>';
+    grid.appendChild(c);
+  });
+})();
 
 // Cursor
 const cur=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
