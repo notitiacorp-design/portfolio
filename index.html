@@ -78,7 +78,7 @@ header.scrolled .nav{height:64px}
 .hero .eyebrow::before{content:"";width:44px;height:1px;background:var(--ambre)}
 .hero h1{font-family:var(--serif);font-weight:400;font-size:clamp(3rem,9.5vw,7.5rem);line-height:1.02;letter-spacing:-.03em;margin-bottom:34px}
 .hero h1 .line{display:block;overflow:hidden}
-.hero h1 .w{display:inline-block;transform:translateY(120%)}
+.hero h1 .w{display:inline-block}
 .hero h1 .w.accent{font-style:italic;color:var(--ambre);font-weight:300}
 .hero .lead{font-family:var(--sans);font-weight:300;font-size:clamp(1.05rem,1.6vw,1.25rem);color:var(--encre-douce);max-width:520px;line-height:1.8;margin-bottom:42px}
 .hero-actions{display:flex;flex-wrap:wrap;gap:16px}
@@ -212,7 +212,6 @@ footer{border-top:1px solid var(--ligne);padding:44px 0}
 }
 @media(prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
-  .hero h1 .w{transform:none}
   .reveal-curtain{transform:none}
 }
 </style>
@@ -466,7 +465,7 @@ function runIntro(){
   tl.to('#preloader',{clipPath:'polygon(0% 0%,100% 0%,100% 0%,0% 0%)',duration:1,ease:'power4.inOut'},'+=0.15');
   tl.add(()=>{
     gsap.to('#hero-eyebrow',{opacity:1,y:0,duration:.7,ease:'power3.out'});
-    gsap.to('#hero-title .w',{yPercent:0,stagger:0.09,duration:1.1,ease:'power4.out'},'-=0.4');
+    gsap.from('#hero-title .w',{yPercent:120,stagger:0.09,duration:1.1,ease:'power4.out'},'-=0.4');
     gsap.to('#hero-lead',{opacity:1,y:0,duration:.8,ease:'power3.out'},'-=0.7');
     gsap.to('#hero-cta',{opacity:1,y:0,duration:.8,ease:'power3.out'},'-=0.6');
     gsap.to('#hero-meta',{opacity:1,y:0,duration:.8,ease:'power3.out'},'-=0.6');
